@@ -20,19 +20,19 @@
 
 \newenvironment{code}[4][]
 {\VerbatimEnvironment
-	\begin{tcolorbox}[space to upper,
-		skin=bicolor,
-		colbacklower=black!75,
-		collower=white,
-		title={#4},
-		halign=center,
-		valign=center,
-		nobeforeafter,
-		halign lower=flush right,
-		]
-		\begin{minted}[
-			highlightlines={#3},#1]{#2}}
-		{\end{minted}\end{tcolorbox}}
+  \begin{tcolorbox}[space to upper,
+    skin=bicolor,
+    colbacklower=black!75,
+    collower=white,
+    title={#4},
+    halign=center,
+    valign=center,
+    nobeforeafter,
+    halign lower=flush right,
+    ]
+    \begin{minted}[
+      highlightlines={#3},#1]{#2}}
+    {\end{minted}\end{tcolorbox}}
 
 \tcbuselibrary{skins, breakable, theorems}
 
@@ -1477,7 +1477,7 @@ advance()方法获取源文件中的下一个字符并返回它。advance()用�
 既然如此，现在正好可以跳过其它那些无意义的字符了：换行和空格。
 
 \begin{code}{java}{}{lox/Scanner.java，在scanToken()方法中添加：}
-      	break;
+        break;
       case ' ':
       case '\r':
       case '\t':
@@ -1506,7 +1506,7 @@ advance()方法获取源文件中的下一个字符并返回它。advance()用�
 现在我们对长词素已经很熟悉了，我们可以开始处理字面量了。我们先处理字符串，因为字符串总是以一个特定的字符"开头。
 
 \begin{code}{java}{}{lox/Scanner.java，在 scanToken()方法中添加：}
-      	break;
+        break;
       case '"': string(); break;
       default:
 \end{code}
@@ -1560,15 +1560,13 @@ advance()方法获取源文件中的下一个字符并返回它。advance()用�
 
 为了识别数字词素的开头，我们会寻找任何一位数字。为每个十进制数字添加case分支有点乏味，所以我们直接在默认分支中进行处理。
 
-\begin{code}{java}{}{lox/Scanner.java，在scanToken()方法中替换一行：}
+\begin{code}{java}{2-6}{lox/Scanner.java，在scanToken()方法中替换1行：}
       default:
-      	// 替换部分开始
-      	if (isDigit(c)) {
+        if (isDigit(c)) {
           number();
         } else {
           Lox.error(line, "Unexpected character.");
         }
-				// 替换部分结束
         break;
 \end{code}
 
@@ -1634,14 +1632,12 @@ case 'o':
 
 所以我们首先假设任何以字母或下划线开头的词素都是一个标识符。
 
-\begin{code}{java}{}{lox/Scanner.java，在 scanToken()中添加代码}
+\begin{code}{java}{4-5}{lox/Scanner.java，在 scanToken()中添加代码}
         default:
         if (isDigit(c)) {
           number();
-				// 新增部分开始
         } else if (isAlpha(c)) {
           identifier();
-        // 新增部分结束
         } else {
           Lox.error(line, "Unexpected character.");
         }
@@ -2296,7 +2292,7 @@ ML家族中的函数式范型反过来了。在这些语言中，没有带方法
 
 \begin{code}{java}{2}{tool/GenerateAst.java，在defineAst()方法中添加：}
     writer.println("abstract class " + baseName + " {");
-		defineVisitor(writer, baseName, types);
+    defineVisitor(writer, baseName, types);
     // The AST classes.
 \end{code}
 
@@ -2322,7 +2318,7 @@ ML家族中的函数式范型反过来了。在这些语言中，没有带方法
 在基类中，定义抽象accept()方法。
 
 \begin{code}{java}{3-5}{tool/GenerateAst.java，在 defineAst()方法中添加：}
-    	defineType(writer, baseName, className, fields);
+      defineType(writer, baseName, className, fields);
     }
     // The base accept() method.
     writer.println();
@@ -2384,7 +2380,7 @@ class AstPrinter implements Expr.Visitor<String> {
   return expr.accept(this);
   }
 
-	@Override
+  @Override
   public String visitBinaryExpr(Expr.Binary expr) {
     return parenthesize(expr.operator.lexeme,
                         expr.left, expr.right);
