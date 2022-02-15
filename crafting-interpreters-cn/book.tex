@@ -31,7 +31,7 @@
     nobeforeafter,
     halign lower=flush right,
     ]
-    \begin{minted}[escapeinside=||,mathescape=true,
+    \begin{minted}[breaklines,
       highlightlines={#3},#1]{#2}}
     {\end{minted}\end{tcolorbox}}
 
@@ -48,7 +48,7 @@
 \DeclareMathSymbol{"}{\mathalpha}{letters}{`"}
 \begin{document}
 
-\pagestyle{empty}
+\thispagestyle{empty}
 
 \begin{tikzpicture}[remember picture,overlay]
 %%%%%%%%%%%%%%%%%%%% Background %%%%%%%%%%%%%%%%%%%%%%%%
@@ -657,7 +657,7 @@ var average = (min + max) / 2;
 
 \section{语句}
 
-现在我们来看语句。表达式的主要作用是产生一个*值*，语句的主要作用是产生一个*效果*。由于根据定义，语句不求值，因此必须以某种方式改变世界（通常是修改某些状态，读取输入或产生输出）才能有用。
+现在我们来看语句。表达式的主要作用是产生一个\textit{值}，语句的主要作用是产生一个\textit{作用}。由于根据定义，语句不求值，因此必须以某种方式改变世界（通常是修改某些状态，读取输入或产生输出）才能有用。
 
 您已经看到了几种语句。 第一个是：
 
@@ -1998,19 +1998,21 @@ bread \quad & \rightarrow \quad \mathtt{"}toast\mathtt{"} \quad\vert\quad \matht
 
 使用我们的新符号，下面是语法的表示：
 
-\begin{code}{js}{}{}
-expression     |$\rightarrow$| literal
-                     |$\vert$| unary
-                     |$\vert$| binary
-                     |$\vert$| grouping ;
-
-literal        |$\rightarrow$| NUMBER |$\vert$| STRING |$\vert$| "true" |$\vert$| "false" |$\vert$| "nil" ;
-grouping       |$\rightarrow$| "(" expression ")" ;
-unary          |$\rightarrow$| ( "-" |$\vert$| "!" ) expression ;
-binary         |$\rightarrow$| expression operator expression ;
-operator       |$\rightarrow$| "==" |$\vert$| "!=" |$\vert$| "<" |$\vert$| "<=" |$\vert$| ">" |$\vert$| ">="
-                     |$\vert$| "+" |$\vert$| "-" |$\vert$| "*" |$\vert$| "/" ;
-\end{code}
+\begin{tcolorbox}
+\begin{align*}
+expression & \rightarrow \quad literal \\
+           & \;\;\vert \quad unary \\
+           & \;\;\vert \quad binary \\
+           & \;\;\vert \quad grouping \quad ; \\
+\\
+literal  & \rightarrow \quad NUMBER \quad\vert\quad STRING \quad\vert\quad \mathtt{"}true\mathtt{"} \quad\vert\quad \mathtt{"}false\mathtt{"} \quad\vert\quad \mathtt{"}nil\mathtt{"} \quad ; \\
+grouping & \rightarrow \quad \mathtt{"}(\mathtt{"} \quad expression \quad \mathtt{"})\mathtt{"} \quad ; \\
+unary    & \rightarrow \quad ( \quad \mathtt{"}-\mathtt{"} \quad\vert\quad \mathtt{"}!\mathtt{"} \quad ) \quad expression \quad ; \\
+binary   & \rightarrow \quad expression \quad operator \quad expression \quad ; \\
+operator & \rightarrow \quad \mathtt{"}==\mathtt{"} \quad\vert\quad \mathtt{"}!=\mathtt{"} \quad\vert\quad \mathtt{"}<\mathtt{"} \quad\vert\quad \mathtt{"}<=\mathtt{"} \quad\vert\quad \mathtt{"}>\mathtt{"} \quad\vert\quad \mathtt{"}>=\mathtt{"} \\
+                    & \;\;\vert \quad \mathtt{"}+\mathtt{"} \quad\vert\quad \mathtt{"}-\mathtt{"} \quad\vert\quad \mathtt{"}*\mathtt{"} \quad\vert\quad \mathtt{"}/\mathtt{"} \quad ;
+\end{align*}
+\end{tcolorbox}
 
 这里有一点额外的元语法。除了与精确词素相匹配的终止符会加引号外，我们还对表示单一词素的终止符进行“大写化”，这些词素的文本表示方式可能会有所不同。NUMBER是任何数字字面量，STRING是任何字符串字面量。稍后，我们将对IDENTIFIER进行同样的处理。
 
@@ -2208,7 +2210,7 @@ if (expr instanceof Expr.Binary) {
 
 这种情况下，向表中加入新行来扩展列表是很容易的，简单地定义一个新类即可，不需要修改现有的代码。但是，想象一下，如果你要添加一个新操作（新的一行）。在Java中，这意味着要拆开已有的那些类并向其中添加方法。
 
-ML家族中的函数式范型反过来了。在这些语言中，没有带方法的类，类型和函数是完全独立的。要为许多不同类型实现一个操作，只需定义一个函数。在该函数体中，您可以使用*模式匹配*（某种基于类型的switch操作）在同一个函数中实现每个类型对应的操作。
+ML家族中的函数式范型反过来了。在这些语言中，没有带方法的类，类型和函数是完全独立的。要为许多不同类型实现一个操作，只需定义一个函数。在该函数体中，您可以使用\textit{模式匹配}（某种基于类型的switch操作）在同一个函数中实现每个类型对应的操作。
 
 这使得添加新操作非常简单——只需定义另一个与所有类型模式匹配的的函数即可。
 
@@ -2354,7 +2356,7 @@ ML家族中的函数式范型反过来了。在这些语言中，没有带方法
 
 当我们调试解析器和解释器时，查看解析后的语法树并确保其与期望的结构一致通常是很有用的。我们可以在调试器中进行检查，但那可能有点难。
 
-相反，我们需要一些代码，在给定语法树的情况下，生成一个明确的字符串表示。将语法树转换为字符串是解析器的逆向操作，当我们的目标是产生一个在源语言中语法有效的文本字符串时，通常被称为 "漂亮打印"。
+相反，我们需要一些代码，在给定语法树的情况下，生成一个明确的字符串表示。将语法树转换为字符串是解析器的逆向操作，当我们的目标是产生一个在源语言中语法有效的文本字符串时，通常被称为“漂亮打印”。
 
 这不是我们的目标。我们希望字符串非常明确地显示树的嵌套结构。如果我们要调试的是操作符的优先级是否处理正确，那么返回1 + 2 * 3的打印器并没有什么用，我们想知道+或*是否在语法树的顶部。
 
@@ -2464,11 +2466,14 @@ class AstPrinter implements Expr.Visitor<String> {
 \begin{enumerate}
   \item 之前我说过，我们在语法元语法中添加的|、*、+等形式只是语法糖。以这个语法为例:
 
-\begin{code}{js}{}{}
-expr |$\rightarrow$| expr ( "(" ( expr ( "," expr )* )? ")" |$\vert$| "." IDENTIFIER )+
-           |$\vert$| IDENTIFIER
-           |$\vert$| NUMBER
-\end{code}
+\begin{tcolorbox}
+\begin{align*}
+expr & \rightarrow \quad expr \quad ( \quad \mathtt{"}(\mathtt{"} \quad ( \quad expr \quad ( \quad \mathtt{"},\mathtt{"} \quad expr \quad )* \quad )? \quad \mathtt{"})\mathtt{"} \\
+     & \;\;\vert \quad \mathtt{"}.\mathtt{"} \quad IDENTIFIER \quad )+ \\
+     & \;\;\vert\quad IDENTIFIER \\
+     & \;\;\vert\quad NUMBER
+\end{align*}
+\end{tcolorbox}
 
 生成一个与同一语言相匹配的语法，但不要使用任何语法糖。
 
@@ -2505,31 +2510,33 @@ expr |$\rightarrow$| expr ( "(" ( expr ( "," expr )* )? ")" |$\vert$| "." IDENTI
 
 这些先驱们设计了一些语言，说实话，他们甚至不知道如何编写编译器。然后他们做了开创性的工作，发明了解析和编译技术，可以在那些老旧、小型的机器上处理这些新的、大型的语言。
 
-经典的编译书读起来就像是对这些英雄和他们的工具的吹捧传记。《编译器:原理、技术和工具》（*Compilers: Principles, Techniques, and Tools*）的封面上有一条标记着“编译器设计复杂性”的龙，被一个手持剑和盾的骑士杀死，剑和盾上标记着“LALR解析器生成器”和“语法制导翻译”。他们在过分吹捧。
+经典的编译书读起来就像是对这些英雄和他们的工具的吹捧传记。《编译器：原理、技术和工具》的封面上有一条标记着“编译器设计复杂性”的龙，被一个手持剑和盾的骑士杀死，剑和盾上标记着“LALR解析器生成器”和“语法制导翻译”。他们在过分吹捧。
 
 稍微的自我祝贺是当之无愧的，但事实是，你不需要知道其中的大部分知识，就可以为现代机器制作出高质量的解析器。一如既往，我鼓励你先扩大学习范围，以后再慢慢接受它，但这本书省略了奖杯箱。
 
 \section{歧义与解析游戏}
 
-在上一章中，我说过你可以像“玩”游戏一样使用上下文无关的语法来*生成*字符串。解析器则以相反的方式玩游戏。给定一个字符串(一系列语法标记)，我们将这些标记映射到语法中的终止符，以确定哪些规则可能生成该字符串。
+在上一章中，我说过你可以像“玩”游戏一样使用上下文无关的语法来\textit{生成}字符串。解析器则以相反的方式玩游戏。给定一个字符串(一系列语法标记)，我们将这些标记映射到语法中的终止符，以确定哪些规则可能生成该字符串。
 
-"可能产生 "这部分很有意思。我们完全有可能创建一个*模棱两可*的语法，在这个语法中，不同的生成式可能会得到同一个字符串。当你使用该语法来*生成*字符串时，这一点不太重要。一旦你有了字符串，谁还会在乎你是怎么得到它的呢？
+“可能产生”这部分很有意思。我们完全有可能创建一个\textit{模棱两可}的语法，在这个语法中，不同的生成式可能会得到同一个字符串。当你使用该语法来\textit{生成}字符串时，这一点不太重要。一旦你有了字符串，谁还会在乎你是怎么得到它的呢？
 
 但是在解析时，歧义意味着解析器可能会误解用户的代码。当我们进行解析时，我们不仅要确定字符串是不是有效的Lox代码，还要记录哪些规则与代码的哪些部分相匹配，以便我们知道每个标记属于语言的哪一部分。下面是我们在上一章整理的Lox表达式语法：
 
-\begin{code}{js}{}{}
-expression     → literal
-               | unary
-               | binary
-               | grouping ;
-
-literal        → NUMBER | STRING | "true" | "false" | "nil" ;
-grouping       → "(" expression ")" ;
-unary          → ( "-" | "!" ) expression ;
-binary         → expression operator expression ;
-operator       → "==" | "!=" | "<" | "<=" | ">" | ">="
-               | "+"  | "-"  | "*" | "/" ;
-\end{code}
+\begin{tcolorbox}
+\begin{align*}
+expression & \rightarrow \quad literal \\
+           & \;\;\vert \quad unary \\
+           & \;\;\vert \quad binary \\
+           & \;\;\vert \quad grouping \quad ; \\
+\\
+literal   & \rightarrow \quad NUMBER \quad\vert\quad STRING \quad\vert\quad \mathtt{"}true\mathtt{"} \quad\vert\quad \mathtt{"}false\mathtt{"} \quad\vert\quad \mathtt{"}nil\mathtt{"} \quad ; \\
+grouping  & \rightarrow \quad \mathtt{"}(\mathtt{"} \quad expression \mathtt{"})\mathtt{"} \quad ; \\
+unary     & \rightarrow \quad ( \quad \mathtt{"}-\mathtt{"} \quad\vert\quad \mathtt{"}!\mathtt{"} \quad ) \quad expression \quad ; \\
+binary    & \rightarrow \quad expression \quad operator \quad expression \quad ; \\
+operator  & \rightarrow \quad \mathtt{"}==\mathtt{"} \quad\vert\quad \mathtt{"}!=\mathtt{"} \quad\vert\quad \mathtt{"}<\mathtt{"} \quad\vert\quad \mathtt{"}<=\mathtt{"} \quad\vert\quad \mathtt{"}>\mathtt{"} \quad\vert\quad \mathtt{"}>=\mathtt{"} \\
+& \;\;\vert\quad \mathtt{"}+\mathtt{"} \quad\vert\quad \mathtt{"}-\mathtt{"} \quad\vert\quad \mathtt{"}*\mathtt{"} \quad\vert\quad \mathtt{"}/\mathtt{"} \quad ;
+\end{align*}
+\end{tcolorbox}
 
 下面是一个满足语法的有效字符串：
 
@@ -2604,45 +2611,55 @@ operator       → "==" | "!=" | "<" | "<=" | ">" | ">="
 
 我们通过对语法进行分层来解决这个问题。我们为每个优先级定义一个单独的规则。
 
-\begin{code}{js}{}{}
-expression     → ...
-equality       → ...
-comparison     → ...
-term           → ...
-factor         → ...
-unary          → ...
-primary        → ...
-\end{code}
+\begin{tcolorbox}
+\begin{align*}
+expression & \rightarrow \quad ... \\
+equality   & \rightarrow \quad ... \\
+comparison & \rightarrow \quad ... \\
+term       & \rightarrow \quad ... \\
+factor     & \rightarrow \quad ... \\
+unary      & \rightarrow \quad ... \\
+primary    & \rightarrow \quad ...
+\end{align*}
+\end{tcolorbox}
 
-此处的每个规则仅匹配其当前优先级或更高优先级的表达式。 例如，unary 匹配一元表达式（如 !negated）或主表达式（如1234）。term可以匹配1 + 2，但也可以匹配3 * 4 /5。最后的primary 规则涵盖优先级最高的形式——字面量和括号表达式。
+此处的每个规则仅匹配其当前优先级或更高优先级的表达式。 例如，unary匹配一元表达式（如 !negated）或主表达式（如1234）。term可以匹配1 + 2，但也可以匹配3 * 4 /5。最后的primary规则涵盖优先级最高的形式——字面量和括号表达式。
 
-我们只需要填写每条规则的生成式。我们先从简单的开始。顶级的expression 规则可以匹配任何优先级的表达式。由于equality的优先级最低，只要我们匹配了它，就涵盖了一切。
+我们只需要填写每条规则的生成式。我们先从简单的开始。顶级的expression规则可以匹配任何优先级的表达式。由于equality的优先级最低，只要我们匹配了它，就涵盖了一切。
 
 \begin{tcolorbox}
-expression $\rightarrow$ equality
+\begin{align*}
+expression \rightarrow\quad equality
+\end{align*}
 \end{tcolorbox}
 
 在优先级表的另一端，primary表达式包括所有的字面量和分组表达式。
 
-\begin{code}{js}{}{}
-primary        → NUMBER | STRING | "true" | "false" | "nil"
-               | "(" expression ")" ;
-\end{code}
+\begin{tcolorbox}
+\begin{align*}
+primary & \rightarrow \quad NUMBER \quad\vert\quad STRING \quad\vert\quad \mathtt{"}true\mathtt{"} \quad\vert\quad \mathtt{"}false\mathtt{"} \quad\vert\quad \mathtt{"}nil\mathtt{"} \\
+        & \;\;\vert\quad \mathtt{"}(\mathtt{"} expression \mathtt{"})\mathtt{"} \quad ;
+\end{align*}
+\end{tcolorbox}
 
 一元表达式以一元操作符开头，后跟操作数。因为一元操作符可以嵌套——!!true虽奇怪也是可用的表达式——这个操作数本身可以是一个一元表达式。递归规则可以很好地解决这个问题。
 
 \begin{tcolorbox}
-unary $\rightarrow$ ( "!" | "-" ) unary ;
+\begin{align*}
+unary \rightarrow \quad ( \quad \mathtt{"}!\mathtt{"} \quad\vert\quad \mathtt{"}-\mathtt{"} \quad ) \quad unary \quad ;
+\end{align*}
 \end{tcolorbox}
 
 但是这条规则有一个问题，它永远不会终止。
 
 请记住，每个规则都需要匹配该优先级或更高优先级的表达式，因此我们还需要使其与主表达式匹配。
 
-\begin{code}{js}{}{}
-unary          → ( "!" | "-" ) unary
-               | primary ;
-\end{code}
+\begin{tcolorbox}
+\begin{align*}
+unary & \rightarrow \quad ( \quad \mathtt{"}!\mathtt{"} \quad\vert\quad \mathtt{"}-\mathtt{"} \quad ) \quad unary \\
+      & \;\;\vert \quad primary \quad ;
+\end{align*}
+\end{tcolorbox}
 
 这样就可以了。
 
@@ -2663,7 +2680,7 @@ factor         → factor ( "/" | "*" ) unary
 factor         → unary ( ( "/" | "*" ) unary )* ;
 \end{code}
 
-我们将因子表达式定义为乘法和除法的扁平*序列*。这与前面的规则语法相同，但更好地反映了我们将编写的解析Lox的代码。我们对其它二进制运算符的优先级使用相同的结构，从而得到下面这个完整的表达式语法：
+我们将因子表达式定义为乘法和除法的扁平\textit{序列}。这与前面的规则语法相同，但更好地反映了我们将编写的解析Lox的代码。我们对其它二进制运算符的优先级使用相同的结构，从而得到下面这个完整的表达式语法：
 
 \begin{code}{js}{}{}
 expression     → equality ;
@@ -2689,13 +2706,19 @@ primary        → NUMBER | STRING | "true" | "false" | "nil"
 
 递归下降解析器是一种将语法规则直接翻译成命令式代码的文本翻译器。每个规则都会变成一个函数，规则主体翻译成代码大致是这样的：
 
-| Grammar notation | Code representation                                          |
-| ---------------- | ------------------------------------------------------------ |
-| Terminal         | Code to match and consume a token      匹配并消费一个语法标记 |
-| Nonterminal      | Call to that rule’s function       调用规则对应的函数        |
-| |              | if or switch statement      if或switch语句               |
-| * or +       | while or for loop      while或for循环                    |
-| ?              | if statement      if语句                                   |
+\begin{center}
+  \begin{tabular}{ |c|c| } 
+   \hline
+   语法记号 & 代码表示 \\
+   \hline 
+   终结符 & 匹配并消费一个词法标记 \\ 
+   非终结符 & 调用规则对应的函数 \\
+   | & if或者switch语句 \\
+   *或者+ & while或者for循环 \\
+   ? & if语句 \\ 
+   \hline
+  \end{tabular}
+\end{center}
 
 下降被“递归”修饰是因为，如果一个规则引用自身（直接或间接）就会变为递归的函数调用。
 
@@ -2813,7 +2836,7 @@ isAtEnd()检查我们是否处理完了待解析的标记。peek()方法返回�
 
 我们获取到匹配的操作符标记，这样就可以知道我们要处理哪一类等式表达式。之后，我们再次调用comparison()解析右边的操作数。我们将操作符和它的两个操作数组合成一个新的Expr.Binary语法树节点，然后开始循环。对于每一次迭代，我们都将结果表达式存储在同一个expr局部变量中。在对等式表达式序列进行压缩时，会创建一个由二元操作符节点组成的左结合嵌套树。
 
-一旦解析器遇到一个不是等式操作符的标记，就会退出循环。最后，它会返回对应的表达式。请注意，如果解析器从未遇到过等式操作符，它就永远不会进入循环。在这种情况下，equality()方法有效地调用并返回comparison()。这样一来，这个方法就会匹配一个等式运算符或*任何更高优先级的表达式*。
+一旦解析器遇到一个不是等式操作符的标记，就会退出循环。最后，它会返回对应的表达式。请注意，如果解析器从未遇到过等式操作符，它就永远不会进入循环。在这种情况下，equality()方法有效地调用并返回comparison()。这样一来，这个方法就会匹配一个等式运算符或\textit{任何更高优先级的表达式}。
 
 继续看下一个规则。
 
@@ -2932,15 +2955,15 @@ primary        → NUMBER | STRING | "true" | "false" | "nil"
   \item 给定一个\textit{无效}的标记序列，检测错误并告知用户。
 \end{enumerate}
 
-不要低估第二项工作的重要性！在现代的IDE和编辑器中，为了语法高亮显示和支持自动补齐等功能，当用户还在编辑代码时，解析器就会不断地重新解析代码。这也意味着解析器*总是*会遇到不完整的、半错误状态的代码。
+不要低估第二项工作的重要性！在现代的IDE和编辑器中，为了语法高亮显示和支持自动补齐等功能，当用户还在编辑代码时，解析器就会不断地重新解析代码。这也意味着解析器\textit{总是}会遇到不完整的、半错误状态的代码。
 
-当用户没有意识到语法错误时，解析器要帮助引导他们回到正确的道路上。它报告错误的方式是你的语言的用户界面中很大的一部分。良好的语法错误处理是很难的。根据定义，代码并不是处于良好定义的状态，所以没有可靠的方法能够知道用户*想要*写什么。解析器无法读懂你的思想。
+当用户没有意识到语法错误时，解析器要帮助引导他们回到正确的道路上。它报告错误的方式是你的语言的用户界面中很大的一部分。良好的语法错误处理是很难的。根据定义，代码并不是处于良好定义的状态，所以没有可靠的方法能够知道用户\textit{想要}写什么。解析器无法读懂你的思想。
 
 当解析器遇到语法错误时，有几个硬性要求。解析器必须能够：
 
 \begin{itemize}
   \item \textbf{检测并报告错误。}如果它没有检测到错误，并将由此产生的畸形语法树传递给解释器，就会出现各种可怕的情况。
-  \item \textbf{避免崩溃或挂起。}语法错误是生活中不可避免的事实，面对语法错误，语言工具必须非常健壮。段错误或陷入无限循环是不允许的。虽然源代码可能不是有效的*代码*，但它仍然是*解析器的有效输入*，因为用户使用解析器来了解什么是允许的语法。
+  \item \textbf{避免崩溃或挂起。}语法错误是生活中不可避免的事实，面对语法错误，语言工具必须非常健壮。段错误或陷入无限循环是不允许的。虽然源代码可能不是有效的\textit{代码}，但它仍然是\textit{解析器的有效输入}，因为用户使用解析器来了解什么是允许的语法。
 \end{itemize}
 
 如果你想参与到解析器的游戏中来，这些就是桌面的筹码，但你真的想提高赌注，除了这些。一个像样的解析器还应该：
@@ -2965,7 +2988,7 @@ primary        → NUMBER | STRING | "true" | "false" | "nil"
 
 为此，我们在语法中选择一些规则来标记同步点。解析器会跳出所有嵌套的生成式直到回退至该规则中，来修复其解析状态。然后，它会丢弃标记，直到遇到一个可以匹配该规则的标记，以此来同步标记流。
 
-这些被丢弃的标记中隐藏的其它真正的语法错误都不会被报告，但是这也意味着由初始错误引起的其它级联错误也不会被*错误地*报告出来，这是个不错的权衡。
+这些被丢弃的标记中隐藏的其它真正的语法错误都不会被报告，但是这也意味着由初始错误引起的其它级联错误也不会被\textit{错误地}报告出来，这是个不错的权衡。
 
 语法中传统的要同步的地方是语句之间。我们还没有这些，所以我们不会在这一章中真正地同步，但我们会在以后把这些机制准备好。
 
@@ -3006,11 +3029,9 @@ primary        → NUMBER | STRING | "true" | "false" | "nil"
 
 在我们报告错误后，用户知道了他们的错误，但接下来解析器要做什么呢？回到error()方法中，我们创建并返回了一个ParseError，是下面这个新类的实例:
 
-\begin{code}{java}{}{lox/Parser.java，在Parser中嵌入内部类：}
+\begin{code}{java}{1}{lox/Parser.java，在Parser中嵌入内部类：}
 class Parser {  
-  // 新增部分开始
-	private static class ParseError extends RuntimeException {}
-  // 新增部分结束
+  private static class ParseError extends RuntimeException {}
   private final List<Token> tokens;
 \end{code}
 
@@ -3026,7 +3047,7 @@ class Parser {
 
 在Java中，最自然的实现方式是异常。当我们想要同步时，我们抛出ParseError对象。在我们正同步的语法规则的方法上层，我们将捕获它。因为我们在语句边界上同步，所以我们可以在那里捕获异常。捕获异常后，解析器就处于正确的状态。剩下的就是同步标记了。
 
-我们想要丢弃标记，直至达到下一条语句的开头。这个边界很容易发现——这也是我们选其作为边界的原因。在*分号*之后，我们可能就结束了一条语句。大多数语句都通过一个关键字开头——for、 if、 return、 var等等。当下一个标记是其中之一时，我们可能就要开始一条新语句了。
+我们想要丢弃标记，直至达到下一条语句的开头。这个边界很容易发现——这也是我们选其作为边界的原因。在\textit{分号}之后，我们可能就结束了一条语句。大多数语句都通过一个关键字开头——for、if、return、var等等。当下一个标记是其中之一时，我们可能就要开始一条新语句了。
 
 下面的方法封装了这个逻辑：
 
@@ -3092,9 +3113,8 @@ class Parser {
 
 删除打印已扫描标记的旧代码，将其替换为：
 
-\begin{code}{java}{}{lox/Lox.java，在run()方法中，替换其中5行}
+\begin{code}{java}{2-8}{lox/Lox.java，在run()方法中，替换其中5行}
     List<Token> tokens = scanner.scanTokens();
-    // 替换部分开始
     Parser parser = new Parser(tokens);
     Expr expression = parser.parse();
 
@@ -3102,7 +3122,6 @@ class Parser {
     if (hadError) return;
 
     System.out.println(new AstPrinter().print(expression));
-    // 替换部分结束
   }
 \end{code}
 
@@ -3133,7 +3152,7 @@ if ((flags & FLAG_MASK) == SOME_FLAG) { ... } // Right.
 
 这种内部一致性使语言更容易学习，因为用户需要纠正的边界情况和异常变少了。这很好，因为用户在使用我们的语言之前，需要先理解所有的语法和语义。一个更简单、更合理的语言是\textit{有意义的}。
 
-但是，对于许多用户来说，有一个更快的捷径，可以将我们语言的思想融入他们的湿件中——*使用他们已经知道的概念*。许多我们语言的新用户都使用过其它一门或多门语言。如果我们的语言使用了与那些语言相同的一些语法或语义，那么用户需要学习（和\textit{忘掉}）的东西就会少很多。
+但是，对于许多用户来说，有一个更快的捷径，可以将我们语言的思想融入他们的湿件中——\textit{使用他们已经知道的概念}。许多我们语言的新用户都使用过其它一门或多门语言。如果我们的语言使用了与那些语言相同的一些语法或语义，那么用户需要学习（和\textit{忘掉}）的东西就会少很多。
 
 这对词法语法特别有帮助。您现在可能不太记得了，但是回想一下您学习第一门编程语言时，代码看起来似乎很陌生且难以理解。 只有通过艰苦的努力，您才学会阅读和接受它。 如果你为你的新语言设计了一种新颖的语法，你就会迫使用户重新开始这个过程。
 
@@ -3170,13 +3189,19 @@ if ((flags & FLAG_MASK) == SOME_FLAG) { ... } // Right.
 
 在解释器中需要存储Lox值的地方，我们可以使用Object作为类型。Java已经将其基本类型的所有子类对象装箱了，因此我们可以将它们用作Lox的内置类型：
 
-| Lox type   Lox类 | Java representation   Java表示 |
-| ---------------- | ------------------------------ |
-| Any Lox value    | Object                         |
-| nil            | null                         |
-| Boolean          | Boolean                        |
-| number           | Double                         |
-| string           | String                         |
+\begin{center}
+  \begin{tabular}{ |c|c| } 
+   \hline
+   Lox的类型 & Java表示 \\
+   \hline
+   任意Lox值 & Object \\ 
+   nil & null \\
+   Boolean & Boolean \\
+   number & Double \\
+   string & String \\
+   \hline
+  \end{tabular}
+\end{center}
 
 给定一个静态类型为Object的值，我们可以使用Java内置的instanceof操作符来确定运行时的值是数字、字符串或其它什么。换句话说，JVM自己的对象表示方便地为我们提供了实现Lox内置类型所需的一切。当稍后添加Lox的函数、类和实例等概念时，我们还必须做更多的工作，但Object和基本类型的包装类足以满足我们现在的需要。
 
@@ -3260,8 +3285,8 @@ class Interpreter implements Expr.Visitor<Object> {
 另一个一元操作符是逻辑非。
 
 \begin{code}{java}{2-3}{lox/Interpreter.java，在visitUnaryExpr()方法中添加：}
-		switch (expr.operator.type) { 
-			case BANG:
+    switch (expr.operator.type) { 
+      case BANG:
         return !isTruthy(right);
       case MINUS:
 \end{code}
@@ -3355,7 +3380,7 @@ Lox遵循Ruby的简单规则：false和nil是假的，其他都是真的。我�
       case EQUAL_EQUAL: return isEqual(left, right);
 \end{code}
 
-与需要数字的比较运算符不同，等式运算符支持任何类型的操作数，甚至是混合类型。你不能问Lox 3是否*小于*"three"，但你可以问它3是否等于"three"。
+与需要数字的比较运算符不同，等式运算符支持任何类型的操作数，甚至是混合类型。你不能问Lox 3是否\textit{小于}"three"，但你可以问它3是否等于"three"。
 
 与真假判断一样，相等判断也被提取到了单独的方法中。
 
@@ -3372,7 +3397,7 @@ Lox遵循Ruby的简单规则：false和nil是假的，其他都是真的。我�
 
 幸运的是，这两者很相似。Lox不会在等式中做隐式转换，Java也不会。我们必须对nil/null做特殊处理，这样就不会在对null调用equals()方法时抛出NullPointerException。其它情况下，都是没问题的。Java中的.equals()方法对Boolean、Double和 String的处理都符合Lox的要求。
 
-就这样了! 这就是我们要正确解释一个有效的Lox表达式所需要的全部代码。但是*无效的*表达式呢？尤其是，当一个子表达式的计算结果类型与待执行的操作不符时会发生什么？
+就这样了! 这就是我们要正确解释一个有效的Lox表达式所需要的全部代码。但是\textit{无效的}表达式呢？尤其是，当一个子表达式的计算结果类型与待执行的操作不符时会发生什么？
 
 \section{运行时错误}
 
@@ -3402,7 +3427,7 @@ Lox遵循Ruby的简单规则：false和nil是假的，其他都是真的。我�
 
 \begin{code}{java}{2}{lox/Interpreter.java，在visitUnaryExpr()方法中添加：}
       case MINUS:
-       	checkNumberOperand(expr.operator, right);
+        checkNumberOperand(expr.operator, right);
         return -(double)right;
 \end{code}
 
@@ -3436,73 +3461,49 @@ class RuntimeError extends RuntimeException {
 
 大于：
 
-lox/Interpreter.java，在visitBinaryExpr()方法中添加：
-
-\begin{code}{java}{}{}
-      case GREATER:  
-				// 新增部分开始
+\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加：}
+      case GREATER:
         checkNumberOperands(expr.operator, left, right);
-        // 新增部分结束
         return (double)left > (double)right;
 \end{code}
 
 大于等于：
 
-lox/Interpreter.java，在visitBinaryExpr()方法中添加：
-
-\begin{code}{java}{}{}
-      case GREATER_EQUAL:  
-				// 新增部分开始
+\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加：}
+      case GREATER_EQUAL:
         checkNumberOperands(expr.operator, left, right);
-        // 新增部分结束
         return (double)left >= (double)right;
 \end{code}
 
 小于：
 
-lox/Interpreter.java，在visitBinaryExpr()方法中添加：
-
-\begin{code}{java}{}{}
-      case LESS:  
-				// 新增部分开始
+\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加：}
+      case LESS:
         checkNumberOperands(expr.operator, left, right);
-        // 新增部分结束
         return (double)left < (double)right;
 \end{code}
 
 小于等于：
 
-lox/Interpreter.java，在visitBinaryExpr()方法中添加：
-
-\begin{code}{java}{}{}
-      case LESS_EQUAL:  
-				// 新增部分开始
+\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加：}
+      case LESS_EQUAL:
         checkNumberOperands(expr.operator, left, right);
-        // 新增部分结束
         return (double)left <= (double)right;
 \end{code}
 
 减法：
 
-lox/Interpreter.java，在visitBinaryExpr()方法中添加：
-
-\begin{code}{java}{}{}
-      case MINUS:  
-				// 新增部分开始
+\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加：}
+      case MINUS:
         checkNumberOperands(expr.operator, left, right);
-        // 新增部分结束
         return (double)left - (double)right;
 \end{code}
 
 除法：
 
-lox/Interpreter.java，在visitBinaryExpr()方法中添加：
-
-\begin{code}{java}{}{}
-      case SLASH:  
-				// 新增部分开始
+\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加：}
+      case SLASH:
         checkNumberOperands(expr.operator, left, right);
-        // 新增部分结束
         return (double)left / (double)right;
 \end{code}
 
@@ -3526,15 +3527,11 @@ lox/Interpreter.java，在visitBinaryExpr()方法中添加：
 
 剩下的最后一个运算符，也是最奇怪的一个，就是加法。由于+已经对数字和字符串进行重载，其中已经有检查类型的代码。我们需要做的就是在这两种情况都不匹配时失败。 
 
-lox/Interpreter.java，在visitBinaryExpr()方法中替换一行：
-
-\begin{code}{java}{}{}
+\begin{code}{java}{3-4}{lox/Interpreter.java，在visitBinaryExpr()方法中替换1行：}
           return (String)left + (String)right;
         }
-        // 替换部分开始
         throw new RuntimeError(expr.operator,
             "Operands must be two numbers or two strings.");
-        // 替换部分结束
       case SLASH:
 \end{code}
 
@@ -4179,7 +4176,7 @@ lox/Interpreter.java，在visitPrintStmt()方法后添加：
   }
 \end{code}
 
-如果该变量有初始化式，我们就对其求值。如果没有，我们就需要做一个选择。我们可以通过在解析器中*要求*初始化式令其成为一个语法错误。但是，大多数语言都不会这么做，所以在Lox中这样做感觉有点苛刻。
+如果该变量有初始化式，我们就对其求值。如果没有，我们就需要做一个选择。我们可以通过在解析器中\textit{要求}初始化式令其成为一个语法错误。但是，大多数语言都不会这么做，所以在Lox中这样做感觉有点苛刻。
 
 我们可以使其成为运行时错误。我们允许您定义一个未初始化的变量，但如果您在对其赋值之前访问它，就会发生运行时错误。这不是一个坏主意，但是大多数动态类型的语言都不会这样做。相反，我们使用最简单的方式。或者说，如果变量没有被显式初始化，Lox会将变量设置为nil。
 
@@ -4237,29 +4234,21 @@ instance.field = "value";
 
 最简单的部分就是添加新的语法树节点。
 
-tool/GenerateAst.java，在main()方法中添加：
-
-\begin{code}{java}{}{}
+\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加：}
     defineAst(outputDir, "Expr", Arrays.asList(
-      // 新增部分开始
       "Assign   : Token name, Expr value",
-      // 新增部分结束
       "Binary   : Expr left, Token operator, Expr right",
 \end{code}
 
 其中包含被赋值变量的标记，一个计算新值的表达式。运行AstGenerator得到新的Expr.Assign类之后，替换掉解析器中现有的expression()方法的方法体，以匹配最新的规则。
 
-lox/Parser.java，在expression()方法中替换一行：
-
-\begin{code}{java}{}{}
+\begin{code}{java}{2}{lox/Parser.java，在expression()方法中替换1行：}
   private Expr expression() {
-    // 替换部分开始
     return assignment();
-    // 替换部分结束
   }
 \end{code}
 
-这里开始变得棘手。单个标记前瞻递归下降解析器直到解析完左侧标记并且遇到=标记*之后*，才能判断出来正在解析的是赋值语句。你可能会想，为什么需要这样做？毕竟，我们也是完成左操作数的解析之后才知道正在解析的是+表达式。
+这里开始变得棘手。单个标记前瞻递归下降解析器直到解析完左侧标记并且遇到=标记\textit{之后}，才能判断出来正在解析的是赋值语句。你可能会想，为什么需要这样做？毕竟，我们也是完成左操作数的解析之后才知道正在解析的是+表达式。
 
 区别在于，赋值表达式的左侧不是可以求值的表达式，而是一种伪表达式，计算出的是一个你可以赋值的“东西”。考虑以下代码：
 
@@ -4362,7 +4351,7 @@ var a = 1;
 print a = 2; // "2".
 \end{code}
 
-我们的解释器现在可以创建、读取和修改变量。这和早期的BASICs一样复杂。全局变量很简单，但是在编写一个大型程序时，任何两块代码都可能不小心修改对方的状态，这就不好玩了。我们需要*局部*变量，这意味着是时候讨论*作用域*了。
+我们的解释器现在可以创建、读取和修改变量。这和早期的BASICs一样复杂。全局变量很简单，但是在编写一个大型程序时，任何两块代码都可能不小心修改对方的状态，这就不好玩了。我们需要\textit{局部}变量，这意味着是时候讨论\textit{作用域}了。
 
 \section{作用域}
 
@@ -4386,7 +4375,7 @@ print a = 2; // "2".
 
 这里，我们在两个块中都定义了一个变量a。我们可以从代码中看出，在第一个print语句中使用的a指的是第一个a，第二个语句指向的是第二个变量。
 
-这与\textbf{动态作用域}形成了对比，在动态作用域中，直到执行代码时才知道名称指向的是什么。Lox没有动态作用域*变量*，但是对象上的方法和字段是动态作用域的。
+这与\textbf{动态作用域}形成了对比，在动态作用域中，直到执行代码时才知道名称指向的是什么。Lox没有动态作用域\textit{变量}，但是对象上的方法和字段是动态作用域的。
 
 \begin{code}{java}{}{}
 class Saxophone {
@@ -4717,7 +4706,7 @@ Lox使用不同的语法来声明新变量和为已有变量赋值。有些语�
 
 \begin{itemize}
   \item \textbf{条件}或\textbf{分支控制流}是用来不执行某些代码的。意思是，你可以把它看作是跳过了代码的一个区域。
-  \item \textbf{循环控制流}是用于多次执行一块代码的。它会*向回*跳转，从而能再次执行某些代码。用户通常不需要无限循环，所以一般也会有一些条件逻辑用于判断何时停止循环。
+  \item \textbf{循环控制流}是用于多次执行一块代码的。它会\textit{向回}跳转，从而能再次执行某些代码。用户通常不需要无限循环，所以一般也会有一些条件逻辑用于判断何时停止循环。
 \end{itemize}
 
 分支更简单一些，所以我们先从分支开始实现。C衍生语言中包含两个主要的条件执行功能，即if语句和“条件”运算符（?:）。if语句使你可以按条件执行语句，而条件运算符使你可以按条件执行表达式。
@@ -5300,7 +5289,7 @@ Lox的Java解释器实际上并不需要限制，但是设置一个最大的参�
         arguments.add(expression());
 \end{code}
 
-请注意，如果发现参数过多，这里的代码会*报告*一个错误，但是不会*抛出*该错误。抛出错误是进入恐慌模式的方法，如果解析器处于混乱状态，不知道自己在语法中处于什么位置，那这就是我们想要的。但是在这里，解析器仍然处于完全有效的状态，只是发现了太多的参数。所以它会报告这个错误，并继续执行解析。
+请注意，如果发现参数过多，这里的代码会\textit{报告}一个错误，但是不会\textit{抛出}该错误。抛出错误是进入恐慌模式的方法，如果解析器处于混乱状态，不知道自己在语法中处于什么位置，那这就是我们想要的。但是在这里，解析器仍然处于完全有效的状态，只是发现了太多的参数。所以它会报告这个错误，并继续执行解析。
 
 \section{解释函数调用}
 
@@ -5348,26 +5337,22 @@ interface LoxCallable {
 
 \subsection{调用类型错误}
 
-Before we get to implementing LoxCallable, we need to make the visit method a little more robust. It currently ignores a couple of failure modes that we can’t pretend won’t occur. First, what happens if the callee isn’t actually something you can call? What if you try to do this:
+在我们实现LoxCallable之前，我们需要使访问者方法更加健壮一些。现在的访问者方法忽略了很多的错误模式，但我们不能假装没看见。首先，如果被调用的函数根本不是可以调用的呢？如果你像下面这样写代码：
 
 \begin{code}{js}{}{}
 "totally not a function"();
 \end{code}
 
-Strings aren’t callable in Lox. The runtime representation of a Lox string is a Java string, so when we cast that to LoxCallable, the JVM will throw a ClassCastException. We don’t want our interpreter to vomit out some nasty Java stack trace and die. Instead, we need to check the type ourselves first.
+在Lox中，字符串是不能被调用的。因为Lox字符串的运行时表示是Java的字符串类型，所以在我们将字符串类型强制转换为LoxCallable接口类型时，JVM将会抛出一个ClassCastException异常。我们不希望解释器输出一些恶心的Java调用栈信息然后死掉。所以，我们首先需要自己来检查一下类型。
 
-\begin{code}{js}{}{}
+\begin{code}{java}{3-6}{lox/Interpreter.java，在visitCallExpr()中添加}
     }
-\end{code}
 
-*lox/Interpreter.java*
-in *visitCallExpr*()
-
-\begin{code}{java}{}{}
     if (!(callee instanceof LoxCallable)) {
       throw new RuntimeError(expr.paren,
           "Can only call functions and classes.");
     }
+
     LoxCallable function = (LoxCallable)callee;
 \end{code}
 
@@ -5381,7 +5366,7 @@ fun add(a, b, c) {
 }
 \end{code}
 
-这个函数定义了三个形参，a 、b 和c，所以它的元数是3，而且它期望有3个参数。那么如果你用下面的方式调用该函数会怎样：
+这个函数定义了三个形参，a、b和c，所以它的元数是3，而且它期望有3个参数。那么如果你用下面的方式调用该函数会怎样：
 
 \begin{code}{java}{}{}
 add(1, 2, 3, 4); // Too many.
@@ -5731,35 +5716,23 @@ return nil;
 
 在AST生成器中，添加一个新节点。
 
-tool/GenerateAst.java，在main()方法中添加：
-
-\begin{code}{java}{}{}
+\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加：}
       "Print      : Expr expression",
-      // 新增部分开始
       "Return     : Token keyword, Expr value",
-      // 新增部分结束
       "Var        : Token name, Expr initializer",
 \end{code}
 
 其中保留了return关键字标记（这样我们可以使用该标记的位置来报告错误），以及返回的值（如果有的话）。我们像解析其它语句一样来解析它，首先识别起始的关键字。
 
-lox/Parser.java，在statement()方法中添加：
-
-\begin{code}{java}{}{}
+\begin{code}{java}{2}{lox/Parser.java，在statement()方法中添加：}
     if (match(PRINT)) return printStatement();
-    // 新增部分开始
     if (match(RETURN)) return returnStatement();
-    // 新增部分结束
     if (match(WHILE)) return whileStatement();
 \end{code}
 
-> That branches out to:
-
 分支会跳转到：
 
-lox/Parser.java，在printStatement()方法后添加：
-
-\begin{code}{java}{}{}
+\begin{code}{java}{}{lox/Parser.java，在printStatement()方法后添加：}
   private Stmt returnStatement() {
     Token keyword = previous();
     Expr value = null;
@@ -5842,18 +5815,14 @@ class Return extends RuntimeException {
 
 我们希望可以一直跳出到函数调用开始的地方，也就是LoxFunction中的call()方法。
 
-lox/LoxFunction.java，在call()方法中替换一行：
-
-\begin{code}{java}{}{}
+\begin{code}{java}{3-7}{lox/LoxFunction.java，在call()方法中替换1行：}
          arguments.get(i));
     }
-    // 替换部分开始
     try {
       interpreter.executeBlock(declaration.body, environment);
     } catch (Return returnValue) {
       return returnValue.value;
     }
-    // 替换部分结束
     return null;
 \end{code}
 
@@ -5861,7 +5830,7 @@ lox/LoxFunction.java，在call()方法中替换一行：
 
 我们来试一下。我们终于有能力支持这个经典的例子——递归函数计算Fibonacci数：
 
-\begin{code}{java}{}{}
+\begin{code}{js}{}{}
 fun fib(n) {
   if (n <= 1) return n;
   return fib(n - 2) + fib(n - 1);
@@ -5886,7 +5855,7 @@ LoxFunction中的call()实现创建了一个新的环境，并在其中绑定了
 
 考虑下面这个经典的例子：
 
-\begin{code}{java}{}{}
+\begin{code}{js}{}{}
 fun makeCounter() {
   var i = 0;
   fun count() {
@@ -5902,7 +5871,7 @@ counter(); // "1".
 counter(); // "2".
 \end{code}
 
-这个例子中，count()使用了i，它是在该函数外部的 makeCounter()声明的。makeCounter() 返回对count()函数的引用，然后它的函数体就执行完成了。
+这个例子中，count()使用了i，它是在该函数外部的makeCounter()声明的。makeCounter()返回对count()函数的引用，然后它的函数体就执行完成了。
 
 同时，顶层代码调用了返回的count()函数。这就执行了count()函数的主体，它会对i赋值并读取i，尽管定义i的函数已经退出。
 
@@ -5912,53 +5881,37 @@ counter(); // "2".
 
 我们把时间往回拨一点。我们在makeCounter()的函数体中声明count()时，环境链的样子是下面这样：
 
-所以，在函数声明的地方，我们可以看到i。但是当我们从 makeCounter() 返回并退出其主体时，解释器会丢弃这个环境。因为解释器不会保留count() 外围的环境，所以要靠函数对象本身来保存它。
+所以，在函数声明的地方，我们可以看到i。但是当我们从makeCounter()返回并退出其主体时，解释器会丢弃这个环境。因为解释器不会保留count()外围的环境，所以要靠函数对象本身来保存它。
 
 这种数据结构被称为\textbf{闭包}，因为它“封闭”并保留着函数声明的外围变量。闭包早在Lisp时代就已经存在了，语言黑客们想出了各种方法来实现闭包。在jlox中，我们将采用最简单的方式。在LoxFunction中，我们添加一个字段来存储环境。
 
-lox/LoxFunction.java，在LoxFunction类中添加：
-
-\begin{code}{java}{}{}
+\begin{code}{java}{2}{lox/LoxFunction.java，在LoxFunction类中添加：}
   private final Stmt.Function declaration;
-  // 新增部分开始
   private final Environment closure;
-  // 新增部分结束
   LoxFunction(Stmt.Function declaration) {
 \end{code}
 
 我们在构造函数中对其初始化。
 
-lox/LoxFunction.java，在LoxFunction()构造方法中替换一行：
-
-\begin{code}{java}{}{}
-  //替换部分开始
+\begin{code}{java}{1-2}{lox/LoxFunction.java，在LoxFunction()构造方法中替换1行：}
   LoxFunction(Stmt.Function declaration, Environment closure) {
     this.closure = closure;
-    // 替换部分结束
     this.declaration = declaration;
 \end{code}
 
 当我们创建LoxFunction时，我们会捕获当前环境。
 
-lox/Interpreter.java，在visitFunctionStmt()方法中替换一行：
-
-\begin{code}{java}{}{}
+\begin{code}{java}{2}{lox/Interpreter.java，在visitFunctionStmt()方法中替换1行：}
     public Void visitFunctionStmt(Stmt.Function stmt) {
-      // 替换部分开始
       LoxFunction function = new LoxFunction(stmt, environment);
-      // 替换部分结束
       environment.define(stmt.name.lexeme, function);
 \end{code}
 
 这是函数声明时生效的环境，而不是函数被调用时的环境，这正是我们想要的。它代表了函数声明时的词法作用域。最后，当我们调用函数时，我们使用该环境作为调用的父环境，而不是直接使用globals。
 
-lox/LoxFunction.java，在call()方法中替换一行：
-
-\begin{code}{java}{}{}
+\begin{code}{java}{2}{lox/LoxFunction.java，在call()方法中替换1行：}
                       List<Object> arguments) {
-    // 替换部分开始                  
     Environment environment = new Environment(closure);
-    // 替换部分结束
     for (int i = 0; i < declaration.params.size(); i++) {
 \end{code}
 
@@ -6012,7 +5965,7 @@ fun scope(a) {
 
 \epigraph{你也许偶尔会发现自己处于一种奇怪的情况。你曾以最自然的方式逐渐进入其中，但当你身处其中时，你会突然感到惊讶，并问自己这一切到底是怎么发生的。}{索尔}
 
-哦，不! 我们的语言实现正在进水! 在我们刚添加变量和代码块时，我们把作用域控制的很好很严密。但是当我们后来添加闭包之后，我们以前防水的解释器上就出现了一个洞。大多数真正的程序都不可能从这个洞里溜走，但是作为语言实现者，我们要立下神圣的誓言，即使在语义的最深处、最潮湿的角落里也要关心正确性。【译者注：这一段好中二，其实原文中有很多地方都有类似的中二之魂燃烧瞬间】
+哦，不! 我们的语言实现正在进水! 在我们刚添加变量和代码块时，我们把作用域控制的很好很严密。但是当我们后来添加闭包之后，我们以前防水的解释器上就出现了一个洞。大多数真正的程序都不可能从这个洞里溜走，但是作为语言实现者，我们要立下神圣的誓言，即使在语义的最深处、最潮湿的角落里也要关心正确性。
 
 我们将用整整一章的时间来探索这个漏洞，然后小心翼翼地把它补上。在这个过程中，我们将对Lox和其他C语言传统中使用的词法范围有一个更严格的理解。我们还将有机会学习语义分析——这是一种强大的技术，用于从用户的源代码中提取语义而无需运行它。
 
@@ -6078,7 +6031,7 @@ var a = "global";
 }
 \end{code}
 
-在你执行这段代码之前，先思考一下它*应该*输出什么。
+在你执行这段代码之前，先思考一下它\textit{应该}输出什么。
 
 好的......清楚了吗？如果你熟悉其它语言中的闭包，你们你可能期望会输出两次“global”。对showA()的第一次调用肯定会打印“global”，因为我们甚至还没有执行到内部变量a的声明。而根据我们的规则，一个变量表达式总数解析为同一个变量，这意味着对showA()的第二次调用也应该打印出同样的内容。
 
@@ -6128,11 +6081,11 @@ block
 
 在标记的第一行，作用域中只有a。在第二行时，a和b都在其中。如果将作用域定义为一组声明，那么它们显然不是相同的作用域——它们不包含相同的声明。这就好像是var语句将代码块分割成了两个独立的作用域，变量声明前的作用域和包含新变量的作用域。
 
-但是在我们的实现中，环境确实表现得像整个代码块是一个作用域，只是这个作用域会随时间变化。而闭包不是这样的。当函数被声明时，它会捕获一个指向当前环境的引用。函数*应该*捕获一个冻结的环境快照，就像它存在于函数被声明的那一瞬间。但是事实上，在Java代码中，它引用的是一个实际可变的环境对象。当后续在该环境所对应的作用域内声明一个变量时，闭包会看到该变量，即使变量声明*没有*出现在函数之前。
+但是在我们的实现中，环境确实表现得像整个代码块是一个作用域，只是这个作用域会随时间变化。而闭包不是这样的。当函数被声明时，它会捕获一个指向当前环境的引用。函数\textit{应该}捕获一个冻结的环境快照，就像它存在于函数被声明的那一瞬间。但是事实上，在Java代码中，它引用的是一个实际可变的环境对象。当后续在该环境所对应的作用域内声明一个变量时，闭包会看到该变量，即使变量声明\textit{没有}出现在函数之前。
 
 \subsection{持久环境}
 
-有一种编程风格，使用所谓的\textbf{持久性数据结构}。与你在命令式编程中所熟悉的模糊的数据结构不同，持久化数据结构永远不能被直接修改。相应地，对现有结构的任何 "修改 "都会产生一个全新的对象，其中包含所有的原始数据和新的修改。而原有的对象则保持不变。
+有一种编程风格，使用所谓的\textbf{持久性数据结构}。与你在命令式编程中所熟悉的模糊的数据结构不同，持久化数据结构永远不能被直接修改。相应地，对现有结构的任何“修改”都会产生一个全新的对象，其中包含所有的原始数据和新的修改。而原有的对象则保持不变。
 
 如果我们将这一技术应用于环境，那么每次你声明一个变量时，都会返回一个新的环境，其中包含所有先前声明的变量和一个新名称。声明一个变量会执行隐式分割，在声明变量之前与之后都有一个环境：
 
@@ -6160,7 +6113,7 @@ block
 
 要“解析”一个变量使用，我们只需要计算声明的变量在环境链中有多少“跳”。有趣的问题是在什么时候进行这个计算——或者换句话说，在解释器的实现中，这段代码要添加到什么地方？
 
-因为我们是根据源代码的结构来计算一个静态属性，所以答案显然是在解析器中。那是传统的选择，也是我们以后在clox 中实现它的地方。在这里同样也适用，但是我想给你展示另一种技巧。我们会单独写一个解析器。
+因为我们是根据源代码的结构来计算一个静态属性，所以答案显然是在解析器中。那是传统的选择，也是我们以后在clox中实现它的地方。在这里同样也适用，但是我想给你展示另一种技巧。我们会单独写一个解析器。
 
 \subsection{变量解析过程}
 
@@ -6708,7 +6661,7 @@ class Interpreter implements Expr.Visitor<Object>,
 
 \section{解析错误}
 
-由于我们正在进行语义分析，因此我们有机会使Lox 的语义更加精确，以帮助用户在执行代码之前及早发现错误。看一下下面这个坏代码：
+由于我们正在进行语义分析，因此我们有机会使Lox的语义更加精确，以帮助用户在执行代码之前及早发现错误。看一下下面这个坏代码：
 
 \begin{code}{js}{}{}
 fun bad() {
@@ -6950,9 +6903,7 @@ class Breakfast {
 
 现在我们解释一下类的声明。
 
-lox/Interpreter.java，在visitBlockStmt()方法后添加：
-
-\begin{code}{java}{}{}
+\begin{code}{java}{}{lox/Interpreter.java，在visitBlockStmt()方法后添加：}
   @Override
   public Void visitClassStmt(Stmt.Class stmt) {
     environment.define(stmt.name.lexeme, null);
@@ -6962,7 +6913,7 @@ lox/Interpreter.java，在visitBlockStmt()方法后添加：
   }
 \end{code}
 
-这看起来类似于我们执行函数声明的方式。我们在当前环境中声明该类的名称。然后我们把类的*语法节点*转换为LoxClass，即类的*运行时*表示。我们回过头来，将类对象存储在我们之前声明的变量中。这个二阶段的变量绑定过程允许在类的方法中引用其自身。
+这看起来类似于我们执行函数声明的方式。我们在当前环境中声明该类的名称。然后我们把类的\textit{语法节点}转换为LoxClass，即类的\textit{运行时}表示。我们回过头来，将类对象存储在我们之前声明的变量中。这个二阶段的变量绑定过程允许在类的方法中引用其自身。
 
 我们会在整个章节中对其进行完善，但是LoxClass的初稿看起来如下：
 
@@ -8124,11 +8075,13 @@ print super; // Syntax error.
 
 因此，我们在语法中的primary规则添加新子句时要包含属性访问。
 
-\begin{code}{scala}{}{}
-primary        → "true" | "false" | "nil" | "this"
-               | NUMBER | STRING | IDENTIFIER | "(" expression ")"
-               | "super" "." IDENTIFIER ;
-\end{code}
+\begin{tcolorbox}
+\begin{align*}
+primary \quad & \rightarrow \mathtt{"}true\mathtt{"} \quad\vert\quad \mathtt{"}false\mathtt{"} \quad\vert\quad \mathtt{"}nil\mathtt{"} \quad\vert\quad \mathtt{"}this\mathtt{"}
+              & \vert \quad NUMBER \quad\vert\quad STRING \quad\vert\quad IDENTIFIER \quad\vert\quad \mathtt{"}(\mathtt{"} \quad expression \mathtt{"})\mathtt{"}
+              & \vert \quad \mathtt{"}super\mathtt{"} \quad \mathtt{"}.\mathtt{"} \quad IDENTIFIER \quad ;
+\end{align*}
+\end{tcolorbox}
 
 通常情况下，super表达式用于方法调用，但是，与普通方法一样，参数列表并不是表达式的一部分。相反，super调用是一个super属性访问，然后跟一个函数调用。与其它方法调用一样，你可以获得超类方法的句柄，然后单独运行它。
 
