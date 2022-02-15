@@ -1695,7 +1695,7 @@ case 'o':
 
 接下来，在我们扫描到标识符之后，要检查是否与map中的某些项匹配。
 
-\begin{code}{java}{3-6}{lox/Scanner.java，在identifier()方法中替换一行：}
+\begin{code}{java}{3-6}{lox/Scanner.java，在identifier()方法中替换1行：}
     while (isAlphaNumeric(peek())) advance();
 
     String text = source.substring(start, current);
@@ -3973,7 +3973,7 @@ IDENTIFIER子语句会匹配单个标识符标记，该标记会被理解为正�
 
 然后我们添加一个表达式节点用于访问变量。
 
-\begin{code}{js}{3}{tool/GenerateAst.java，在main()方法中添加一行，前一行需要加,：}
+\begin{code}{js}{3}{tool/GenerateAst.java，在main()方法中添加1行，前1行需要加“,”}
       "Literal  : Object value",
       "Unary    : Token operator, Expr right",
       "Variable : Token name"
@@ -4289,7 +4289,7 @@ makeList().head.next = node;
 
 解析赋值表达式的大部分代码看起来与解析其它二元运算符（如+）的代码类似。我们解析左边的内容，它可以是任何优先级更高的表达式。如果我们发现一个=，就解析右侧内容，并把它们封装到一个复杂表达式树节点中。
 
-与二元运算符的一个细微差别在于，我们不会循环构建相同操作符的序列。因为赋值操作是右关联的，所以我们递归调用 assignment()来解析右侧的值。
+与二元运算符的一个细微差别在于，我们不会循环构建相同操作符的序列。因为赋值操作是右关联的，所以我们递归调用assignment()来解析右侧的值。
 
 诀窍在于，在创建赋值表达式节点之前，我们先查看左边的表达式，弄清楚它是什么类型的赋值目标。然后我们将右值表达式节点转换为左值的表示形式。
 
@@ -4328,7 +4328,7 @@ a + b = c;
   }
 \end{code}
 
-很明显，这与变量声明很类似。首先，对右侧表达式运算以获取值，然后将其保存到命名变量中。这里不使用Environment中的 define()，而是调用下面的新方法：
+很明显，这与变量声明很类似。首先，对右侧表达式运算以获取值，然后将其保存到命名变量中。这里不使用Environment中的define()，而是调用下面的新方法：
 
 \begin{code}{java}{}{lox/Environment.java，在get()方法后添加：}
   void assign(Token name, Object value) {
@@ -4351,7 +4351,7 @@ var a = 1;
 print a = 2; // "2".
 \end{code}
 
-我们的解释器现在可以创建、读取和修改变量。这和早期的BASICs一样复杂。全局变量很简单，但是在编写一个大型程序时，任何两块代码都可能不小心修改对方的状态，这就不好玩了。我们需要\textit{局部}变量，这意味着是时候讨论\textit{作用域}了。
+我们的解释器现在可以创建、读取和修改变量。这和早期的BASIC一样复杂。全局变量很简单，但是在编写一个大型程序时，任何两块代码都可能不小心修改对方的状态，这就不好玩了。我们需要\textit{局部}变量，这意味着是时候讨论\textit{作用域}了。
 
 \section{作用域}
 
@@ -4395,7 +4395,7 @@ fun playIt(thing) {
 }
 \end{code}
 
-当playIt()调用thing.play()时，我们不知道我们将要听到的是 "Careless Whisper "还是 "Fore!" 。这取决于你向函数传递的是Saxophone还是GolfClub，而我们在运行时才知道这一点。
+当playIt()调用thing.play()时，我们不知道我们将要听到的是“Careless Whisper”还是“Fore!”。这取决于你向函数传递的是Saxophone还是GolfClub，而我们在运行时才知道这一点。
 
 作用域和环境是近亲，前者是理论概念，而后者是实现它的机制。当我们的解释器处理代码时，影响作用域的语法树节点会改变环境上下文。在像Lox这样的类C语言语法中，作用域是由花括号的块控制的。（这就是为什么我们称它为\textbf{块范围}）。
 
@@ -7299,7 +7299,7 @@ bill.sayName(); // ?
 
 好吧，这里有很多语义需要装到你的脑子里。暂时先不考虑那些边缘情况了，我们以后再讲。现在，让我们先把基本的方法调用做好。我们已经解析了类主体内的方法声明，所以下一步就是对其分析。
 
-\begin{code}{java}{2-5}{lox/Resolver.java，在visitClassStmt()方法内添加：}
+\begin{code}{java}{2-5}{lox/Resolver.java，在visitClassStmt()方法内添加}
     define(stmt.name);
     for (Stmt.Function method : stmt.methods) {
       FunctionType declaration = FunctionType.METHOD;
@@ -7310,7 +7310,7 @@ bill.sayName(); // ?
 
 我们遍历类主体中的方法，并调用我们已经写好的用来处理函数声明的resolveFunction()方法。唯一的区别在于，我们传入了一个新的FunctionType枚举值。
 
-\begin{code}{java}{3}{lox/Resolver.java，在FunctionType枚举中添加代码，在上一行末尾添加,：}
+\begin{code}{java}{3}{lox/Resolver.java，在FunctionType枚举中添加代码，在上1行末尾添加“,”}
     NONE,
     FUNCTION,
     METHOD
@@ -7319,7 +7319,7 @@ bill.sayName(); // ?
 
 这一点在我们分析this表达式时很重要。现在还不用担心这个问题。有趣的部分在解释器中。
 
-\begin{code}{java}{2-8}{lox/Interpreter.java，在visitClassStmt()方法中替换1行：}
+\begin{code}{java}{2-8}{lox/Interpreter.java，在visitClassStmt()方法中替换1行}
     environment.define(stmt.name.lexeme, null);
     Map<String, LoxFunction> methods = new HashMap<>();
     for (Stmt.Function method : stmt.methods) {
@@ -7335,7 +7335,7 @@ bill.sayName(); // ?
 
 我们把所有这些都打包到一个map中，以方法名称作为键。这些数据存储在LoxClass中。
 
-\begin{code}{java}{2-7}{lox/LoxClass.java，在类LoxClass中，替换4行：}
+\begin{code}{java}{2-7}{lox/LoxClass.java，在类LoxClass中，替换4行}
   final String name;
   private final Map<String, LoxFunction> methods;
 
@@ -7349,7 +7349,7 @@ bill.sayName(); // ?
 
 实例存储状态，类存储行为。LoxInstance包含字段的map，而LoxClass包含方法的map。虽然方法是归类所有，但仍然是通过类的实例来访问。
 
-\begin{code}{java}{5-6}{lox/LoxInstance.java，在get()方法中添加：}
+\begin{code}{java}{5-6}{lox/LoxInstance.java，在get()方法中添加}
   Object get(Token name) {
     if (fields.containsKey(name.lexeme)) {
       return fields.get(name.lexeme);
@@ -7390,7 +7390,7 @@ Bacon().eat(); // Prints "Crunch crunch crunch!".
 
 我们可以在对象上定义行为和状态，但是它们并没有被绑定在一起。在一个方法中，我们没有办法访问“当前”对象（调用该方法的实例）的字段，也不能调用同一个对象的其它方法。
 
-为了获得这个实例，它需要一个名称。Smalltalk、Ruby和Swift使用"self"。Simula、C++、Java等使用"this"。Python按惯例使用"self"，但从技术上讲，你可以随便叫它什么。
+为了获得这个实例，它需要一个名称。Smalltalk、Ruby和Swift使用"self"。Simula、C++、Java等使用“this”。Python按惯例使用“self”，但从技术上讲，你可以随便叫它什么。
 
 对于Lox来说，因为我们通常遵循Java风格，我们会使用“this”。在方法体中，this表达式计算结果为调用该方法的实例。或者，更确切地说，由于方法是分为两个步骤进行访问和调用的，因此它会引用调用方法的对象。
 
@@ -7457,7 +7457,7 @@ callback();
 
 让我们把它写出来。第一步是为this添加新的语法。
 
-\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加：}
+\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加}
       "Set      : Expr object, Token name, Expr value",
       "This     : Token keyword",
       "Unary    : Token operator, Expr right",
@@ -7465,7 +7465,7 @@ callback();
 
 解析很简单，因为它是已经被词法解析器当作关键字识别出来的单个词法标记。
 
-\begin{code}{java}{3}{lox/Parser.java，在primary()方法中添加：}
+\begin{code}{java}{3}{lox/Parser.java，在primary()方法中添加}
       return new Expr.Literal(previous().literal);
     }
     if (match(THIS)) return new Expr.This(previous());
@@ -7474,7 +7474,7 @@ callback();
 
 当进入分析器后，就可以看到this是如何像变了一样作用的。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitSetExpr()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitSetExpr()方法后添加}
   @Override
   public Void visitThisExpr(Expr.This expr) {
     resolveLocal(expr, expr.keyword);
@@ -7484,7 +7484,7 @@ callback();
 
 我们使用this作为“变量”的名称，并像其它局部变量一样对其分析。当然，现在这是行不通的，因为“this”没有在任何作用域进行声明。我们在visitClassStmt()方法中解决这个问题。
 
-\begin{code}{java}{2-3}{lox/Resolver.java，在visitClassStmt()方法中添加：}
+\begin{code}{java}{2-3}{lox/Resolver.java，在visitClassStmt()方法中添加}
     define(stmt.name);
     beginScope();
     scopes.peek().put("this", true);
@@ -7493,7 +7493,7 @@ callback();
 
 在我们开始分析方法体之前，我们推入一个新的作用域，并在其中像定义变量一样定义“this”。然后，当我们完成后，会丢弃这个外围作用域。
 
-\begin{code}{java}{2}{lox/Resolver.java，在visitClassStmt()方法中添加：}
+\begin{code}{java}{2}{lox/Resolver.java，在visitClassStmt()方法中添加}
     }
     endScope();
     return null;
@@ -7501,9 +7501,9 @@ callback();
 
 现在，只要遇到this表达式（至少是在方法内部），它就会解析为一个“局部变量”，该变量定义在方法体块之外的隐含作用域中。
 
-分析器对this有一个新的*作用域*，所以解释器需要为它创建一个对应的*环境*。记住，我们必须始终保持分析器的作用域链与解释器的链式环境保持同步。在运行时，我们在找到实例上的方法后创建环境。我们把之前那行直接返回方法对应LoxFunction的代码替换如下：
+分析器对this有一个新的*作用域*，所以解释器需要为它创建一个对应的\textit{环境}。记住，我们必须始终保持分析器的作用域链与解释器的链式环境保持同步。在运行时，我们在找到实例上的方法后创建环境。我们把之前那行直接返回方法对应LoxFunction的代码替换如下：
 
-\begin{code}{java}{2}{lox/LoxInstance.java，在get()方法中替换1行：}
+\begin{code}{java}{2}{lox/LoxInstance.java，在get()方法中替换1行}
     LoxFunction method = klass.findMethod(name.lexeme);
     if (method != null) return method.bind(this);
     throw new RuntimeError(name, 
@@ -7512,7 +7512,7 @@ callback();
 
 注意这里对bind()的新调用。该方法看起来是这样的：
 
-\begin{code}{java}{}{lox/LoxFunction.java，在LoxFunction()方法后添加：}
+\begin{code}{java}{}{lox/LoxFunction.java，在LoxFunction()方法后添加}
   LoxFunction bind(LoxInstance instance) {
     Environment environment = new Environment(closure);
     environment.define("this", instance);
@@ -7555,7 +7555,7 @@ fun notAMethod() {
 
 我们的分析过程是一个静态检测这个错误的好地方。它已经检测了函数之外的return语句。我们可以针对this做一些类似的事情。在我们现有的FunctionType枚举的基础上，我们定义一个新的ClassType枚举。
 
-\begin{code}{java}{2-7}{lox/Resolver.java，在FunctionType枚举后添加：}
+\begin{code}{java}{2-7}{lox/Resolver.java，在FunctionType枚举后添加}
   }
   private enum ClassType {
     NONE,
@@ -7570,7 +7570,7 @@ fun notAMethod() {
 
 当我们开始分析一个类声明时，我们会改变它。
 
-\begin{code}{java}{2-3}{lox/Resolver.java，在visitClassStmt()方法中添加：}
+\begin{code}{java}{2-3}{lox/Resolver.java，在visitClassStmt()方法中添加}
   public Void visitClassStmt(Stmt.Class stmt) {
     ClassType enclosingClass = currentClass;
     currentClass = ClassType.CLASS;
@@ -7833,8 +7833,8 @@ class Foo {
 原型比类更简单——语言实现者要编写的代码更少，语言用户要学习和理解的概念更少。这是否意味着它让语言变得更好呢？我们这些语言书呆子有一种迷恋极简主义的倾向。就我个人而言，我认为简单性只是一部分。我们真正想给用户的是功率，我将其定义为：
 
 \begin{code}{js}{}{}
-power = breadth × ease ÷ complexity
-功率 = 广度 × 易用性 ÷ 复杂性
+power = breadth * ease ÷ complexity
+功率 = 广度 * 易用性 ÷ 复杂性
 \end{code}
 
 这些都不是精确的数字度量。我这里用数学作比喻，而不是实际的量化。
@@ -8425,11 +8425,11 @@ super.notEvenInAClass();
 
 \epigraph{如果你发现你几乎把所有的时间都花在了理论上，那就开始把一些注意力转向实际的东西；这会提高你的理论水平。如果你发现你几乎把所有的时间都花在了实践上，那就开始把一些注意力转向理论上的东西；这将改善你的实践。}{高德纳}
 
-我们已经有了一个Lox 的完整实现jlox，那么为什么这本书还没有结束呢？部分原因是jlox依赖JVM为我们做很多事情。如果我们想要了解一个解释器是如何工作的，我们就需要自己构建这些零碎的东西。
+我们已经有了一个Lox的完整实现jlox，那么为什么这本书还没有结束呢？部分原因是jlox依赖JVM为我们做很多事情。如果我们想要了解一个解释器是如何工作的，我们就需要自己构建这些零碎的东西。
 
 jlox不够用的一个更根本的原因在于，它太慢了。树遍历解释器对于某些高级的声明式语言来说是不错的，但是对于通用的命令式语言—即使是Lox这样的“脚本”语言—这是行不通的。以下面的小脚本为例：
 
-\begin{minted}{js}
+\begin{code}{js}{}{}
 fun fib(n) {
   if (n < 2) return n;
   return fib(n - 1) + fib(n - 2); 
@@ -8439,7 +8439,7 @@ var before = clock();
 print(fib(40));
 var after = clock();
 print(after - before);
-\end{minted}
+\end{code}
 
 在我们的笔记本电脑上，jlox大概需要72秒的时间来执行。一个等价的C程序在半秒内可以完成。我们的动态类型的脚本语言永远不可能像手动管理内存的静态类型语言那样快，但我们没必要满足于慢两个数量级以上的速度。
 
@@ -8510,17 +8510,17 @@ print(after - before);
 
 除了main()还能从哪里开始呢？启动你的文本编辑器，开始输入。
 
-\begin{minted}{c}
+\begin{code}{c}{}{}
 #include "common.h"
 
 int main(int argc, const char* argv[]) {
   return 0;
 }
-\end{minted}
+\end{code}
 
 从这颗小小的种子开始，我们将成长为整个VM。由于C提供给我们的东西太少，我们首先需要花费一些时间来培育土壤。其中一部分就在下面的header中。
 
-\begin{minted}{c}
+\begin{code}{c}{}{}
 #ifndef clox_common_h
 #define clox_common_h
 
@@ -8529,7 +8529,7 @@ int main(int argc, const char* argv[]) {
 #include <stdint.h>
 
 #endif
-\end{minted}
+\end{code}
 
 在整个解释器中，我们会使用一些类型和常量，这是一个方便放置它们的地方。现在，它是古老的NULL、size\_t，C99中的布尔类型bool，以及显式声明大小的整数类型—uint8\_t和它的朋友们。
 
@@ -8537,21 +8537,21 @@ int main(int argc, const char* argv[]) {
 
 接下来，我们需要一个模块来定义我们的代码表示形式。我一直使用“chunk”指代字节码序列，所以我们把它作为该模块的正式名称。
 
-\begin{minted}{c}
+\begin{code}{c}{}{}
 #ifndef clox_chunk_h
 #define clox_chunk_h
 
 #include "common.h"
 
 #endif
-\end{minted}
+\end{code}
 
-在我们的字节码格式中，每个指令都有一个字节的\textbf{操作码}（通常简称为\textbf{opcode}）。这个数字控制我们要处理的指令类型—加、减、查找变量等。我们在这块定义这些：
+在我们的字节码格式中，每个指令都有一个字节的\textbf{操作码}（通常简称为\textbf{opcode}）。这个数字控制我们要处理的指令类型——加、减、查找变量等。我们在这块定义这些：
 
-\begin{minted}{c}
+\begin{code}{c}{}{}
 #include "common.h"
 #endif
-\end{minted}
+\end{code}
 
 现在，我们从一条指令OP\_RETURN开始。当我们有一个全功能的VM时，这个指令意味着“从当前函数返回”。我承认这还不是完全有用，但是我们必须从某个地方开始下手，而这是一个特别简单的指令，原因我们会在后面讲到。
 
