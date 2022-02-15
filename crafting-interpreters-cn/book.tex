@@ -4189,9 +4189,7 @@ print a; // "nil".
 
 接下来，我们要对变量表达式求值。
 
-lox/Interpreter.java，在visitUnaryExpr()方法后添加：
-
-\begin{code}{java}{}{}
+\begin{code}{java}{}{lox/Interpreter.java，在visitUnaryExpr()方法后添加}
   @Override
   public Object visitVariableExpr(Expr.Variable expr) {
     return environment.get(expr.name);
