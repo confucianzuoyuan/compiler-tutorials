@@ -1,6 +1,6 @@
 \documentclass[cn,11pt,chinese]{elegantbook}
 
-\usepackage{amsmath}
+\usepackage{amsmath,environ}
 \usepackage{epigraph}
 \usepackage{marginnote}
 \usepackage{minted,tcolorbox}
@@ -21,6 +21,7 @@
 
 \newenvironment{code}[4][]
 {\VerbatimEnvironment
+  \begin{center}
   \begin{tcolorbox}[space to upper,
     skin=bicolor,
     colbacklower=black!75,
@@ -33,7 +34,17 @@
     ]
     \begin{minted}[breaklines,
       highlightlines={#3},#1]{#2}}
-    {\end{minted}\end{tcolorbox}}
+    {\end{minted}\end{tcolorbox}\end{center}}
+
+\NewEnviron{ebnf}{
+  \begin{center}
+  \begin{tcolorbox}[space to upper,skin=bicolor,colbacklower=black!75,collower=white,halign=center,valign=center,nobeforeafter,halign lower=flush right]
+    \begin{align*}
+      \BODY
+    \end{align*}
+  \end{tcolorbox}
+  \end{center}
+}
 
 \tcbuselibrary{skins, breakable, theorems}
 
@@ -449,7 +460,7 @@ Web浏览器是今天的“机器”，它们的“机器代码”是JavaScript�
 好，回到语言上：
 
 \begin{itemize}
-  \item \textbf{编译}是一种实现技术，其中涉及到将源语言翻译成其他语言-通常是较低级的形式。当你生成字节码或机器代码时，你就是在编译。当你移植到另一种高级语言时，你也在编译。
+  \item \textbf{编译}是一种实现技术，其中涉及到将源语言翻译成其他语言——通常是较低级的形式。当你生成字节码或机器代码时，你就是在编译。当你移植到另一种高级语言时，你也在编译。
   \item 当我们说语言实现“是\textbf{编译器}”时，是指它会将源代码转换为其他形式，但不会执行。用户必须获取结果输出并自己运行。
   \item 相反，当我们说一个实现“是一个\textbf{解释器}”时，是指它接受源代码并立即执行它。它“从源代码”运行程序。
 \end{itemize}
@@ -1866,9 +1877,7 @@ case 'o':
 
 以此为基础，下面是一个早餐菜单语法：
 
-\begin{tcolorbox}
-\begin{equation*}
-\begin{split}
+\begin{ebnf}
 breakfast \quad & \rightarrow \quad protein \quad \mathtt{"}with\mathtt{"} \quad breakfast \quad \mathtt{"}on \; the \; side\mathtt{"} \quad ; \\
 breakfast \quad & \rightarrow \quad protein \quad ; \\
 breakfast \quad & \rightarrow \quad bread \quad ; \\
@@ -1887,9 +1896,7 @@ cooked \quad & \rightarrow \quad \mathtt{"}fried\mathtt{"} \quad ; \\
 bread \quad & \rightarrow \quad \mathtt{"}toast\mathtt{"} \quad; \\
 bread \quad & \rightarrow \quad \mathtt{"}biscuits\mathtt{"} \quad ; \\
 bread \quad & \rightarrow \quad \mathtt{"}English \; muffin\mathtt{"} \quad ;
-\end{split}
-\end{equation*}
-\end{tcolorbox}
+\end{ebnf}
 
 我们可以使用这个语法来随机生成早餐。我们来玩一轮，看看它是如何工作的。按照老规矩，游戏从语法中的第一个规则开始，这里是breakfast。它有三个生成式，我们随机选择第一个。我们得到的字符串是这样的：
 
@@ -1956,8 +1963,7 @@ protein $\rightarrow$ cooked "eggs" ;
 
   \item 有了所有这些语法上的技巧，我们的早餐语法浓缩为：
 
-\begin{tcolorbox}
-\begin{align*}
+\begin{ebnf}
 breakfast \quad & \rightarrow \quad protein \quad ( \quad \mathtt{"}with\mathtt{"} \quad breakfast \quad \mathtt{"}on \; the \; side\mathtt{"} \quad )? \\
 & \;\; \vert \;\;\quad bread \quad ; \\
 \\
@@ -1966,8 +1972,7 @@ protein \quad & \rightarrow \quad \mathtt{"}really\mathtt{"}+ \quad \mathtt{"}cr
 & \;\; \vert \;\;\quad ( \quad \mathtt{"}scrambled\mathtt{"} \quad \vert \quad \mathtt{"}poached\mathtt{"} \quad \vert \quad \mathtt{"}fried\mathtt{"} \quad ) \quad \mathtt{"}eggs\mathtt{"} \quad ;\\
 \\
 bread \quad & \rightarrow \quad \mathtt{"}toast\mathtt{"} \quad\vert\quad \mathtt{"}biscuits\mathtt{"} \quad\vert\quad \mathtt{"}English \; muffin\mathtt{"} \quad ;
-\end{align*}
-\end{tcolorbox}
+\end{ebnf}
 
 \end{itemize}
 
@@ -1998,8 +2003,7 @@ bread \quad & \rightarrow \quad \mathtt{"}toast\mathtt{"} \quad\vert\quad \matht
 
 使用我们的新符号，下面是语法的表示：
 
-\begin{tcolorbox}
-\begin{align*}
+\begin{ebnf}
 expression & \rightarrow \quad literal \\
            & \;\;\vert \quad unary \\
            & \;\;\vert \quad binary \\
@@ -2011,8 +2015,7 @@ unary    & \rightarrow \quad ( \quad \mathtt{"}-\mathtt{"} \quad\vert\quad \math
 binary   & \rightarrow \quad expression \quad operator \quad expression \quad ; \\
 operator & \rightarrow \quad \mathtt{"}==\mathtt{"} \quad\vert\quad \mathtt{"}!=\mathtt{"} \quad\vert\quad \mathtt{"}<\mathtt{"} \quad\vert\quad \mathtt{"}<=\mathtt{"} \quad\vert\quad \mathtt{"}>\mathtt{"} \quad\vert\quad \mathtt{"}>=\mathtt{"} \\
                     & \;\;\vert \quad \mathtt{"}+\mathtt{"} \quad\vert\quad \mathtt{"}-\mathtt{"} \quad\vert\quad \mathtt{"}*\mathtt{"} \quad\vert\quad \mathtt{"}/\mathtt{"} \quad ;
-\end{align*}
-\end{tcolorbox}
+\end{ebnf}
 
 这里有一点额外的元语法。除了与精确词素相匹配的终止符会加引号外，我们还对表示单一词素的终止符进行“大写化”，这些词素的文本表示方式可能会有所不同。NUMBER是任何数字字面量，STRING是任何字符串字面量。稍后，我们将对IDENTIFIER进行同样的处理。
 
@@ -2466,14 +2469,12 @@ class AstPrinter implements Expr.Visitor<String> {
 \begin{enumerate}
   \item 之前我说过，我们在语法元语法中添加的|、*、+等形式只是语法糖。以这个语法为例:
 
-\begin{tcolorbox}
-\begin{align*}
+\begin{ebnf}
 expr & \rightarrow \quad expr \quad ( \quad \mathtt{"}(\mathtt{"} \quad ( \quad expr \quad ( \quad \mathtt{"},\mathtt{"} \quad expr \quad )* \quad )? \quad \mathtt{"})\mathtt{"} \\
      & \;\;\vert \quad \mathtt{"}.\mathtt{"} \quad IDENTIFIER \quad )+ \\
      & \;\;\vert\quad IDENTIFIER \\
      & \;\;\vert\quad NUMBER
-\end{align*}
-\end{tcolorbox}
+\end{ebnf}
 
 生成一个与同一语言相匹配的语法，但不要使用任何语法糖。
 
@@ -2522,8 +2523,7 @@ expr & \rightarrow \quad expr \quad ( \quad \mathtt{"}(\mathtt{"} \quad ( \quad 
 
 但是在解析时，歧义意味着解析器可能会误解用户的代码。当我们进行解析时，我们不仅要确定字符串是不是有效的Lox代码，还要记录哪些规则与代码的哪些部分相匹配，以便我们知道每个标记属于语言的哪一部分。下面是我们在上一章整理的Lox表达式语法：
 
-\begin{tcolorbox}
-\begin{align*}
+\begin{ebnf}
 expression & \rightarrow \quad literal \\
            & \;\;\vert \quad unary \\
            & \;\;\vert \quad binary \\
@@ -2535,8 +2535,7 @@ unary     & \rightarrow \quad ( \quad \mathtt{"}-\mathtt{"} \quad\vert\quad \mat
 binary    & \rightarrow \quad expression \quad operator \quad expression \quad ; \\
 operator  & \rightarrow \quad \mathtt{"}==\mathtt{"} \quad\vert\quad \mathtt{"}!=\mathtt{"} \quad\vert\quad \mathtt{"}<\mathtt{"} \quad\vert\quad \mathtt{"}<=\mathtt{"} \quad\vert\quad \mathtt{"}>\mathtt{"} \quad\vert\quad \mathtt{"}>=\mathtt{"} \\
 & \;\;\vert\quad \mathtt{"}+\mathtt{"} \quad\vert\quad \mathtt{"}-\mathtt{"} \quad\vert\quad \mathtt{"}*\mathtt{"} \quad\vert\quad \mathtt{"}/\mathtt{"} \quad ;
-\end{align*}
-\end{tcolorbox}
+\end{ebnf}
 
 下面是一个满足语法的有效字符串：
 
@@ -2611,8 +2610,7 @@ operator  & \rightarrow \quad \mathtt{"}==\mathtt{"} \quad\vert\quad \mathtt{"}!
 
 我们通过对语法进行分层来解决这个问题。我们为每个优先级定义一个单独的规则。
 
-\begin{tcolorbox}
-\begin{align*}
+\begin{ebnf}
 expression & \rightarrow \quad ... \\
 equality   & \rightarrow \quad ... \\
 comparison & \rightarrow \quad ... \\
@@ -2620,55 +2618,46 @@ term       & \rightarrow \quad ... \\
 factor     & \rightarrow \quad ... \\
 unary      & \rightarrow \quad ... \\
 primary    & \rightarrow \quad ...
-\end{align*}
-\end{tcolorbox}
+\end{ebnf}
 
 此处的每个规则仅匹配其当前优先级或更高优先级的表达式。 例如，unary匹配一元表达式（如 !negated）或主表达式（如1234）。term可以匹配1 + 2，但也可以匹配3 * 4 /5。最后的primary规则涵盖优先级最高的形式——字面量和括号表达式。
 
 我们只需要填写每条规则的生成式。我们先从简单的开始。顶级的expression规则可以匹配任何优先级的表达式。由于equality的优先级最低，只要我们匹配了它，就涵盖了一切。
 
-\begin{tcolorbox}
-\begin{align*}
+\begin{ebnf}
 expression \rightarrow\quad equality
-\end{align*}
-\end{tcolorbox}
+\end{ebnf}
 
 在优先级表的另一端，primary表达式包括所有的字面量和分组表达式。
 
-\begin{tcolorbox}
-\begin{align*}
+\begin{ebnf}
 primary & \rightarrow \quad NUMBER \quad\vert\quad STRING \quad\vert\quad \mathtt{"}true\mathtt{"} \quad\vert\quad \mathtt{"}false\mathtt{"} \quad\vert\quad \mathtt{"}nil\mathtt{"} \\
         & \;\;\vert\quad \mathtt{"}(\mathtt{"} expression \mathtt{"})\mathtt{"} \quad ;
-\end{align*}
-\end{tcolorbox}
+\end{ebnf}
 
 一元表达式以一元操作符开头，后跟操作数。因为一元操作符可以嵌套——!!true虽奇怪也是可用的表达式——这个操作数本身可以是一个一元表达式。递归规则可以很好地解决这个问题。
 
-\begin{tcolorbox}
-\begin{align*}
+\begin{ebnf}
 unary \rightarrow \quad ( \quad \mathtt{"}!\mathtt{"} \quad\vert\quad \mathtt{"}-\mathtt{"} \quad ) \quad unary \quad ;
-\end{align*}
-\end{tcolorbox}
+\end{ebnf}
 
 但是这条规则有一个问题，它永远不会终止。
 
 请记住，每个规则都需要匹配该优先级或更高优先级的表达式，因此我们还需要使其与主表达式匹配。
 
-\begin{tcolorbox}
-\begin{align*}
+\begin{ebnf}
 unary & \rightarrow \quad ( \quad \mathtt{"}!\mathtt{"} \quad\vert\quad \mathtt{"}-\mathtt{"} \quad ) \quad unary \\
       & \;\;\vert \quad primary \quad ;
-\end{align*}
-\end{tcolorbox}
+\end{ebnf}
 
 这样就可以了。
 
 剩下的规则就是二元运算符。我们先从乘法和除法的规则开始。下面是第一次尝试：
 
-\begin{code}{js}{}{}
-factor         → factor ( "/" | "*" ) unary
-               | unary ;
-\end{code}
+\begin{ebnf}
+factor & \rightarrow \quad factor \quad ( \quad \mathtt{"}/\mathtt{"} \quad\vert\quad \mathtt{"}*\mathtt{"} \quad ) \quad unary \\
+       & \;\;\vert\quad unary \quad ;
+\end{ebnf}
 
 该规则递归匹配左操作数，这样一来，就可以匹配一系列乘法和除法表达式，例如1 * 2 / 3。将递归生成式放在左侧并将unary放在右侧，可以使该规则具有左关联性和明确性。
 
@@ -2676,23 +2665,25 @@ factor         → factor ( "/" | "*" ) unary
 
 你可以定义很多符合同一种语言的语法。如何对某一特定语言进行建模，一部分是品味问题，一部分是实用主义问题。这个规则是正确的，但对于我们后续的解析来说它并不是最优的。我们将使用不同的规则来代替左递归规则。
 
-\begin{code}{js}{}{}
-factor         → unary ( ( "/" | "*" ) unary )* ;
-\end{code}
+\begin{ebnf}
+factor \rightarrow\quad unary \quad ( \quad ( \quad \mathtt{"}/\mathtt{"} \quad\vert\quad \mathtt{"}*\mathtt{"} \quad ) \quad unary \quad )* \quad ;
+\end{ebnf}
 
 我们将因子表达式定义为乘法和除法的扁平\textit{序列}。这与前面的规则语法相同，但更好地反映了我们将编写的解析Lox的代码。我们对其它二进制运算符的优先级使用相同的结构，从而得到下面这个完整的表达式语法：
 
-\begin{code}{js}{}{}
-expression     → equality ;
-equality       → comparison ( ( "!=" | "==" ) comparison )* ;
-comparison     → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
-term           → factor ( ( "-" | "+" ) factor )* ;
-factor         → unary ( ( "/" | "*" ) unary )* ;
-unary          → ( "!" | "-" ) unary
-               | primary ;
-primary        → NUMBER | STRING | "true" | "false" | "nil"
-               | "(" expression ")" ;
-\end{code}
+\begin{ebnf}
+\footnotesize
+expression     & \rightarrow\quad equality \quad ; \\
+equality       & \rightarrow\quad comparison \quad ( \quad ( \quad \mathtt{"}!=\mathtt{"} \quad\vert\quad \mathtt{"}==\mathtt{"} \quad ) \quad comparison \quad )* \quad ; \\
+comparison     & \rightarrow\quad term \quad ( \quad ( \quad \mathtt{"}>\mathtt{"} \quad\vert\quad \mathtt{"}>=\mathtt{"} \quad\vert\quad \mathtt{"}<\mathtt{"} \\
+               & \;\;\vert\quad \mathtt{"}<=\mathtt{"} \quad ) \quad term \quad )* \quad ; \\
+term           & \rightarrow\quad factor \quad ( \quad ( \quad \mathtt{"}-\mathtt{"} \quad\vert\quad \mathtt{"}+\mathtt{"} \quad ) \quad factor \quad )* \quad ; \\
+factor         & \rightarrow\quad unary \quad ( \quad ( \quad \mathtt{"}/\mathtt{"} \quad\vert\quad \mathtt{"}*\mathtt{"} \quad ) \quad unary \quad )* \quad ; \\
+unary          & \rightarrow\quad ( \quad \mathtt{"}!\mathtt{"} \quad\vert\quad \mathtt{"}-\mathtt{"} \quad ) \quad unary \\
+               & \;\;\vert\quad primary \quad ; \\
+primary        & \rightarrow\quad NUMBER \quad\vert\quad STRING \quad\vert\quad \mathtt{"}true\mathtt{"} \quad\vert\quad \mathtt{"}false\mathtt{"} \quad\vert\quad \mathtt{"}nil\mathtt{"} \\
+               & \;\;\vert\quad \mathtt{"}(\mathtt{"} \quad expression \quad \mathtt{"})\mathtt{"} \quad ;
+\end{ebnf}
 
 这个语法比我们以前的那个更复杂，但反过来我们也消除了前一个语法定义中的歧义。这正是我们制作解析器时所需要的。
 
@@ -2757,9 +2748,9 @@ class Parser {
 
 等式规则有一点复杂：
 
-\begin{tcolorbox}
-equality $\rightarrow$ comparison ( ( "!=" | "==" ) comparison )* ;
-\end{tcolorbox}
+\begin{ebnf}
+equality \rightarrow \quad comparison \quad ( \quad ( \quad \mathtt{"}!=\mathtt{"} \quad\vert\quad \mathtt{"}==\mathtt{"} \quad ) \quad comparison \quad )* \quad ;
+\end{ebnf}
 
 在Java中，这会变成：
 
@@ -2840,9 +2831,10 @@ isAtEnd()检查我们是否处理完了待解析的标记。peek()方法返回�
 
 继续看下一个规则。
 
-\begin{code}{js}{}{}
-comparison     → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
-\end{code}
+\begin{ebnf}
+comparison & \rightarrow\quad term \quad ( \quad ( \quad \mathtt{"}>\mathtt{"} \quad\vert\quad \mathtt{"}>=\mathtt{"} \\
+& \;\;\vert\quad \mathtt{"}<\mathtt{"} \quad\vert\quad \mathtt{"}<=\mathtt{"} \quad ) \quad term \quad )* \quad ;
+\end{ebnf}
 
 翻译成Java：
 
@@ -2896,10 +2888,10 @@ comparison     → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
 
 这就是所有的二进制运算符，已经按照正确的优先级和结合性进行了解析。接下来，按照优先级层级，我们要处理一元运算符了。
 
-\begin{code}{js}{}{}
-unary          → ( "!" | "-" ) unary
-               | primary ;
-\end{code}
+\begin{ebnf}
+unary & \rightarrow\quad ( \quad \mathtt{"}!\mathtt{"} \quad\vert\quad \mathtt{"}-\mathtt{"} \quad ) \quad unary \\
+      & \;\;\vert\quad primary ;
+\end{ebnf}
 
 该规则对应的代码有些不同。
 
@@ -2919,10 +2911,11 @@ unary          → ( "!" | "-" ) unary
 
 否则，我们就达到了最高级别的优先级，即基本表达式。
 
-\begin{code}{js}{}{}
-primary        → NUMBER | STRING | "true" | "false" | "nil"
-               | "(" expression ")" ;
-\end{code}
+\begin{ebnf}
+  primary & \rightarrow\quad NUMBER \quad\vert\quad STRING \quad\vert\quad \mathtt{"}true\mathtt{"} \\
+  & \;\;\vert\quad \mathtt{"}false\mathtt{"} \quad\vert\quad \mathtt{"}nil\mathtt{"} \\
+  & \;\;\vert\quad \mathtt{"}(\mathtt{"} expression \mathtt{"})\mathtt{"} ;
+\end{ebnf}
 
 该规则中大部分都是终止符，可以直接进行解析。
 
@@ -3694,15 +3687,15 @@ James Gosling和其他Java设计师牺牲了一点静态安全和性能（这些
 
 新的词法意味着新的语法规则。在本章中，我们终于获得了解析整个Lox脚本的能力。由于Lox是一种命令式的、动态类型的语言，所以脚本的“顶层”也只是一组语句。新的规则如下：
 
-\begin{code}{js}{}{}
-program        → statement* EOF ;
-
-statement      → exprStmt
-               | printStmt ;
-
-exprStmt       → expression ";" ;
-printStmt      → "print" expression ";" ;
-\end{code}
+\begin{ebnf}
+program        & \rightarrow\quad statement* \quad EOF \quad ; \\
+\\
+statement      & \rightarrow\quad \quad exprStmt \\
+               & \;\;\vert\quad printStmt \quad ; \\
+\\
+exprStmt       & \rightarrow\quad expression \mathtt{"};\mathtt{"} \quad ; \\
+printStmt      & \rightarrow\quad \mathtt{"}print\mathtt{"} expression \mathtt{"};\mathtt{"} \quad ;
+\end{ebnf}
 
 现在第一条规则是program，这也是语法的起点，代表一个完整的Lox脚本或REPL输入项。程序是一个语句列表，后面跟着特殊的“文件结束”(EOF)标记。强制性的结束标记可以确保解析器能够消费所有输入内容，而不会默默地忽略脚本结尾处错误的、未消耗的标记。
 
@@ -3929,34 +3922,34 @@ if (monday) var beverage = "espresso";
 
 为了适应这种区别，我们为声明名称的语句类型添加了另一条规则：
 
-\begin{code}{js}{}{}
-program        → declaration* EOF ;
-
-declaration    → varDecl
-               | statement ;
-
-statement      → exprStmt
-               | printStmt ;
-\end{code}
+\begin{ebnf}
+program        \rightarrow\quad declaration* EOF ; \\
+\\
+declaration    \rightarrow\quad varDecl \\
+               \;\;\vert \quad statement \quad ; \\
+\\
+statement      \rightarrow\quad exprStmt \\
+               \;\;\vert \quad printStmt ;
+\end{ebnf}
 
 声明语句属于新的declaration规则。目前，这里只有变量，但是后面还会包含函数和类。任何允许声明的地方都允许一个非声明式的语句，所以declaration规则会下降到statement。显然，你可以在脚本的顶层声明一些内容，所以program规则需要路由到新规则。
 
 声明一个变量的规则如下：
 
-\begin{code}{js}{}{}
-varDecl        → "var" IDENTIFIER ( "=" expression )? ";" ;
-\end{code}
+\begin{ebnf}
+varDecl \rightarrow \quad \mathtt{"}var\mathtt{"} \quad IDENTIFIER \quad ( \quad \mathtt{"}=\mathtt{"} \quad expression \quad )? \quad \mathtt{"};\mathtt{"} \quad ;
+\end{ebnf}
 
 像大多数语句一样，它以一个前置关键字开头，这里是var。然后是一个标识符标记，作为声明变量的名称，后面是一个可选的初始化式表达式。最后，以一个分号作为结尾。
 
 为了访问变量，我们还需要定义一个新类型的基本表达式：
 
-\begin{code}{js}{}{}
-primary        → "true" | "false" | "nil"
-               | NUMBER | STRING
-               | "(" expression ")"
-               | IDENTIFIER ;
-\end{code}
+\begin{ebnf}
+primary &\rightarrow\quad \mathtt{"}true\mathtt{"} \quad\vert\quad \mathtt{"}false\mathtt{"} \quad\vert\quad \mathtt{"}nil\mathtt{"} \\
+&\;\;\vert\quad NUMBER \quad\vert\quad STRING \\
+&\;\;\vert\quad \mathtt{"}(\mathtt{"} expression \mathtt{"})\mathtt{"} \\
+&\;\;\vert\quad IDENTIFIER \quad ;
+\end{ebnf}
 
 IDENTIFIER子语句会匹配单个标识符标记，该标记会被理解为正在访问的变量的名称。
 
@@ -4161,9 +4154,7 @@ class Interpreter implements Expr.Visitor<Object>,
 
 我们有两个新的语法树，所以这就是两个新的访问方法。第一个是关于声明语句的。
 
-lox/Interpreter.java，在visitPrintStmt()方法后添加：
-
-\begin{code}{java}{}{}
+\begin{code}{java}{}{lox/Interpreter.java，在visitPrintStmt()方法后添加}
   @Override
   public Void visitVarStmt(Stmt.Var stmt) {
     Object value = null;
@@ -4218,11 +4209,11 @@ Lox没有这么严苛。Lox是一个命令式语言，可变性是与生俱来�
 
 这个小小的=语法比看起来要更复杂。像大多数C派生语言一样，赋值是一个表达式，而不是一个语句。和C语言中一样，它是优先级最低的表达式形式。这意味着该规则在语法中处于 expression 和equality（下一个优先级的表达式）之间。
 
-\begin{code}{js}{}{}
-expression     → assignment ;
-assignment     → IDENTIFIER "=" assignment
-               | equality ;
-\end{code}
+\begin{ebnf}
+expression & \rightarrow\quad assignment \quad ; \\
+assignment & \rightarrow\quad IDENTIFIER \quad \mathtt{"}=\mathtt{"} \quad assignment \\
+& \;\;\vert\quad equality \quad ;
+\end{ebnf}
 
 这就是说，一个assignment（赋值式）要么是一个标识符，后跟一个=和一个对应值的表达式；要么是一个等式（也就是任何其它）表达式。稍后，当我们在对象中添加属性设置式时，赋值将会变得更加复杂，比如：
 
@@ -4504,13 +4495,13 @@ class Environment {
 
 现在环境已经嵌套了，我们就准备向语言中添加块了。请看以下语法：
 
-\begin{code}{js}{}{}
-statement      → exprStmt
-               | printStmt
-               | block ;
-
-block          → "{" declaration* "}" ;
-\end{code}
+\begin{ebnf}
+statement &\rightarrow\quad exprStmt \\
+& \;\;\vert\quad printStmt \\
+& \;\;\vert\quad block \quad ; \\
+\\
+block &\rightarrow\quad \mathtt{"}{\mathtt{"} \quad declaration* \quad \mathtt{"}}\mathtt{"} \quad ;
+\end{ebnf}
 
 块是由花括号包围的一系列语句或声明(可能是空的)。块本身就是一条语句，可以出现在任何允许语句的地方。语法树节点如下所示。
 
@@ -4711,15 +4702,15 @@ Lox使用不同的语法来声明新变量和为已有变量赋值。有些语�
 
 为了简单起见，Lox没有条件运算符，所以让我们直接开始if语句吧。我们的语句语法需要一个新的生成式。
 
-\begin{code}{js}{}{}
-statement      → exprStmt
-               | ifStmt
-               | printStmt
-               | block ;
-
-ifStmt         → "if" "(" expression ")" statement
-               ( "else" statement )? ;
-\end{code}
+\begin{ebnf}
+statement &\rightarrow\quad exprStmt \\
+&\;\;\vert\quad ifStmt \\
+&\;\;\vert\quad printStmt \\
+&\;\;\vert\quad block ; \\
+\\
+ifStmt &\rightarrow\quad \mathtt{"}if\mathtt{"} \quad \mathtt{"}(\mathtt{"} \quad expression \quad \mathtt{"})\mathtt{"} \quad statement \\
+& \quad\quad ( \quad \mathtt{"}else\mathtt{"} \quad statement \quad )? \quad ;
+\end{ebnf}
 
 if语句有一个表达式作为条件，然后是一个在条件为真时要执行的语句。另外，它还可以有一个else关键字和条件为假时要执行的语句。语法树节点中对语法的这三部分都有对应的字段。
 
@@ -4811,13 +4802,13 @@ false and sideEffect();
 
 这就是为什么我们没有在实现其它二元运算符的时候一起实现逻辑运算符。现在我们已经准备好了。这两个新的运算符在优先级表中的位置很低，类似于C语言中的||和\&\&，它们都有各自的优先级，or低于and。我们把这两个运算符插入assignment 和 equality之间。
 
-\begin{code}{js}{}{}
-expression     → assignment ;
-assignment     → IDENTIFIER "=" assignment
-               | logic_or ;
-logic_or       → logic_and ( "or" logic_and )* ;
-logic_and      → equality ( "and" equality )* ;
-\end{code}
+\begin{ebnf}
+expression &\rightarrow\quad assignment \quad ; \\
+assignment &\rightarrow\quad IDENTIFIER \quad \mathtt{"}=\mathtt{"} \quad assignment \\
+          &\;\;\vert\quad logic\_or \quad ; \\
+logic\_or  &\rightarrow\quad logic\_and \quad ( \quad \mathtt{"}or\mathtt{"} \quad logic\_and \quad )* \quad ; \\
+logic\_and &\rightarrow\quad equality \quad ( \quad \mathtt{"}and\mathtt{"} \quad equality \quad )* \quad ;
+\end{ebnf}
 
 assignment现在不是落到equality，而是继续进入logic\_or。两个新规则，logic\_or 和logic\_and，与其它二元运算符类似。然后logic\_and会调用equality计算其操作数，然后我们就链入了表达式规则的其它部分。
 
@@ -4905,15 +4896,15 @@ print nil or "yes"; // "yes".
 
 Lox有两种类型的循环控制流语句，分别是while和for。while循环更简单一点，我们先从它开始.
 
-\begin{code}{js}{}{}
-statement      → exprStmt
-               | ifStmt
-               | printStmt
-               | whileStmt
-               | block ;
-
-whileStmt      → "while" "(" expression ")" statement ;
-\end{code}
+\begin{ebnf}
+statement &\rightarrow\quad exprStmt \\
+&\;\;\vert\quad ifStmt \\
+&\;\;\vert\quad printStmt \\
+&\;\;\vert\quad whileStmt \\
+&\;\;\vert\quad block \quad ; \\
+\\
+whileStmt &\rightarrow\quad \mathtt{"}while\mathtt{"} \quad \mathtt{"}(\mathtt{"} \quad expression \quad \mathtt{"})\mathtt{"} \quad statement \quad ;
+\end{ebnf}
 
 我们在statement规则中添加一个子句，指向while对应的新规则whileStmt。该规则接收一个while关键字，后跟一个带括号的条件表达式，然后是循环体对应的语句。新语法规则需要定义新的语法树节点。
 
@@ -4971,18 +4962,18 @@ for (var i = 0; i < 10; i = i + 1) print i;
 
 在语法中，是这样的：
 
-\begin{code}{js}{}{}
-statement      → exprStmt
-               | forStmt
-               | ifStmt
-               | printStmt
-               | whileStmt
-               | block ;
-
-forStmt        → "for" "(" ( varDecl | exprStmt | ";" )
-                 expression? ";"
-                 expression? ")" statement ;
-\end{code}
+\begin{ebnf}
+statement &\rightarrow\quad exprStmt \\
+&\;\;\vert\quad forStmt \\
+&\;\;\vert\quad ifStmt \\
+&\;\;\vert\quad printStmt \\
+&\;\;\vert\quad whileStmt \\
+&\;\;\vert\quad block \quad ; \\
+\\
+forStmt &\rightarrow\quad \mathtt{"}for\mathtt{"} \quad \mathtt{"}(\mathtt{"} \quad ( \quad varDecl \quad\vert\quad exprStmt \quad\vert\quad \mathtt{"};\mathtt{"} \quad ) \\
+& \quad\quad expression? \quad \mathtt{"};\mathtt{"} \\
+& \quad\quad expression? \mathtt{"})\mathtt{"} \quad statement \quad ;
+\end{ebnf}
 
 在括号内，有三个由分号分隔的子语句：
 
@@ -5195,20 +5186,20 @@ getCallback()();
 
 这个“运算符”比其它运算符（包括一元运算符）有更高的优先级。所以我们通过让unary规则跳转到新的call规则，将其添加到语法中。
 
-\begin{code}{js}{}{}
-unary          → ( "!" | "-" ) unary | call ;
-call           → primary ( "(" arguments? ")" )* ;
-\end{code}
+\begin{ebnf}
+unary &\rightarrow\quad ( \quad \mathtt{"}!\mathtt{"} \quad\vert\quad \mathtt{"}-\mathtt{"} \quad ) \quad unary \quad\vert\quad call \quad ; \\
+call  &\rightarrow\quad primary \quad ( \quad \mathtt{"}(\mathtt{"} \quad arguments? \quad \mathtt{"})\mathtt{"} \quad )* \quad ;
+\end{ebnf}
 
 该规则匹配一个基本表达式，后面跟着0个或多个函数调用。如果没有括号，则解析一个简单的基本表达式。否则，每一对圆括号都表示一个函数调用，圆括号内有一个可选的参数列表。参数列表语法是：
 
-\begin{code}{js}{}{}
-arguments      → expression ( "," expression )* ;
-\end{code}
+\begin{ebnf}
+arguments \rightarrow\quad expression \quad ( \quad \mathtt{"},\mathtt{"} \quad expression \quad )* \quad ;
+\end{ebnf}
 
-这个规则要求至少有一个参数表达式，后面可以跟0个或多个其它表达式，每两个表达式之间用,分隔。为了处理无参调用，call规则本身认为整个arguments生成式是可选的。
+这个规则要求至少有一个参数表达式，后面可以跟0个或多个其它表达式，每两个表达式之间用“,”分隔。为了处理无参调用，call规则本身认为整个arguments生成式是可选的。
 
-我承认，对于极其常见的 "零或多个逗号分隔的事物 "模式来说，这在语法上似乎比你想象的更难处理。有一些复杂的元语法可以更好地处理这个问题，但在我们的BNF和我见过的许多语言规范中，它就是如此的麻烦。
+我承认，对于极其常见的“零或多个逗号分隔的事物”模式来说，这在语法上似乎比你想象的更难处理。有一些复杂的元语法可以更好地处理这个问题，但在我们的BNF和我见过的许多语言规范中，它就是如此的麻烦。
 
 在我们的语法树生成器中，我们添加一个新节点。
 
@@ -5457,26 +5448,26 @@ class Interpreter implements Expr.Visitor<Object>,
 
 我们终于可以在添加变量时就引入的declaration规则中添加产生式了。就像变量一样，函数声明也会绑定一个新的名称。这意味中它们只能出现在允许声明的地方。
 
-\begin{code}{js}{}{}
-declaration    → funDecl
-               | varDecl
-               | statement ;
-\end{code}
+\begin{ebnf}
+declaration &\rightarrow\quad funDecl \\
+&\;\;\vert\quad varDecl \\
+&\;\;\vert\quad statement \quad ;
+\end{ebnf}
 
 更新后的declaration引用了下面的新规则：
 
-\begin{code}{js}{}{}
-funDecl        → "fun" function ;
-function       → IDENTIFIER "(" parameters? ")" block ;
-\end{code}
+\begin{ebnf}
+funDecl  &\rightarrow\quad \mathtt{"}fun\mathtt{"} \quad function \quad ; \\
+function &\rightarrow\quad IDENTIFIER \mathtt{"}(\mathtt{"} \quad parameters? \quad \mathtt{"})\mathtt{"} \quad block \quad ;
+\end{ebnf}
 
 主要的funDecl规则使用了一个单独的辅助规则function。函数\textit{声明语句}是fun关键字后跟实际的函数体内容。等到我们实现类的时候，将会复用function规则来声明方法。这些方法与函数声明类似，但是前面没有fun。
 
 函数本身是一个名称，后跟带括号的参数列表和函数体。函数体是一个带花括号的块，可以使用与块语句相同的语法。参数列表则使用以下规则：
 
-\begin{code}{js}{}{}
-parameters     → IDENTIFIER ( "," IDENTIFIER )* ;
-\end{code}
+\begin{ebnf}
+parameters \rightarrow\quad IDENTIFIER \quad ( \quad \mathtt{"},\mathtt{"} \quad IDENTIFIER \quad )* \quad ;
+\end{ebnf}
 
 这就类似于前面的arguments规则，区别在于参数是一个标识符，而不是一个表达式。这对于解析器来说是很多要处理的新语法，但是生成的AST节点没这么复杂。
 
@@ -5681,17 +5672,17 @@ sayHi("Dear", "Reader");
 
 我们可以通过传递参数将数据输入函数中，但是我们没有办法将结果\textit{传出来}。如果Lox是像Ruby或Scheme那样的面向表达式的语言，那么函数体就是一个表达式，其值就隐式地作为函数的结果。但是在Lox中，函数体是一个不产生值的语句列表，所有我们需要专门的语句来发出结果。换句话说，就是return语句。我相信你已经能猜出语法了。
 
-\begin{code}{js}{}{}
-statement      → exprStmt
-               | forStmt
-               | ifStmt
-               | printStmt
-               | returnStmt
-               | whileStmt
-               | block ;
-
-returnStmt     → "return" expression? ";" ;
-\end{code}
+\begin{ebnf}
+statement & \rightarrow\quad exprStmt \\
+& \;\;\vert\quad forStmt \\
+& \;\;\vert\quad ifStmt \\
+& \;\;\vert\quad printStmt \\
+& \;\;\vert\quad returnStmt \\
+& \;\;\vert\quad whileStmt \\
+& \;\;\vert\quad block \quad ; \\
+\\
+returnStmt & \rightarrow\quad \mathtt{"}return\mathtt{"} \quad expression? \quad \mathtt{"};\mathtt{"} \quad ;
+\end{ebnf}
 
 我们又得到一个statement规则下的新产生式（实际上也是最后一个）。一个return语句就是一个return关键字，后跟一个可选的表达式，并以一个分号结尾。
 
@@ -5780,9 +5771,7 @@ Interpreter.visitCallExpr()
 
 新的AST节点的visit方法如下所示：
 
-lox/Interpreter.java，在visitPrintStmt()方法后添加：
-
-\begin{code}{java}{}{}
+\begin{code}{java}{}{lox/Interpreter.java，在visitPrintStmt()方法后添加}
   @Override
   public Void visitReturnStmt(Stmt.Return stmt) {
     Object value = null;
@@ -5794,9 +5783,7 @@ lox/Interpreter.java，在visitPrintStmt()方法后添加：
 
 如果我们有返回值，就对其求值，否则就使用nil。然后我们取这个值并将其封装在一个自定义的异常类中，并抛出该异常。
 
-lox/Return.java，创建新文件：
-
-\begin{code}{java}{}{}
+\begin{code}{java}{}{lox/Return.java，创建新文件}
 package com.craftinginterpreters.lox;
 
 class Return extends RuntimeException {
@@ -6814,21 +6801,21 @@ var a = "outer";
 
 跟之前一样，我们从语法开始。class语句引入了一个新名称，所以它应该在declaration语法规则中。
 
-\begin{code}{js}{}{}
-declaration    → classDecl
-               | funDecl
-               | varDecl
-               | statement ;
-
-classDecl      → "class" IDENTIFIER "{" function* "}" ;
-\end{code}
+\begin{ebnf}
+declaration &\rightarrow\quad classDecl \\
+&\;\;\vert\quad funDecl \\
+&\;\;\vert\quad varDecl \\
+&\;\;\vert\quad statement \quad ; \\
+\\
+classDecl &\rightarrow\quad \mathtt{"}class\mathtt{"} \quad IDENTIFIER \quad \mathtt{"}{\mathtt{"} \quad function* \quad \mathtt{"}}\mathtt{"} \quad ;
+\end{ebnf}
 
 新的classDecl规则依赖于前面定义的function规则。复习一下：
 
-\begin{code}{js}{}{}
-function       → IDENTIFIER "(" parameters? ")" block ;
-parameters     → IDENTIFIER ( "," IDENTIFIER )* ;
-\end{code}
+\begin{ebnf}
+function   &\rightarrow\quad IDENTIFIER \quad \mathtt{"}(\mathtt{"} \quad parameters? \quad \mathtt{"})\mathtt{"} \quad block \quad ; \\
+parameters &\rightarrow\quad IDENTIFIER \quad ( \quad \mathtt{"},\mathtt{"} \quad IDENTIFIER \quad )* \quad ;
+\end{ebnf}
 
 用简单的英语来说，类声明就是class关键字，后跟类的名称，然后是一对花括号包含的主体。在这个主体中，有一个方法声明的列表。与函数声明不同的是，方法没有前导的fun关键字。每个方法就是一个名称、参数列表和方法主体。下面是一个例子：
 
@@ -7132,10 +7119,10 @@ someObject.someProperty = value;
 
 在语言方面，我们扩展了赋值规则，允许在左侧使用点标识符。
 
-\begin{tcolorbox}
-assignment     → ( call "." )? IDENTIFIER "=" assignment
-               | logic\_or ;
-\end{tcolorbox}
+\begin{ebnf}
+assignment &\rightarrow\quad ( \quad call \quad \mathtt{"}.\mathtt{"} \quad )? \quad IDENTIFIER \quad \mathtt{"}=\mathtt{"} \quad assignment \\
+&\;\;\vert\quad logic\_or \quad ;
+\end{ebnf}
 
 与getter不同，setter不使用链。但是，对call 规则的引用允许在最后的点符号之前出现任何高优先级的表达式，包括任何数量的\textit{getters}，如：
 
@@ -7877,10 +7864,10 @@ class BostonCream < Doughnut {
 
 为了在语法中实现这一点，我们在目前的classDecl规则中加一个新的可选子句。
 
-\begin{code}{js}{}{}
-classDecl      → "class" IDENTIFIER ( "<" IDENTIFIER )?
-                 "{" function* "}" ;
-\end{code}
+\begin{ebnf}
+classDecl &\rightarrow\quad \mathtt{"}class\mathtt{"} \quad IDENTIFIER \quad ( \quad \mathtt{"}<\mathtt{"} \quad IDENTIFIER \quad )? \\
+          &\quad\quad \mathtt{"}{\mathtt{"} \quad function* \quad \mathtt{"}}\mathtt{"} \quad ;
+\end{ebnf}
 
 在类的名称后面，可以有一个<，后跟超类的名称。超类子句是可选的，因为一个类不一定要有超类。与Java等面向对象的语言不同，Lox没有所有东西都继承的一个根“Object”类，所以当你省略超类子句时，该类就没有超类，甚至连隐含的都没有。
 
@@ -8073,13 +8060,11 @@ print super; // Syntax error.
 
 因此，我们在语法中的primary规则添加新子句时要包含属性访问。
 
-\begin{tcolorbox}
-\begin{align*}
+\begin{ebnf}
 primary \quad & \rightarrow \mathtt{"}true\mathtt{"} \quad\vert\quad \mathtt{"}false\mathtt{"} \quad\vert\quad \mathtt{"}nil\mathtt{"} \quad\vert\quad \mathtt{"}this\mathtt{"}
               & \vert \quad NUMBER \quad\vert\quad STRING \quad\vert\quad IDENTIFIER \quad\vert\quad \mathtt{"}(\mathtt{"} \quad expression \mathtt{"})\mathtt{"}
               & \vert \quad \mathtt{"}super\mathtt{"} \quad \mathtt{"}.\mathtt{"} \quad IDENTIFIER \quad ;
-\end{align*}
-\end{tcolorbox}
+\end{ebnf}
 
 通常情况下，super表达式用于方法调用，但是，与普通方法一样，参数列表并不是表达式的一部分。相反，super调用是一个super属性访问，然后跟一个函数调用。与其它方法调用一样，你可以获得超类方法的句柄，然后单独运行它。
 
