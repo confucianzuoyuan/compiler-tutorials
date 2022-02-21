@@ -9566,4 +9566,204 @@ int disassembleInstruction(Chunk* chunk, int offset) {
 
 我可以继续说下去，但是我不希望这变成一场说教。此外，我并不想假装自己是语言测试专家。我只是想让你在内心深处明白，测试你的语言是多么重要。我是认真的。测试你的语言。你会为此感谢我的。
 
+\chapter{虚拟机}
+
+\epigraph{魔术师保护他们的秘密，不是因为秘密大而重要，而是因为它们是如此渺小和微不足道。在舞台上创造的美妙效果往往是一个荒谬的秘密的结果，以至于魔术师会不好意思承认它是如何做到的。}{普里斯特}
+
+我们花了很多时间讨论如何将程序表示为一系列字节码指令，但这感觉就像只使用填充的死动物来学习生物学。我们在理论上知道指令是什么，但我们从未在实际中看到它们，因此很难真正理解它们的作用。当我们对字节码的行为没有很好的理解时，很难编写一个输出字节码的编译器。
+
+因此，在我们开始构建新解释器的前端之前，我们将从后端开始——执行指令的虚拟机。它为字节码注入了活力。观察指令的跳跃让我们更清楚地了解编译器如何将用户的源代码翻译成一系列的源代码。
+
+\section{执行指令的机器}
+
+虚拟机是我们解释器内部架构的一部分。你给它一大块代码——字面意思是一个块——它就会运行它。VM的代码和数据结构位于一个新模块中。
+
+\begin{code}{c}{}{创建新文件vm.h}
+#ifndef clox_vm_h
+#define clox_vm_h
+
+#include "chunk.h"
+
+typedef struct {
+  Chunk* chunk;
+} VM;
+
+void initVM();
+void freeVM();
+
+#endif
+\end{code}
+
+像往常一样，我们从简单开始。VM将逐渐获取它需要跟踪的一大堆状态，因此我们现在定义一个结构体来填充所有内容。目前，我们存储的只是它执行的块。
+
+就像我们对我们创建的大多数数据结构所做的那样，我们也定义了创建和销毁VM的函数。这是实现：
+
+\begin{code}{c}{}{创建新文件vm.c}
+#include "common.h"
+#include "vm.h"
+
+VM vm; 
+
+void initVM() {
+}
+
+void freeVM() {
+}
+\end{code}
+
+好的，将这些函数称为“实现”是一个延伸。我们还没有任何有趣的状态要初始化或释放，所以函数是空的。相信我，我们会到达那里的。
+
+这里稍微有趣一点的是vm的声明。该模块最终将拥有大量函数，将指向VM的指针传递给所有这些函数将是一件苦差事。相反，我们声明一个全局VM对象。无论如何，我们只需要一个，这样可以使书中的代码在页面上稍微轻松一些。
+
+\begin{code}{c}{2-3}{main.c，在main()中添加}
+int main(int argc, const char* argv[]) {
+  initVM();
+
+  Chunk chunk;
+\end{code}
+
+我们在解释器开始运行时，就马上初始化VM。当我们打算退出时，会释放VM。
+
+\begin{code}{c}{2}{main.c}
+#include "debug.h"
+#include "vm.h"
+
+int main(int argc, const char* argv[]) {
+\end{code}
+
+现在，当您运行clox时，它会在创建上一章中的手工编写的块之前启动VM。VM已准备就绪并正在等待，所以让我们教它做点什么。
+
+\subsection{执行指令}
+
+当我们命令VM解释执行一大块字节码时，VM就会开始行动。
+
+\begin{code}{c}{2}{main.c，在main()中添加}
+  disassembleChunk(&chunk, "test chunk");
+  interpret(&chunk);
+  freeVM();
+\end{code}
+
+这个函数是VM的主入口点。声明如下：
+
+\begin{code}{c}{2}{vm.h，添加到freeVM()后面}
+void freeVM();
+InterpreterResult interpret(Chunk* chunk);
+
+#endif
+\end{code}
+
+VM运行字节码块，然后返回一个枚举值如下：
+
+\begin{code}{c}{3-7}{vm.h，在结构体VM后添加}
+} VM;
+
+typedef enum {
+  INTERPRET_OK,
+  INTERPRET_COMPILE_ERROR,
+  INTERPRET_RUNTIME_ERROR
+} InterpretResult;
+
+void initVM();
+void freeVM();
+\end{code}
+
+我们还没有使用这个结果，但是当我们拥有了一个可以报告静态错误的编译器以及一个可以检测运行时错误的VM时，解释器将使用枚举值来确定如何设置进程的退出码。
+
+我们得一点一点添加有用的代码：
+
+\begin{code}{c}{}{vm.c，在freeVM()后添加}
+InterpretResult interpret(Chunk* chunk) {
+  vm.chunk = chunk;
+  vm.ip = vm.chunk->code;
+  return run();
+}
+\end{code}
+
+首先，我们需要存储VM执行的字节码块。然后我们将调用run()函数。run()函数是一个内部的辅助函数，用来真正的执行字节码指令。在这两部分之间有一行不太好理解的代码。ip字段是用来干什么的？
+
+由于VM的工作方式是将字节码执行一遍，所以VM必须跟踪执行字节码指令的位置——也就是当前执行的指令的位置。我们不会在run()函数中声明一个局部变量来保存位置信息，因为其它函数也可能需要访问位置信息。所以，我们将位置信息作为一个字段保存在VM结构体中。
+
+\begin{code}{c}{3}{vm.h，在结构体VM中添加}
+typedef struct {
+  Chunk* chunk;
+  uint8_t* ip;
+} VM;
+\end{code}
+
+ip字段的类型是指向字节数据类型的指针。我们使用一个真正的C语言指针来指向字节码数组中的某个位置，而不是使用数组的索引来访问数组中的元素，因为对指针进行解引用操作比使用数组索引来查找数组中的元素要快。
+
+“IP”这个名称是很传统的，但是——不像很多计算机科学中的传统名称——有真实的含义：\textbf{指向指令的指针（instruction pointer）}。世界上几乎每一种指令集，无论是真实的还是虚拟的，都有一个寄存器或者变量的名字叫做IP。
+
+我们将ip初始化为指向字节码块中的第一个字节的指针。由于我们还没有开始执行字节码块中的指令，所以ip指向的指令其实是：\textit{下一条将要执行的指令}。在VM运行的所有时刻：ip一直会指向下一条将要执行的指令，而非当前正在处理的指令。
+
+真正有意思的事情发生在run()函数中：
+
+\begin{code}{c}{}{vm.c，在freeVM()后面添加}
+static InterpretResult run() {
+#define READ_BYTE() (*vm.ip++)
+
+  for (;;) {
+    uint8_t instruction;
+    switch (instruction = READ_BYTE()) {
+      case OP_RETURN: {
+        return INTERPRET_OK;
+      }
+    }
+  }
+
+#undef READ_BYTE
+}
+\end{code}
+
+这个函数是到目前为止，clox代码中最重要的函数。当解释器执行用户编写的程序时，解释器将花费90\%的时间来运行run()函数。run()函数是VM的心跳。
+
+尽管我们进行了戏剧化的简介，但从概念上来说其实很简单。我们有一个外层循环，不停的在执行。每次循环，我们都读取一条指令，并执行这条指令。
+
+为了执行一条指令，我们首先需要判断将要处理的这条指令是哪种类型的指令。READ\_BYTE这个宏读取当前ip指向的指令，然后让ip指针前进\footnote{也就是让ip指向下一条指令}。所有指令的第一个字节都是操作码opcode。给定一个用来进行数值计算的操作码，我们需要获取实现指令语义的C语言代码。这个过程叫做\textbf{解码（decoding）}或者\textbf{分发（dispatching）}指令。
+
+我们对每一条指令都执行这一过程。每一次循环都执行一条指令，所以这部分代码是整个虚拟机最性能攸关的部分。编程语言这个领域中充斥着各种聪明的技术来更有效的进行指令分发，这些技术可以追溯到计算机科学的最早期阶段。
+
+唉，性能最好的解决方案要么需要C语言的非标准扩展，要么需要手工编写汇编代码。对于clox，我们将采用简单且容易理解的实现方式。就像我们的反汇编器一样，我们将维护一个巨大的switch语句，然后针对每一个操作码实现一个case语句。每个case语句都会实现对应操作码的执行逻辑。
+
+到目前为止，我们仅能处理一条指令：OP\_RETURN，这条指令只能做一件事情，就是退出循环。到最后，这条指令将会用来从当前调用的Lox函数中退出。由于我们还没有实现函数功能，所以现在我们只用这条指令来完成结束执行的工作。
+
+让我们继续前进，再来支持一条指令：
+
+\begin{code}{c}{2-7}{vm.c，在run()中添加}
+  switch (instruction = READ_BYTE()) {
+    case OP_CONSTANT: {
+        Value constant = READ_CONSTANT();
+        printValue(constant);
+        printf("\n");
+        break;
+      }
+    case OP_RETURN: {
+\end{code}
+
+由于我们目前还没有实现足够的功能来使用常量做一些有用的事情。所以现在，我们只能将常量打印出来，来看一看VM中到底发生了哪些事情。由于我们需要调用printf()，所以需要导入一些依赖：
+
+\begin{code}{c}{1}{vm.c，在文件的最上面添加}
+#include <stdio.h>
+
+#include "common.h"
+\end{code}
+
+我们还需要定义一个新的宏：
+
+\begin{code}{c}{2}{vm.c，在run()中添加}
+#define READ_BYTE() (*vm.ip++)
+#define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
+
+  for (;;) {
+\end{code}
+
+READ\_CONSTANT()读取字节码的下一个字节，然后使用返回值作为索引，去查找字节码块中的常量表中索引对应的值。在后面的章节里，我们将会添加一些有关常量的指令，这些指令将常量作为操作数来使用。所以我们现在构建了这样一个宏定义，作为辅助。
+
+就像之前实现的READ\_BYTE宏定义，READ\_CONSTANT宏定义只用在run()函数中。为了使宏定义的作用域更加的明显，我们在函数中定义宏，来将宏定义的作用域限制在函数内。我们在函数最开始定义了宏——因为我们很小心——然后在函数尾部解除这个宏定义。
+
+\begin{code}{c}{2}{vm.c，在run()中}
+#undef READ_BYTE
+#undef READ_CONSTANT
+\end{code}
+
 \end{document}
