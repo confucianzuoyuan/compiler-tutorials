@@ -154,6 +154,11 @@
 
 对于每一种成功的通用语言，都有上千种成功的小众语言。我们过去称它们为“小语言”，但术语泛滥的今天它们有了“领域特定语言（即DSL）”的名称。这些是为特定任务量身定做的洋泾浜语言，如应用程序脚本语言、模板引擎、标记格式和配置文件。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/introduction/little-languages.png}
+\end{figure}
+
 几乎每个大型软件项目都需要一些这样的工具。如果可以的话，最好重用现有的工具，而不是自己动手实现。一旦考虑到文档、调试器、编辑器支持、语法高亮显示和所有其他可能的障碍，自己实现就成了一项艰巨的任务。
 
 但是，当现有的库不能满足您的需要时，您仍然很有可能发现自己需要一个解析器或其他东西。即使当您重用一些现有的实现时，您也不可避免地需要调试和维护，并在其内部进行探索。
@@ -309,7 +314,17 @@ Java是一门很适合这种场景的语言。它的级别足够高，我们不�
 
 最终我们达到了峰顶。我们可以鸟瞰用户的程序，可以看到他们的代码含义是什么。我们开始从山的另一边下山。我们将这个最高级的表示形式转化为连续的较低级别的形式，从而越来越接近我们所知道的如何让CPU真正执行的形式。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/a-map-of-the-territory/mountain.png}
+\end{figure}
+
 让我们沿着每一条路线和每一个感兴趣的地方走一遍。我们的旅程从左边的用户源代码的纯文本开始。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/a-map-of-the-territory/string.png}
+\end{figure}
 
 \subsection{扫描}
 
@@ -319,11 +334,21 @@ Java是一门很适合这种场景的语言。它的级别足够高，我们不�
 
 源文件中的一些字符实际上没有任何意义。空格通常是无关紧要的，而注释，从定义就能看出来，会被语言忽略。扫描仪通常会丢弃这些字符，留下一个干净的有意义的标记序列。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/a-map-of-the-territory/tokens.png}
+\end{figure}
+
 \subsection{语法分析}
 
 下一步是\textbf{解析}。这就是我们从句法中得到\textbf{语法}的地方——语法能够将较小的部分组成较大的表达式和语句。你在英语课上画过句子图吗？如果有，你就做了解析器所做的事情，区别在于，英语中有成千上万的“关键字”和大量的歧义，而编程语言要简单得多。
 
 \textbf{解析器}接受标记的平面序列，并构建反映语法嵌套本质的树结构。这些树有两个不同的名称：\textbf{解析树}或\textbf{抽象语法树}，这取决于它们与源语言的语法结构有多接近。在实践中，语言黑客通常称它们为“\textbf{语法树}”、“\textbf{AST}”，或者干脆直接说“\textbf{树}”。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/a-map-of-the-territory/ast.png}
+\end{figure}
 
 解析在计算机科学中有着悠久而丰富的历史，它与人工智能界有着密切的联系。今天用于解析编程语言的许多技术最初是由人工智能研究人员设想的，他们试图让计算机与我们对话，以解析人类语言。
 
@@ -457,6 +482,11 @@ Web浏览器是今天的“机器”，它们的“机器代码”是JavaScript�
 
 事实证明，这就像问水果和蔬菜的区别一样。这看上去似乎是一个非此即彼的选择，但实际上“水果”是一个植物学术语，“蔬菜”是烹饪学术语。严格来说，一个并不意味着对另一个的否定。有不是蔬菜的水果（苹果），也有不是水果的蔬菜（胡萝卜），也有既是水果又是蔬菜的可食用植物，比如西红柿。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/a-map-of-the-territory/plants.png}
+\end{figure}
+
 好，回到语言上：
 
 \begin{itemize}
@@ -472,6 +502,11 @@ Web浏览器是今天的“机器”，它们的“机器代码”是JavaScript�
 但是CPython呢？当你使用它运行你的Python程序时，代码会被解析并转换为内部字节码格式，然后在虚拟机内部执行。从用户的角度来看，这显然是一个解释器——他们是从源代码开始运行自己的程序。但如果你看一下CPython的内部，你会发现肯定有一些编译工作在进行。
 
 答案是两者兼而有之。CPython是一个解释器，但他也\textit{有}一个编译器。实际上，大多数脚本语言都以这种方式工作，如您所见：
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/a-map-of-the-territory/venn.png}
+\end{figure}
 
 中间那个重叠的区域也是我们第二个解释器所在的位置，因为它会在内部编译成字节码。所以，虽然本书名义上是关于解释器的，但我们也会涉及一些编译的内容。
 
@@ -869,7 +904,17 @@ fn();
 
 在基于类的语言中，有两个核心概念：实例和类。实例存储每个对象的状态，并有一个对实例的类的引用。类包含方法和继承链。要在实例上调用方法，总是存在一个中间层。您要先查找实例的类，然后在其中找到方法：
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/the-lox-language/class-lookup.png}
+\end{figure}
+
 基于原型的语言融合了这两个概念。这里只有对象——没有类，而且每个对象都可以包含状态和方法。对象之间可以直接继承（或者用原型语言的术语说是“委托”）：
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/the-lox-language/prototype-lookup.png}
+\end{figure}
 
 这意味着原型语言在某些方面比类更基础。它们实现起来真的很整洁，因为它们很简单。另外，它们还可以表达很多不寻常的模式，而这些模式是类所不具备的。
 
@@ -1161,14 +1206,14 @@ Error: Unexpected "," in argument list.
 
 我们在Lox主类中坚持使用这个错误报告功能的主要原因就是因为那个hadError字段。它的定义在这里：
 
-\begin{code}{java}{}{lox/Lox.java 在Lox类中添加：}
+\begin{code}{java}{}{lox/Lox.java 在Lox类中添加}
 public class Lox {
   static boolean hadError = false;
 \end{code}
 
 我们将以此来确保我们不会尝试执行有已知错误的代码。此外，它还能让我们像一个好的命令行工具那样，用一个非零的结束代码退出。
 
-\begin{code}{java}{}{lox/Lox.java，在runFile()中添加：}
+\begin{code}{java}{}{lox/Lox.java，在runFile()中添加}
     run(new String(bytes, Charset.defaultCharset()));
     
     // Indicate an error in the exit code.
@@ -1178,7 +1223,7 @@ public class Lox {
 
 我们需要在交互式循环中重置此标志。如果用户输入有误，也不应终止整个会话。
 
-\begin{code}{java}{}{lox/Lox.java，在runPrompt()中添加：}
+\begin{code}{java}{}{lox/Lox.java，在runPrompt()中添加}
       run(line);
       hadError = false;
     }
@@ -1204,7 +1249,12 @@ var language = "lox";
 
 这就是词法分析的意义所在。我们的工作是扫描字符列表，并将它们归纳为具有某些含义的最小序列。每一组字符都被称为词素。在示例代码行中，词素是：
 
-词素只是源代码的原始子字符串。 但是，在将字符序列分组为词素的过程中，我们也会发现了一些其他有用的信息。当我们获取词素并将其与其他数据捆绑在一起时，结果是一个标记（token，词法单元）。它包含一些有用的内容，比如：
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/scanning/lexemes.png}
+\end{figure}
+
+词素只是源代码的原始子字符串。但是，在将字符序列分组为词素的过程中，我们也会发现了一些其他有用的信息。当我们获取词素并将其与其他数据捆绑在一起时，结果是一个标记（token，词法单元）。它包含一些有用的内容，比如：
 
 \subsection{标记类型}
 
@@ -1277,6 +1327,11 @@ class Token {
 
 然后再循环一次，它又循环回来，从源代码中的下一个字符开始再做一次。它一直这样做，吃掉字符，偶尔，呃，排出标记，直到它到达输入的终点。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/scanning/lexigator.png}
+\end{figure}
+
 在循环中，我们会查看一些字符，以确定它“匹配”的是哪种词素，这部分内容可能听起来很熟悉，但如果你知道正则表达式，你可以考虑为每一种词素定义一个regex，并使用这些regex来匹配字符。如果你了解正则表达式，你可以考虑为每一种词素定义一个regex，然后用来匹配字符。例如，Lox对标识符（变量名等）的规则与C语言相同。下面的regex可以匹配一个标识符：
 
 \begin{code}{js}{}{}
@@ -1332,7 +1387,7 @@ class Scanner {
 
 这个循环依赖于几个字段来跟踪扫描器在源代码中的位置。
 
-\begin{code}{java}{2-4}{lox/Scanner.java，在Scanner类中添加：}
+\begin{code}{java}{2-4}{lox/Scanner.java，在Scanner类中添加}
   private final List<Token> tokens = new ArrayList<>();
   private int start = 0;
   private int current = 0;
@@ -1345,7 +1400,7 @@ start和current字段是指向字符串的偏移量。start字段指向被扫描
 
 然后，我们还有一个辅助函数，用来告诉我们是否已消费完所有字符。
 
-\begin{code}{java}{}{lox/Scanner.java在scanTokens()方法之后添加：}
+\begin{code}{java}{}{lox/Scanner.java在scanTokens()方法之后添加}
   private boolean isAtEnd() {
     return current >= source.length();
   }
@@ -1397,7 +1452,7 @@ advance()方法获取源文件中的下一个字符并返回它。advance()用�
 
 在我们深入探讨之前，我们先花一点时间考虑一下词法层面的错误。如果用户抛入解释器的源文件中包含一些Lox中不使用的字符——如@\#\^，会发生什么？现在，这些字符被默默抛弃了。它们没有被Lox语言使用，但是不意味着解释器可以假装它们不存在。相反，我们应该报告一个错误：
 
-\begin{code}{java}{}{lox/Scanner.java 在scanToken()方法中添加：}
+\begin{code}{java}{}{lox/Scanner.java 在scanToken()方法中添加}
       case '*': addToken(STAR); break; 
 
       default:
@@ -1455,7 +1510,7 @@ advance()方法获取源文件中的下一个字符并返回它。advance()用�
 
 我们还缺少一个操作符：表示除法的/。这个字符需要一些特殊处理，因为注释也是以斜线开头的。
 
-\begin{code}{java}{}{lox/Scanner.java，在scanToken()方法中添加：}
+\begin{code}{java}{}{lox/Scanner.java，在scanToken()方法中添加}
       break;
       case '/':
         if (match('/')) {
@@ -1474,7 +1529,7 @@ advance()方法获取源文件中的下一个字符并返回它。advance()用�
 
 我们又有了一个辅助函数：
 
-\begin{code}{java}{}{lox/Scanner.java，在match()方法后添加：}
+\begin{code}{java}{}{lox/Scanner.java，在match()方法后添加}
   private char peek() {
     if (isAtEnd()) return '\0';
     return source.charAt(current);
@@ -1487,7 +1542,7 @@ advance()方法获取源文件中的下一个字符并返回它。advance()用�
 
 既然如此，现在正好可以跳过其它那些无意义的字符了：换行和空格。
 
-\begin{code}{java}{}{lox/Scanner.java，在scanToken()方法中添加：}
+\begin{code}{java}{}{lox/Scanner.java，在scanToken()方法中添加}
         break;
       case ' ':
       case '\r':
@@ -1516,7 +1571,7 @@ advance()方法获取源文件中的下一个字符并返回它。advance()用�
 
 现在我们对长词素已经很熟悉了，我们可以开始处理字面量了。我们先处理字符串，因为字符串总是以一个特定的字符"开头。
 
-\begin{code}{java}{}{lox/Scanner.java，在scanToken()方法中添加：}
+\begin{code}{java}{}{lox/Scanner.java，在scanToken()方法中添加}
         break;
       case '"': string(); break;
       default:
@@ -1524,7 +1579,7 @@ advance()方法获取源文件中的下一个字符并返回它。advance()用�
 
 这里会调用：
 
-\begin{code}{java}{}{lox/Scanner.java，在scanToken()方法之后添加：}
+\begin{code}{java}{}{lox/Scanner.java，在scanToken()方法之后添加}
   private void string() {
     while (peek() != '"' && !isAtEnd()) {
       if (peek() == '\n') line++;
@@ -1583,7 +1638,7 @@ advance()方法获取源文件中的下一个字符并返回它。advance()用�
 
 这里依赖下面的小工具函数：
 
-\begin{code}{java}{}{lox/Scanner.java，在peek()方法之后添加：}
+\begin{code}{java}{}{lox/Scanner.java，在peek()方法之后添加}
   private boolean isDigit(char c) {
     return c >= '0' && c <= '9';
   } 
@@ -1591,7 +1646,7 @@ advance()方法获取源文件中的下一个字符并返回它。advance()用�
 
 一旦我们知道当前在处理数字，我们就分支进入一个单独的方法消费剩余的字面量，跟字符串的处理类似。
 
-\begin{code}{java}{}{lox/Scanner.java，在scanToken()方法后添加：}
+\begin{code}{java}{}{lox/Scanner.java，在scanToken()方法后添加}
   private void number() {
     while (isDigit(peek())) advance();
 
@@ -1656,7 +1711,7 @@ case 'o':
 
 其它代码如下：
 
-\begin{code}{java}{}{lox/Scanner.java，在scanToken()方法之后添加：}
+\begin{code}{java}{}{lox/Scanner.java，在scanToken()方法之后添加}
   private void identifier() {
     while (isAlphaNumeric(peek())) advance();
 
@@ -1666,7 +1721,7 @@ case 'o':
 
 通过以下辅助函数来定义：
 
-\begin{code}{java}{}{lox/Scanner.java，在peekNext()方法之后添加：}
+\begin{code}{java}{}{lox/Scanner.java，在peekNext()方法之后添加}
   private boolean isAlpha(char c) {
     return (c >= 'a' && c <= 'z') ||
            (c >= 'A' && c <= 'Z') ||
@@ -1680,7 +1735,7 @@ case 'o':
 
 这样标识符就开始工作了。为了处理关键字，我们要查看标识符的词素是否是保留字之一。如果是，我们就使用该关键字特有的标记类型。我们在map中定义保留字的集合。
 
-\begin{code}{java}{}{lox/Scanner.java，在Scanner类中添加：}
+\begin{code}{java}{}{lox/Scanner.java，在Scanner类中添加}
   private static final Map<String, TokenType> keywords;
 
   static {
@@ -1821,6 +1876,11 @@ case 'o':
 
 要想计算一个算术节点，你需要知道它的子树的数值，所以你必须先计算子树的结果。这意味着要从叶节点一直计算到根节点——\textit{后序}遍历：
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/representing-code/tree-evaluate.png}
+\end{figure}
+
 \begin{itemize}
   \item A. 从完整的树开始，先计算最下面的操作2*3；
   \item B. 现在计算+；
@@ -1921,6 +1981,11 @@ protein $\rightarrow$ cooked "eggs" ;
 我们可以不断选择breakfast的第一个生成式，以做出各种各样的早餐：“bacon with sausage with scrambled eggs with bacon......”，【存疑，按照规则设置，这里应该不会出现以bacon开头的字符串，原文可能有误】但我们不会这样做。这一次我们选择bread。有三个对应的规则，每个规则只包含一个终止符。我们选“English muffin”。
 
 这样一来，字符串中的每一个非终止符都被展开了，直到最后只包含终止符，我们就剩下：
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/representing-code/breakfast.png}
+\end{figure}
 
 再加上一些火腿和荷兰酱，你就得到了松饼蛋。
 
@@ -2113,7 +2178,7 @@ public class GenerateAst {
 
 defineAst()需要做的第一件事是输出基类Expr。
 
-\begin{code}{java}{}{tool/GenerateAst.java，在main()方法后添加：}
+\begin{code}{java}{}{tool/GenerateAst.java，在main()方法后添加}
   private static void defineAst(
       String outputDir, String baseName, List<String> types)
       throws IOException {
@@ -2135,7 +2200,7 @@ defineAst()需要做的第一件事是输出基类Expr。
 
 在基类内部，我们定义每个子类。
 
-\begin{code}{java}{2-7}{tool/GenerateAst.java，在defineAst()类中添加：}
+\begin{code}{java}{2-7}{tool/GenerateAst.java，在defineAst()类中添加}
     writer.println("abstract class " + baseName + " {");
     // The AST classes.
     for (String type : types) {
@@ -2148,7 +2213,7 @@ defineAst()需要做的第一件事是输出基类Expr。
 
 这段代码依次调用：
 
-\begin{code}{java}{}{tool/GenerateAst.java，在defineAst()后面添加：}
+\begin{code}{java}{}{tool/GenerateAst.java，在defineAst()后面添加}
   private static void defineType(
       PrintWriter writer, String baseName,
       String className, String fieldList) {
@@ -2207,15 +2272,30 @@ if (expr instanceof Expr.Binary) {
 
 这个问题比起初看起来更基础。我们有一些类型，和一些高级操作，比如“解释”。对于每一对类型和操作，我们都需要一个特定的实现。画一个表:
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/representing-code/table.png}
+\end{figure}
+
 行是类型，列是操作。每个单元格表示在该类型上实现该操作的唯一代码段。
 
 像Java这样的面向对象的语言，假定一行中的所有代码都自然地挂在一起。它认为你对一个类型所做的所有事情都可能是相互关联的，而使用这类语言可以很容易将它们一起定义为同一个类里面的方法。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/representing-code/rows.png}
+\end{figure}
 
 这种情况下，向表中加入新行来扩展列表是很容易的，简单地定义一个新类即可，不需要修改现有的代码。但是，想象一下，如果你要添加一个新操作（新的一行）。在Java中，这意味着要拆开已有的那些类并向其中添加方法。
 
 ML家族中的函数式范型反过来了。在这些语言中，没有带方法的类，类型和函数是完全独立的。要为许多不同类型实现一个操作，只需定义一个函数。在该函数体中，您可以使用\textit{模式匹配}（某种基于类型的switch操作）在同一个函数中实现每个类型对应的操作。
 
 这使得添加新操作非常简单——只需定义另一个与所有类型模式匹配的的函数即可。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/representing-code/columns.png}
+\end{figure}
 
 但是，反过来说，添加新类型是困难的。您必须回头向已有函数中的所有模式匹配添加一个新的case。
 
@@ -2293,6 +2373,11 @@ ML家族中的函数式范型反过来了。在这些语言中，没有带方法
 
 这就是这个技巧的核心所在。它让我们可以在\textit{pastry}类上使用多态派遣，在\textit{visitor}类上选择合适的方法。对应在表格中，每个pastry类都是一行，但如果你看一个visitor的所有方法，它们就会形成一\textit{列}。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/representing-code/visitor.png}
+\end{figure}
+
 我们为每个类添加了一个accept()方法，我们可以根据需要将其用于任意数量的访问者，而无需再次修改\textit{pastry}类。这是一个聪明的模式。
 
 \subsection{表达式访问者}
@@ -2301,7 +2386,7 @@ ML家族中的函数式范型反过来了。在这些语言中，没有带方法
 
 首先，我们定义访问者接口。同样，我们把它嵌套在基类中，以便将所有的内容都放在一个文件中。
 
-\begin{code}{java}{2}{tool/GenerateAst.java，在defineAst()方法中添加：}
+\begin{code}{java}{2}{tool/GenerateAst.java，在defineAst()方法中添加}
     writer.println("abstract class " + baseName + " {");
     defineVisitor(writer, baseName, types);
     // The AST classes.
@@ -2309,7 +2394,7 @@ ML家族中的函数式范型反过来了。在这些语言中，没有带方法
 
 这个函数会生成visitor接口。
 
-\begin{code}{java}{}{tool/GenerateAst.java，在defineAst()方法后添加：}
+\begin{code}{java}{}{tool/GenerateAst.java，在defineAst()方法后添加}
   private static void defineVisitor(
       PrintWriter writer, String baseName, List<String> types) {
     writer.println("  interface Visitor<R> {");
@@ -2328,7 +2413,7 @@ ML家族中的函数式范型反过来了。在这些语言中，没有带方法
 
 在基类中，定义抽象accept()方法。
 
-\begin{code}{java}{3-5}{tool/GenerateAst.java，在defineAst()方法中添加：}
+\begin{code}{java}{3-5}{tool/GenerateAst.java，在defineAst()方法中添加}
       defineType(writer, baseName, className, fields);
     }
     // The base accept() method.
@@ -2339,7 +2424,7 @@ ML家族中的函数式范型反过来了。在这些语言中，没有带方法
 
 最后，每个子类都实现该方法，并调用其类型对应的visit方法。
 
-\begin{code}{java}{2-8}{tool/GenerateAst.java，在defineType()方法中添加：}
+\begin{code}{java}{2-8}{tool/GenerateAst.java，在defineType()方法中添加}
     writer.println("    }");
     // Visitor pattern.
     writer.println();
@@ -2367,6 +2452,11 @@ ML家族中的函数式范型反过来了。在这些语言中，没有带方法
 
 给定一个语法树，如：
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/representing-code/expression.png}
+\end{figure}
+
 输出结果为：
 
 \begin{code}{js}{}{}
@@ -2375,7 +2465,7 @@ ML家族中的函数式范型反过来了。在这些语言中，没有带方法
 
 不是很“漂亮”，但是它确实明确地展示了嵌套和分组。为了实现这一点，我们定义了一个新类。
 
-\begin{code}{java}{}{lox/AstPrinter.java，创建新文件：}
+\begin{code}{java}{}{lox/AstPrinter.java，创建新文件}
 package com.craftinginterpreters.lox;
 
 class AstPrinter implements Expr.Visitor<String> {
@@ -2387,7 +2477,7 @@ class AstPrinter implements Expr.Visitor<String> {
 
 如你所见，它实现了visitor接口。这意味着我们需要为我们目前拥有的每一种表达式类型提供visit方法。
 
-\begin{code}{java}{4-24}{lox/AstPrinter.java，在print()方法后添加：}
+\begin{code}{java}{4-24}{lox/AstPrinter.java，在print()方法后添加}
   return expr.accept(this);
   }
 
@@ -2417,7 +2507,7 @@ class AstPrinter implements Expr.Visitor<String> {
 
 字面量表达式很简单——它们将值转换为一个字符串，并通过一个小检查用Java中的null代替Lox中的nil。其他表达式有子表达式，所以它们要使用parenthesize()这个辅助方法：
 
-\begin{code}{java}{}{lox/AstPrinter.java，在visitUnaryExpr()方法后添加：}
+\begin{code}{java}{}{lox/AstPrinter.java，在visitUnaryExpr()方法后添加}
   private String parenthesize(String name, Expr... exprs) {
     StringBuilder builder = new StringBuilder();
 
@@ -2442,7 +2532,7 @@ class AstPrinter implements Expr.Visitor<String> {
 
 我们还没有解析器，所以很难看到它的实际应用。现在，我们先使用一个main()方法来手动实例化一个树并打印它。
 
-\begin{code}{java}{}{lox/AstPrinter.java，在parenthesize()方法后添加：}
+\begin{code}{java}{}{lox/AstPrinter.java，在parenthesize()方法后添加}
   public static void main(String[] args) {
     Expr expression = new Expr.Binary(
         new Expr.Unary(
@@ -2539,6 +2629,11 @@ operator  & \rightarrow \quad \mathtt{"}==\mathtt{"} \quad\vert\quad \mathtt{"}!
 
 下面是一个满足语法的有效字符串：
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/parsing-expressions/tokens.png}
+\end{figure}
+
 但是，有两种方式可以生成该字符串。其一是：
 
 \begin{enumerate}
@@ -2561,7 +2656,12 @@ operator  & \rightarrow \quad \mathtt{"}==\mathtt{"} \quad\vert\quad \mathtt{"}!
 
 它们产生相同的字符串，但对应的是不同的\textit{语法树}：
 
-换句话说，这个语法可以将该表达式看作是 (6 / 3) - 1或6 / (3 - 1)。binary 规则运行操作数以任意方式嵌套，这反过来又会影响解析数的计算结果。自从黑板被发明以来，数学家们解决这种模糊性的方法就是定义优先级和结合性规则。
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/parsing-expressions/syntax-trees.png}
+\end{figure}
+
+换句话说，这个语法可以将该表达式看作是(6 / 3) - 1或6 / (3 - 1)。binary规则运行操作数以任意方式嵌套，这反过来又会影响解析数的计算结果。自从黑板被发明以来，数学家们解决这种模糊性的方法就是定义优先级和结合性规则。
 
 \begin{itemize}
   \item \textbf{优先级}决定了在一个包含不同运算符的混合表达式中，哪个运算符先被执行。优先级规则告诉我们，在上面的例子中，我们在-之前先计算/。优先级较高的运算符在优先级较低的运算符之前计算。同样，优先级较高的运算符被称为“更严格的绑定”。
@@ -2717,7 +2817,7 @@ primary        & \rightarrow\quad NUMBER \quad\vert\quad STRING \quad\vert\quad 
 
 每个语法规则都成为新类中的一个方法:
 
-\begin{code}{java}{}{lox/Parser.java，创建新文件：}
+\begin{code}{java}{}{lox/Parser.java，创建新文件}
 package com.craftinginterpreters.lox;
 
 import java.util.List;
@@ -2738,7 +2838,7 @@ class Parser {
 
 我们现在要直接执行表达式语法，并将每一条规则翻译为Java代码。第一条规则expression，简单地展开为equality规则，所以很直接：
 
-\begin{code}{java}{}{lox/Parser.java，在Parser()方法添加：}
+\begin{code}{java}{}{lox/Parser.java，在Parser()方法添加}
   private Expr expression() {
     return equality();
   }
@@ -2754,7 +2854,7 @@ equality \rightarrow \quad comparison \quad ( \quad ( \quad \mathtt{"}!=\mathtt{
 
 在Java中，这会变成：
 
-\begin{code}{java}{}{lox/Parser.java，在expression()后面添加：}
+\begin{code}{java}{}{lox/Parser.java，在expression()后面添加}
   private Expr equality() {
     Expr expr = comparison();
 
@@ -2772,7 +2872,7 @@ equality \rightarrow \quad comparison \quad ( \quad ( \quad \mathtt{"}!=\mathtt{
 
 然后，规则中的(...)*循环映射为一个while循环。我们需要知道何时退出这个循环。可以看到，在规则体中，我们必须先找到一个!=或==标记。因此，如果我们\textit{没有}看到其中任一标记，我们必须结束相等（不相等）运算符的序列。我们使用一个方便的match()方法来执行这个检查。
 
-\begin{code}{java}{}{lox/Parser.java，在equality()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在equality()方法后添加}
   private boolean match(TokenType... types) {
     for (TokenType type : types) {
       if (check(type)) {
@@ -2789,7 +2889,7 @@ equality \rightarrow \quad comparison \quad ( \quad ( \quad \mathtt{"}!=\mathtt{
 
 如果当前标记属于给定类型，则check()方法返回true。与match()不同的是，它从不消费标记，只是读取。
 
-\begin{code}{java}{}{lox/Parser.java，在match()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在match()方法后添加}
   private boolean check(TokenType type) {
     if (isAtEnd()) return false;
     return peek().type == type;
@@ -2798,7 +2898,7 @@ equality \rightarrow \quad comparison \quad ( \quad ( \quad \mathtt{"}!=\mathtt{
 
 advance()方法会消费当前的标记并返回它，类似于扫描器中对应方法处理字符的方式。
 
-\begin{code}{java}{}{lox/Parser.java，在check()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在check()方法后添加}
   private Token advance() {
     if (!isAtEnd()) current++;
     return previous();
@@ -2807,7 +2907,7 @@ advance()方法会消费当前的标记并返回它，类似于扫描器中对�
 
 这些方法最后都归结于几个基本操作。
 
-\begin{code}{java}{}{lox/Parser.java，在advance()后添加：}
+\begin{code}{java}{}{lox/Parser.java，在advance()后添加}
   private boolean isAtEnd() {
     return peek().type == EOF;
   }
@@ -2827,6 +2927,11 @@ isAtEnd()检查我们是否处理完了待解析的标记。peek()方法返回�
 
 我们获取到匹配的操作符标记，这样就可以知道我们要处理哪一类等式表达式。之后，我们再次调用comparison()解析右边的操作数。我们将操作符和它的两个操作数组合成一个新的Expr.Binary语法树节点，然后开始循环。对于每一次迭代，我们都将结果表达式存储在同一个expr局部变量中。在对等式表达式序列进行压缩时，会创建一个由二元操作符节点组成的左结合嵌套树。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/parsing-expressions/sequence.png}
+\end{figure}
+
 一旦解析器遇到一个不是等式操作符的标记，就会退出循环。最后，它会返回对应的表达式。请注意，如果解析器从未遇到过等式操作符，它就永远不会进入循环。在这种情况下，equality()方法有效地调用并返回comparison()。这样一来，这个方法就会匹配一个等式运算符或\textit{任何更高优先级的表达式}。
 
 继续看下一个规则。
@@ -2838,7 +2943,7 @@ comparison & \rightarrow\quad term \quad ( \quad ( \quad \mathtt{"}>\mathtt{"} \
 
 翻译成Java：
 
-\begin{code}{java}{}{lox/Parser.java，在equality()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在equality()方法后添加}
   private Expr comparison() {
     Expr expr = term();
 
@@ -2856,7 +2961,7 @@ comparison & \rightarrow\quad term \quad ( \quad ( \quad \mathtt{"}>\mathtt{"} \
 
 按照优先级顺序，先做加减法：
 
-\begin{code}{java}{}{lox/Parser.java，在comparison()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在comparison()方法后添加}
   private Expr term() {
     Expr expr = factor();
 
@@ -2872,7 +2977,7 @@ comparison & \rightarrow\quad term \quad ( \quad ( \quad \mathtt{"}>\mathtt{"} \
 
 最后，是乘除法：
 
-\begin{code}{java}{}{lox/Parser.java，在term()方法后面添加：}
+\begin{code}{java}{}{lox/Parser.java，在term()方法后面添加}
   private Expr factor() {
     Expr expr = unary();
 
@@ -2895,7 +3000,7 @@ unary & \rightarrow\quad ( \quad \mathtt{"}!\mathtt{"} \quad\vert\quad \mathtt{"
 
 该规则对应的代码有些不同。
 
-\begin{code}{java}{}{lox/Parser.java，在factor()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在factor()方法后添加}
   private Expr unary() {
     if (match(BANG, MINUS)) {
       Token operator = previous();
@@ -2919,7 +3024,7 @@ unary & \rightarrow\quad ( \quad \mathtt{"}!\mathtt{"} \quad\vert\quad \mathtt{"
 
 该规则中大部分都是终止符，可以直接进行解析。
 
-\begin{code}{java}{}{lox/Parser.java，在unary()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在unary()方法后添加}
   private Expr primary() {
     if (match(FALSE)) return new Expr.Literal(false);
     if (match(TRUE)) return new Expr.Literal(true);
@@ -2989,7 +3094,7 @@ unary & \rightarrow\quad ( \quad \mathtt{"}!\mathtt{"} \quad\vert\quad \mathtt{"
 
 在我们讨论错误恢复之前，我们正在编写解析括号表达式的代码。在解析表达式之后，会调用consume()方法查找收尾的)。这里，终于可以实现那个方法了：
 
-\begin{code}{java}{}{lox/Parser.java，在match()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在match()方法后添加}
   private Token consume(TokenType type, String message) {
     if (check(type)) return advance();
 
@@ -2999,7 +3104,7 @@ unary & \rightarrow\quad ( \quad \mathtt{"}!\mathtt{"} \quad\vert\quad \mathtt{"
 
 它和match()方法类似，检查下一个标记是否是预期的类型。如果是，它就会消费该标记，一切都很顺利。如果是其它的标记，那么我们就遇到了错误。我们通过调用下面的方法来报告错误：
 
-\begin{code}{java}{}{lox/Parser.java，在previous()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在previous()方法后添加}
   private ParseError error(Token token, String message) {
     Lox.error(token, message);
     return new ParseError();
@@ -3008,7 +3113,7 @@ unary & \rightarrow\quad ( \quad \mathtt{"}!\mathtt{"} \quad\vert\quad \mathtt{"
 
 首先，通过调用下面的方法向用户展示错误信息：
 
-\begin{code}{java}{}{lox/Lox.java，在report()方法后添加：}
+\begin{code}{java}{}{lox/Lox.java，在report()方法后添加}
   static void error(Token token, String message) {
     if (token.type == TokenType.EOF) {
       report(token.line, " at end", message);
@@ -3044,7 +3149,7 @@ class Parser {
 
 下面的方法封装了这个逻辑：
 
-\begin{code}{java}{}{lox/Parser.java，在error()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在error()方法后添加}
   private void synchronize() {
     advance();
 
@@ -3076,7 +3181,7 @@ class Parser {
 
 我们现在基本上已经完成了对表达式的解析。我们还需要在另一个地方添加一些错误处理。当解析器在每个语法规则的解析方法中下降时，它最终会进入primary()。如果该方法中的case都不匹配，就意味着我们正面对一个不是表达式开头的语法标记。我们也需要处理这个错误。
 
-\begin{code}{java}{6}{lox/Parser.java，在primary()方法中添加：}
+\begin{code}{java}{6}{lox/Parser.java，在primary()方法中添加}
     if (match(LEFT_PAREN)) {
       Expr expr = expression();
       consume(RIGHT_PAREN, "Expect ')' after expression.");
@@ -3088,7 +3193,7 @@ class Parser {
 
 这样，解析器中剩下的工作就是定义一个初始方法来启动它。这个方法自然应该叫做parse()。
 
-\begin{code}{java}{}{lox/Parser.java，在Parser()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在Parser()方法后添加}
   Expr parse() {
     try {
       return expression();
@@ -3163,6 +3268,11 @@ if ((flags & FLAG_MASK) == SOME_FLAG) { ... } // Right.
 
 如果你想为这一章适当地设定气氛，试着想象一场雷雨，那种在故事高潮时喜欢拉开百叶窗的漩涡式暴风雨。也许再加上几道闪电。在这一章中，我们的解释器将开始呼吸，睁开眼睛，并执行一些代码。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/evaluating-expressions/lightning.png}
+\end{figure}
+
 对于语言实现来说，有各种方式可以使计算机执行用户的源代码命令。它们可以将其编译为机器代码，将其翻译为另一种高级语言，或者将其还原为某种字节码格式，以便在虚拟机中执行。不过对于我们的第一个解释器，我们要选择最简单、最短的一条路，也就是执行语法树本身。
 
 现在，我们的解释器只支持表达式。因此，为了“执行”代码，我们要计算一个表达式时并生成一个值。对于我们可以解析的每一种表达式语法——字面量，操作符等——我们都需要一个相应的代码块，该代码块知道如何计算该语法树并产生结果。这也就引出了两个问题：
@@ -3221,7 +3331,7 @@ class Interpreter implements Expr.Visitor<Object> {
 
 因此，就像我们在解析器中将字面量\textit{标记}转换为字面量\textit{语法树节点}一样，现在我们将字面量树节点转换为运行时值。这其实很简单。
 
-\begin{code}{java}{}{lox/Interpreter.java，在Interpreter类中添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在Interpreter类中添加}
   @Override
   public Object visitLiteralExpr(Expr.Literal expr) {
     return expr.value;
@@ -3234,7 +3344,7 @@ class Interpreter implements Expr.Visitor<Object> {
 
 下一个要求值的节点是分组——在表达式中显式使用括号时产生的语法树节点。
 
-\begin{code}{java}{}{lox/Interpreter.java，在Interpreter类中添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在Interpreter类中添加}
   @Override
   public Object visitGroupingExpr(Expr.Grouping expr) {
     return evaluate(expr.expression);
@@ -3245,7 +3355,7 @@ class Interpreter implements Expr.Visitor<Object> {
 
 我们依赖于下面这个辅助方法，它只是将表达式发送回解释器的访问者实现中：
 
-\begin{code}{java}{}{lox/Interpreter.java，在Interpreter类中添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在Interpreter类中添加}
   private Object evaluate(Expr expr) {
     return expr.accept(this);
 \end{code}
@@ -3254,7 +3364,7 @@ class Interpreter implements Expr.Visitor<Object> {
 
 像分组表达式一样，一元表达式也有一个必须先求值的子表达式。不同的是，一元表达式自身在完成求值之后还会做一些工作。
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitLiteralExpr()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitLiteralExpr()方法后添加}
   @Override
   public Object visitUnaryExpr(Expr.Unary expr) {
     Object right = evaluate(expr.right);
@@ -3277,7 +3387,7 @@ class Interpreter implements Expr.Visitor<Object> {
 
 另一个一元操作符是逻辑非。
 
-\begin{code}{java}{2-3}{lox/Interpreter.java，在visitUnaryExpr()方法中添加：}
+\begin{code}{java}{2-3}{lox/Interpreter.java，在visitUnaryExpr()方法中添加}
     switch (expr.operator.type) { 
       case BANG:
         return !isTruthy(right);
@@ -3294,7 +3404,7 @@ class Interpreter implements Expr.Visitor<Object> {
 
 Lox遵循Ruby的简单规则：false和nil是假的，其他都是真的。我们是这样实现的：
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitUnaryExpr()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitUnaryExpr()方法后添加}
   private boolean isTruthy(Object object) {
     if (object == null) return false;
     if (object instanceof Boolean) return (boolean)object;
@@ -3306,7 +3416,7 @@ Lox遵循Ruby的简单规则：false和nil是假的，其他都是真的。我�
 
 来到最后的表达式树类——二元操作符，其中包含很多运算符，我们先从数学运算开始。
 
-\begin{code}{java}{}{lox/Interpreter.java，在evaluate()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在evaluate()方法后添加}
   @Override
   public Object visitBinaryExpr(Expr.Binary expr) {
     Object left = evaluate(expr.left);
@@ -3330,7 +3440,7 @@ Lox遵循Ruby的简单规则：false和nil是假的，其他都是真的。我�
 
 我漏掉了一个算术运算符，因为它有点特殊。
 
-\begin{code}{java}{4-13}{lox/Interpreter.java，在visitBinaryExpr()方法中添加：}
+\begin{code}{java}{4-13}{lox/Interpreter.java，在visitBinaryExpr()方法中添加}
     switch (expr.operator.type) {
       case MINUS:
         return (double)left - (double)right;
@@ -3351,7 +3461,7 @@ Lox遵循Ruby的简单规则：false和nil是假的，其他都是真的。我�
 
 接下来是比较操作符。
 
-\begin{code}{java}{2-9}{lox/Interpreter.java，在visitBinaryExpr()方法中添加：}
+\begin{code}{java}{2-9}{lox/Interpreter.java，在visitBinaryExpr()方法中添加}
     switch (expr.operator.type) {
       case GREATER:
         return (double)left > (double)right;
@@ -3368,7 +3478,7 @@ Lox遵循Ruby的简单规则：false和nil是假的，其他都是真的。我�
 
 最后一对是等式运算符。
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitBinaryExpr()方法中添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitBinaryExpr()方法中添加}
       case BANG_EQUAL: return !isEqual(left, right);
       case EQUAL_EQUAL: return isEqual(left, right);
 \end{code}
@@ -3377,7 +3487,7 @@ Lox遵循Ruby的简单规则：false和nil是假的，其他都是真的。我�
 
 与真假判断一样，相等判断也被提取到了单独的方法中。
 
-\begin{code}{java}{}{lox/Interpreter.java，在isTruthy()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在isTruthy()方法后添加}
   private boolean isEqual(Object a, Object b) {
     if (a == null && b == null) return true;
     if (a == null) return false;
@@ -3418,7 +3528,7 @@ Lox遵循Ruby的简单规则：false和nil是假的，其他都是真的。我�
 
 在进行强制转换之前，我们先自己检查对象的类型。因此，对于一元操作符-，我们需要添加代码：
 
-\begin{code}{java}{2}{lox/Interpreter.java，在visitUnaryExpr()方法中添加：}
+\begin{code}{java}{2}{lox/Interpreter.java，在visitUnaryExpr()方法中添加}
       case MINUS:
         checkNumberOperand(expr.operator, right);
         return -(double)right;
@@ -3426,7 +3536,7 @@ Lox遵循Ruby的简单规则：false和nil是假的，其他都是真的。我�
 
 检查操作数的代码如下：
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitUnaryExpr()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitUnaryExpr()方法后添加}
   private void checkNumberOperand(Token operator, Object operand) {
     if (operand instanceof Double) return;
     throw new RuntimeError(operator, "Operand must be a number.");
@@ -3454,7 +3564,7 @@ class RuntimeError extends RuntimeException {
 
 大于：
 
-\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加：}
+\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加}
       case GREATER:
         checkNumberOperands(expr.operator, left, right);
         return (double)left > (double)right;
@@ -3462,7 +3572,7 @@ class RuntimeError extends RuntimeException {
 
 大于等于：
 
-\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加：}
+\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加}
       case GREATER_EQUAL:
         checkNumberOperands(expr.operator, left, right);
         return (double)left >= (double)right;
@@ -3470,7 +3580,7 @@ class RuntimeError extends RuntimeException {
 
 小于：
 
-\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加：}
+\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加}
       case LESS:
         checkNumberOperands(expr.operator, left, right);
         return (double)left < (double)right;
@@ -3478,7 +3588,7 @@ class RuntimeError extends RuntimeException {
 
 小于等于：
 
-\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加：}
+\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加}
       case LESS_EQUAL:
         checkNumberOperands(expr.operator, left, right);
         return (double)left <= (double)right;
@@ -3486,7 +3596,7 @@ class RuntimeError extends RuntimeException {
 
 减法：
 
-\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加：}
+\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加}
       case MINUS:
         checkNumberOperands(expr.operator, left, right);
         return (double)left - (double)right;
@@ -3494,7 +3604,7 @@ class RuntimeError extends RuntimeException {
 
 除法：
 
-\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加：}
+\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加}
       case SLASH:
         checkNumberOperands(expr.operator, left, right);
         return (double)left / (double)right;
@@ -3502,7 +3612,7 @@ class RuntimeError extends RuntimeException {
 
 乘法：
 
-\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加：}
+\begin{code}{java}{2}{lox/Interpreter.java，在visitBinaryExpr()方法中添加}
       case STAR:
         checkNumberOperands(expr.operator, left, right);
         return (double)left * (double)right;
@@ -3510,7 +3620,7 @@ class RuntimeError extends RuntimeException {
 
 所有这些都依赖于下面这个验证器，它实际上与一元验证器相同：
 
-\begin{code}{java}{}{lox/Interpreter.java，在checkNumberOperand()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在checkNumberOperand()方法后添加}
   private void checkNumberOperands(Token operator, Object left, Object right) {
     if (left instanceof Double && right instanceof Double) return;
     
@@ -3534,7 +3644,7 @@ class RuntimeError extends RuntimeException {
 
 visit方法是Interpreter类的核心部分，真正的工作是在这里进行的。我们需要给它们包上一层皮，以便与程序的其他部分对接。解释器的公共API只是一种方法。
 
-\begin{code}{java}{}{lox/Interpreter.java，在Interpreter类中添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在Interpreter类中添加}
   void interpret(Expr expression) { 
     try {
       Object value = evaluate(expression);
@@ -3547,7 +3657,7 @@ visit方法是Interpreter类的核心部分，真正的工作是在这里进行�
 
 该方法会接收一个表达式对应的语法树，并对其进行计算。如果成功了，evaluate()方法会返回一个对象作为结果值。interpret()方法将结果转为字符串并展示给用户。要将Lox值转为字符串，我们要依赖下面的方法：
 
-\begin{code}{java}{}{lox/Interpreter.java，在isEqual()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在isEqual()方法后添加}
   private String stringify(Object object) {
     if (object == null) return "nil";
 
@@ -3573,7 +3683,7 @@ Lox即使对整数值也使用双精度数字。在这种情况下，打印时�
 
 如果在计算表达式时出现了运行时错误，interpret()方法会将其捕获。这样我们可以向用户报告这个错误，然后优雅地继续执行。我们现有的所有错误报告代码都在Lox类中，所以我们也把这个方法放在其中：
 
-\begin{code}{java}{}{lox/Lox.java，在error()方法后添加：}
+\begin{code}{java}{}{lox/Lox.java，在error()方法后添加}
   static void runtimeError(RuntimeError error) {
     System.err.println(error.getMessage() +
         "\n[line " + error.token.line + "]");
@@ -3585,7 +3695,7 @@ Lox即使对整数值也使用双精度数字。在这种情况下，打印时�
 
 展示错误之后，runtimeError()会设置以下字段：
 
-\begin{code}{java}{2}{lox/Lox.java，在Lox类中添加：}
+\begin{code}{java}{2}{lox/Lox.java，在Lox类中添加}
   static boolean hadError = false;
   static boolean hadRuntimeError = false;
   public static void main(String[] args) throws IOException {
@@ -3593,7 +3703,7 @@ Lox即使对整数值也使用双精度数字。在这种情况下，打印时�
 
 这个字段担任着很小但很重要的角色。
 
-\begin{code}{java}{5}{lox/Lox.java，在runFile()方法中添加：}
+\begin{code}{java}{5}{lox/Lox.java，在runFile()方法中添加}
     run(new String(bytes, Charset.defaultCharset()));
 
     // Indicate an error in the exit code.
@@ -3608,7 +3718,7 @@ Lox即使对整数值也使用双精度数字。在这种情况下，打印时�
 
 现在我们有了解释器，Lox类可以开始使用它了。
 
-\begin{code}{java}{2}{lox/Lox.java，在Lox类中添加：}
+\begin{code}{java}{2}{lox/Lox.java，在Lox类中添加}
 public class Lox {
   private static final Interpreter interpreter = new Interpreter();
   static boolean hadError = false;
@@ -3628,6 +3738,11 @@ public class Lox {
 我们现在有一个完整的语言管道：扫描、解析和执行。恭喜你，你现在有了你自己的算术计算器。
 
 如您所见，这个解释器是非常简陋的。但是我们今天建立的解释器类和访问者模式构成了一个骨架，后面的章节中将填充入有趣的内容（变量，函数等）。现在，解释器的功能并不多，但它是活的!
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/evaluating-expressions/skeleton.png}
+\end{figure}
 
 \section{挑战}
 
@@ -3671,6 +3786,11 @@ James Gosling和其他Java设计师牺牲了一点静态安全和性能（这些
 到目前为止，我们提供解释器的感觉不太像是在使用一种真正的语言进行编程，更像是在计算器上按按钮。对我来说，"编程 "意味着用较小的部分构建出一个系统。我们目前还不支持这样做，因为我们还无法将一个名称绑定到某个数据或函数。我们不能在无法引用小片段的情况下编写软件。
 
 为了支持绑定，我们的解释器需要保存内部状态。如果你在程序开始处定义了一个变量，并在结束处使用它，那么解释器必须在这期间保持该变量的值。所以在这一章中，我们会给解释器一个大脑，它不仅可以运算，而且可以\textit{记忆}。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/statements-and-state/brain.png}
+\end{figure}
 
 状态和语句是相辅相成的。因为根据定义，语句不会计算出一个具体值，而是需要做一些事情来发挥作用。这些事情被称为\textbf{副作用(side effect)}。它可能意味着产生用户可见的输出，或者修改解释器中的一些状态，而这些状态后续可以被检测到。第二个特性使得语句非常适合于定义变量或其他命名实体。
 
@@ -3749,7 +3869,7 @@ import java.util.List;
 
 一个程序就是一系列的语句，而我们可以通过下面的方法解析每一条语句：
 
-\begin{code}{java}{}{lox/Parser.java，在expression()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在expression()方法后添加}
   private Stmt statement() {
     if (match(PRINT)) return printStatement();
 
@@ -3763,7 +3883,7 @@ import java.util.List;
 
 每种语句类型都有自己的方法。首先是print：
 
-\begin{code}{java}{}{lox/Parser.java，在statement()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在statement()方法后添加}
   private Stmt printStatement() {
     Expr value = expression();
     consume(SEMICOLON, "Expect ';' after value.");
@@ -3775,7 +3895,7 @@ import java.util.List;
 
 如果我们没有匹配到print语句，那一定是一条下面的语句：
 
-\begin{code}{java}{}{lox/Parser.java，在printStatement()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在printStatement()方法后添加}
   private Stmt expressionStatement() {
     Expr expr = expression();
     consume(SEMICOLON, "Expect ';' after expression.");
@@ -3799,7 +3919,7 @@ class Interpreter implements Expr.Visitor<Object>,
 
 与表达式不同，语句不会产生值，因此visit方法的返回类型是Void，而不是Object。我们有两种语句类型，每种类型都需要一个visit方法。最简单的是表达式语句：
 
-\begin{code}{java}{}{lox/Interpreter.java，在evaluate()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在evaluate()方法后添加}
   @Override
   public Void visitExpressionStmt(Stmt.Expression stmt) {
     evaluate(stmt.expression);
@@ -3811,7 +3931,7 @@ class Interpreter implements Expr.Visitor<Object>,
 
 print语句的visit方法没有太大的不同。
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitExpressionStmt()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitExpressionStmt()方法后添加}
   @Override
   public Void visitPrintStmt(Stmt.Print stmt) {
     Object value = evaluate(stmt.expression);
@@ -3838,7 +3958,7 @@ print语句的visit方法没有太大的不同。
 
 这段代码替换了原先处理单个表达式的旧代码。新代码依赖于下面的小辅助方法。
 
-\begin{code}{java}{}{lox/Interpreter.java，在evaluate()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在evaluate()方法后添加}
   private void execute(Stmt stmt) {
     stmt.accept(this);
   }
@@ -3868,7 +3988,7 @@ Lox主类中仍然是只解析单个表达式并将其传给解释器。我们�
   }
 \end{code}
 
-基本就是对新语法进行遍历。 OK，启动解释器并测试一下。现在有必要在文本文件中草拟一个小的Lox程序来作为脚本运行。 就像是：
+基本就是对新语法进行遍历。好的，启动解释器并测试一下。现在有必要在文本文件中草拟一个小的Lox程序来作为脚本运行。 就像是：
 
 \begin{code}{js}{}{}
 print "one";
@@ -3992,7 +4112,7 @@ IDENTIFIER子语句会匹配单个标识符标记，该标记会被理解为正�
 
 这里会调用下面的新方法：
 
-\begin{code}{java}{}{lox/Parser.java，在expression()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在expression()方法后添加}
   private Stmt declaration() {
     try {
       if (match(VAR)) return varDeclaration();
@@ -4015,7 +4135,7 @@ IDENTIFIER子语句会匹配单个标识符标记，该标记会被理解为正�
 
 当解析器匹配到一个var标记时，它会跳转到：
 
-\begin{code}{java}{}{lox/Parser.java，在printStatement()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在printStatement()方法后添加}
   private Stmt varDeclaration() {
     Token name = consume(IDENTIFIER, "Expect variable name.");
 
@@ -4035,7 +4155,7 @@ IDENTIFIER子语句会匹配单个标识符标记，该标记会被理解为正�
 
 解析变量表达式甚至更简单。在primary()中，我们需要查找一个标识符标记。
 
-\begin{code}{java}{3-5}{lox/Parser.java，在primary()方法中添加：}
+\begin{code}{java}{3-5}{lox/Parser.java，在primary()方法中添加}
       return new Expr.Literal(previous().literal);
     }
     if (match(IDENTIFIER)) {
@@ -4049,6 +4169,11 @@ IDENTIFIER子语句会匹配单个标识符标记，该标记会被理解为正�
 \section{环境}
 
 变量与值之间的绑定关系需要保存在某个地方。自从Lisp发明圆括号以来，这种数据结构就被称为\textbf{环境}。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/statements-and-state/environment.png}
+\end{figure}
 
 你可以把它想象成一个映射，其中键是变量名称，值就是变量的值。实际上，这也就是我们在Java中采用的实现方式。我们可以直接在解释器中加入该映射及其管理代码，但是因为它形成了一个很好的概念，我们可以将其提取到单独的类中。
 
@@ -4067,7 +4192,7 @@ class Environment {
 
 我们需要支持两个操作。首先，是变量定义操作，可以将一个新的名称与一个值进行绑定。
 
-\begin{code}{java}{}{lox/Environment.java，在Environment类中添加：}
+\begin{code}{java}{}{lox/Environment.java，在Environment类中添加}
   void define(String name, Object value) {
     values.put(name, value);
   }
@@ -4088,7 +4213,7 @@ print a; // "after".
 
 所以，为了保证两种模式的统一，我们选择允许重定义——至少对于全局变量如此。一旦一个变量存在，我们就需要可以查找该变量的方法。
 
-\begin{code}{java}{3-10}{lox/Environment.java，在Environment类中添加：}
+\begin{code}{java}{3-10}{lox/Environment.java，在Environment类中添加}
 class Environment {
   private final Map<String, Object> values = new HashMap<>();
   Object get(Token name) {
@@ -4143,7 +4268,7 @@ var a = "too late!";
 
 Interpreter类会获取Environment类的一个实例。
 
-\begin{code}{java}{3}{lox/Interpreter.java，在Interpreter类中添加：}
+\begin{code}{java}{3}{lox/Interpreter.java，在Interpreter类中添加}
 class Interpreter implements Expr.Visitor<Object>,
                              Stmt.Visitor<Void> {  
   private Environment environment = new Environment();
@@ -4223,7 +4348,7 @@ instance.field = "value";
 
 最简单的部分就是添加新的语法树节点。
 
-\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加：}
+\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加}
     defineAst(outputDir, "Expr", Arrays.asList(
       "Assign   : Token name, Expr value",
       "Binary   : Expr left, Token operator, Expr right",
@@ -4256,7 +4381,7 @@ makeList().head.next = node;
 
 我们只会前瞻一个标记，那我们该怎么办呢？我们使用一个小技巧，看起来像下面这样：
 
-\begin{code}{java}{}{lox/Parser.java，在expressionStatement()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在expressionStatement()方法后添加}
   private Expr assignment() {
     Expr expr = equality();
 
@@ -4308,7 +4433,7 @@ a + b = c;
 
 我们有了一个新的语法树节点，所以我们的解释器也需要一个新的访问方法。
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitVarStmt()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitVarStmt()方法后添加}
   @Override
   public Object visitAssignExpr(Expr.Assign expr) {
     Object value = evaluate(expr.value);
@@ -4319,7 +4444,7 @@ a + b = c;
 
 很明显，这与变量声明很类似。首先，对右侧表达式运算以获取值，然后将其保存到命名变量中。这里不使用Environment中的define()，而是调用下面的新方法：
 
-\begin{code}{java}{}{lox/Environment.java，在get()方法后添加：}
+\begin{code}{java}{}{lox/Environment.java，在get()方法后添加}
   void assign(Token name, Object value) {
     if (values.containsKey(name.lexeme)) {
       values.put(name.lexeme, value);
@@ -4363,6 +4488,11 @@ print a = 2; // "2".
 \end{code}
 
 这里，我们在两个块中都定义了一个变量a。我们可以从代码中看出，在第一个print语句中使用的a指的是第一个a，第二个语句指向的是第二个变量。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/statements-and-state/blocks.png}
+\end{figure}
 
 这与\textbf{动态作用域}形成了对比，在动态作用域中，直到执行代码时才知道名称指向的是什么。Lox没有动态作用域\textit{变量}，但是对象上的方法和字段是动态作用域的。
 
@@ -4442,9 +4572,14 @@ var global = "outside";
 
 我们通过将环境链接在一起来实现这一点。每个环境都有一个对直接外围作用域的环境的引用。当我们查找一个变量时，我们从最内层开始遍历环境链直到找到该变量。从内部作用域开始，就是我们使局部变量遮蔽外部变量的方式。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/statements-and-state/chaining.png}
+\end{figure}
+
 在我们添加块语法之前，我们要强化Environment类对这种嵌套的支持。首先，我们在每个环境中添加一个对其外围环境的引用。
 
-\begin{code}{java}{2}{lox/Environment.java，在Environment类中添加：}
+\begin{code}{java}{2}{lox/Environment.java，在Environment类中添加}
 class Environment {
   final Environment enclosing;
   private final Map<String, Object> values = new HashMap<>();
@@ -4452,7 +4587,7 @@ class Environment {
 
 这个字段需要初始化，所以我们添加两个构造函数。
 
-\begin{code}{java}{}{lox/Environment.java，在Environment类中添加：}
+\begin{code}{java}{}{lox/Environment.java，在Environment类中添加}
   Environment() {
     enclosing = null;
   }
@@ -4466,7 +4601,7 @@ class Environment {
 
 我们不必修改define()方法——因为新变量总是在当前最内层的作用域中声明。但是变量的查找和赋值是结合已有的变量一起处理的，需要遍历环境链以找到它们。首先是查找操作：
 
-\begin{code}{java}{3}{lox/Environment.java，在get()方法中添加：}
+\begin{code}{java}{3}{lox/Environment.java，在get()方法中添加}
       return values.get(name.lexeme);
     }
     if (enclosing != null) return enclosing.get(name);
@@ -4478,7 +4613,7 @@ class Environment {
 
 赋值也是如此。
 
-\begin{code}{java}{4-7}{lox/Environment.java，在assign()方法中添加：}
+\begin{code}{java}{4-7}{lox/Environment.java，在assign()方法中添加}
       values.put(name.lexeme, value);
       return;
     }
@@ -4505,7 +4640,7 @@ block &\rightarrow\quad \mathtt{"}{\mathtt{"} \quad declaration* \quad \mathtt{"
 
 块是由花括号包围的一系列语句或声明(可能是空的)。块本身就是一条语句，可以出现在任何允许语句的地方。语法树节点如下所示。
 
-\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加：}
+\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加}
     defineAst(outputDir, "Stmt", Arrays.asList(
       "Block      : List<Stmt> statements",
       "Expression : Expr expression",
@@ -4513,7 +4648,7 @@ block &\rightarrow\quad \mathtt{"}{\mathtt{"} \quad declaration* \quad \mathtt{"
 
 它包含块中语句的列表。解析很简单。与其他语句一样，我们通过块的前缀标记(在本例中是{)来检测块的开始。在statement()方法中，我们添加代码：
 
-\begin{code}{java}{2}{lox/Parser.java，在statement()方法中添加：}
+\begin{code}{java}{2}{lox/Parser.java，在statement()方法中添加}
     if (match(PRINT)) return printStatement();
     if (match(LEFT_BRACE)) return new Stmt.Block(block());
     return expressionStatement();
@@ -4521,7 +4656,7 @@ block &\rightarrow\quad \mathtt{"}{\mathtt{"} \quad declaration* \quad \mathtt{"
 
 真正的工作都在这里进行：
 
-\begin{code}{java}{}{lox/Parser.java，在expressionStatement()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在expressionStatement()方法后添加}
   private List<Stmt> block() {
     List<Stmt> statements = new ArrayList<>();
 
@@ -4538,7 +4673,7 @@ block &\rightarrow\quad \mathtt{"}{\mathtt{"} \quad declaration* \quad \mathtt{"
 
 语法到此为止。对于语义，我们要在Interpreter中添加另一个访问方法。
 
-\begin{code}{java}{}{lox/Interpreter.java，在execute()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在execute()方法后添加}
   @Override
   public Void visitBlockStmt(Stmt.Block stmt) {
     executeBlock(stmt.statements, new Environment(environment));
@@ -4548,7 +4683,7 @@ block &\rightarrow\quad \mathtt{"}{\mathtt{"} \quad declaration* \quad \mathtt{"
 
 要执行一个块，我们先为该块作用域创建一个新的环境，然后将其传入下面这个方法：
 
-\begin{code}{java}{}{lox/Interpreter.java，在execute()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在execute()方法后添加}
   void executeBlock(List<Stmt> statements,
                     Environment environment) {
     Environment previous = this.environment;
@@ -4679,9 +4814,14 @@ Lox使用不同的语法来声明新变量和为已有变量赋值。有些语�
 
 他们认为前两个问题的答案应该是“是”，剩下的就是去证明它。但事实证明这两个问题的答案都是“否”。而且令人惊讶的是，这两个问题是深深地交织在一起的。这是数学的一个迷人的角落，它触及了关于大脑能够做什么和宇宙如何运作的基本问题。我在这里说不清楚。
 
-我想指出的是，在证明前两个问题的答案是 "否 "的过程中，艾伦·图灵和阿隆佐·邱奇为最后一个问题设计了一个精确的答案，即定义了什么样的函数是可计算的。他们各自设计了一个具有最小机械集的微型系统，该系统仍然强大到足以计算一个超大类函数中的任何一个。
+我想指出的是，在证明前两个问题的答案是“否”的过程中，艾伦·图灵和阿隆佐·邱奇为最后一个问题设计了一个精确的答案，即定义了什么样的函数是可计算的。他们各自设计了一个具有最小机械集的微型系统，该系统仍然强大到足以计算一个超大类函数中的任何一个。
 
 这些现在被认为是“可计算函数”。图灵的系统被称为\textbf{图灵机}，邱奇的系统是\textbf{lambda演算}。这两种方法仍然被广泛用作计算模型的基础，事实上，许多现代函数式编程语言的核心都是lambda演算。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/control-flow/turing-machine.png}
+\end{figure}
 
 图灵机的知名度更高——目前还没有关于阿隆佐·邱奇的好莱坞电影，但这两种形式在能力上是等价的。事实上，任何具有最低表达能力的编程语言都足以计算任何可计算函数。
 
@@ -4714,7 +4854,7 @@ ifStmt &\rightarrow\quad \mathtt{"}if\mathtt{"} \quad \mathtt{"}(\mathtt{"} \qua
 
 if语句有一个表达式作为条件，然后是一个在条件为真时要执行的语句。另外，它还可以有一个else关键字和条件为假时要执行的语句。语法树节点中对语法的这三部分都有对应的字段。
 
-\begin{code}{java}{2-3}{tool/GenerateAst.java，在main()方法中添加：}
+\begin{code}{java}{2-3}{tool/GenerateAst.java，在main()方法中添加}
       "Expression : Expr expression",
       "If         : Expr condition, Stmt thenBranch," +
                   " Stmt elseBranch",
@@ -4723,7 +4863,7 @@ if语句有一个表达式作为条件，然后是一个在条件为真时要执
 
 与其它语句类似，解析器通过开头的if关键字来识别if语句。
 
-\begin{code}{java}{2}{lox/Parser.java，在statement()方法中添加：}
+\begin{code}{java}{2}{lox/Parser.java，在statement()方法中添加}
   private Stmt statement() {
     if (match(IF)) return ifStatement();
     if (match(PRINT)) return printStatement();
@@ -4731,7 +4871,7 @@ if语句有一个表达式作为条件，然后是一个在条件为真时要执
 
 如果发现了if关键字，就调用下面的新方法解析其余部分：
 
-\begin{code}{java}{}{lox/Parser.java，在statement()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在statement()方法后添加}
   private Stmt ifStatement() {
     consume(LEFT_PAREN, "Expect '(' after 'if'.");
     Expr condition = expression();
@@ -4764,6 +4904,11 @@ if (first) if (second) whenTrue(); else whenFalse();
 
 由于else子句是可选的，而且没有明确的分隔符来标记if语句的结尾，所以当你以这种方式嵌套if时，语法是不明确的。这种典型的语法陷阱被称为悬空的else问题。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/control-flow/dangling-else.png}
+\end{figure}
+
 也可以定义一个上下文无关的语法来直接避免歧义，但是需要将大部分语句规则拆分成对，一个是允许带有else的if语句，另一个不允许。这很烦人。
 
 相反，大多数语言和解析器都以一种特殊的方式避免了这个问题。不管他们用什么方法来解决这个问题，他们总是选择同样的解释——else与前面最近的if绑定在一起。
@@ -4772,7 +4917,7 @@ if (first) if (second) whenTrue(); else whenFalse();
 
 语法就绪了，我们可以开始解释了。
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitExpressionStmt()后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitExpressionStmt()后添加}
   @Override
   public Void visitIfStmt(Stmt.If stmt) {
     if (isTruthy(evaluate(stmt.condition))) {
@@ -4814,7 +4959,7 @@ assignment现在不是落到equality，而是继续进入logic\_or。两个新�
 
 对于这两个新表达式，我们可以重用Expr.Binary类，因为他们具有相同的字段。但是这样的话，visitBinaryExpr()方法中必须检查运算符是否是逻辑运算符，并且要使用不同的代码处理短路逻辑。我认为更整洁的方法是为这些运算符定义一个新类，这样它们就有了自己的visit方法。
 
-\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加：}
+\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加}
       "Literal  : Object value",
       "Logical  : Expr left, Token operator, Expr right",
       "Unary    : Token operator, Expr right",
@@ -4830,7 +4975,7 @@ assignment现在不是落到equality，而是继续进入logic\_or。两个新�
 
 解析一系列or语句的代码与其它二元运算符相似。
 
-\begin{code}{java}{}{lox/Parser.java，在assignment()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在assignment()方法后添加}
   private Expr or() {
     Expr expr = and();
 
@@ -4846,7 +4991,7 @@ assignment现在不是落到equality，而是继续进入logic\_or。两个新�
 
 它的操作数是位于下一优先级的新的and表达式。
 
-\begin{code}{java}{}{lox/Parser.java，在or()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在or()方法后添加}
   private Expr and() {
     Expr expr = equality();
 
@@ -4860,9 +5005,9 @@ assignment现在不是落到equality，而是继续进入logic\_or。两个新�
   }
 \end{code}
 
-这里会调用 equality() 计算操作数，这样一来，表达式解析器又重新绑定到了一起。我们已经准备好进行解释了。
+这里会调用equality()计算操作数，这样一来，表达式解析器又重新绑定到了一起。我们已经准备好进行解释了。
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitLiteralExpr()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitLiteralExpr()方法后添加}
   @Override
   public Object visitLogicalExpr(Expr.Logical expr) {
     Object left = evaluate(expr.left);
@@ -4919,7 +5064,7 @@ whileStmt &\rightarrow\quad \mathtt{"}while\mathtt{"} \quad \mathtt{"}(\mathtt{"
 
 在解析器中，我们遵循与if语句相同的处理步骤。首先，在statement()添加一个case分支检查并匹配开头的关键字。
 
-\begin{code}{java}{2}{lox/Parser.java，在statement()方法中添加：}
+\begin{code}{java}{2}{lox/Parser.java，在statement()方法中添加}
     if (match(PRINT)) return printStatement();
     if (match(WHILE)) return whileStatement();
     if (match(LEFT_BRACE)) return new Stmt.Block(block());
@@ -4927,7 +5072,7 @@ whileStmt &\rightarrow\quad \mathtt{"}while\mathtt{"} \quad \mathtt{"}(\mathtt{"
 
 实际的工作委托给下面的方法：
 
-\begin{code}{java}{}{lox/Parser.java，在varDeclaration()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在varDeclaration()方法后添加}
   private Stmt whileStatement() {
     consume(LEFT_PAREN, "Expect '(' after 'while'.");
     Expr condition = expression();
@@ -4940,7 +5085,7 @@ whileStmt &\rightarrow\quad \mathtt{"}while\mathtt{"} \quad \mathtt{"}(\mathtt{"
 
 语法非常简单，这里将其直接翻译为Java。说到直接翻译成Java，下面是我们执行新语法的方式：
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitVarStmt()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitVarStmt()方法后添加}
   @Override
   public Void visitWhileStmt(Stmt.While stmt) {
     while (isTruthy(evaluate(stmt.condition))) {
@@ -5023,7 +5168,7 @@ import java.util.List;
 
 接下来是有趣的部分，脱糖也是在这里发生的，所以我们会一点点构建这个方法，首先从子句之前的左括号开始。
 
-\begin{code}{java}{}{lox/Parser.java，在statement()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在statement()方法后添加}
   private Stmt forStatement() {
     consume(LEFT_PAREN, "Expect '(' after 'for'.");
 
@@ -5063,7 +5208,7 @@ import java.util.List;
 
 同样，我们查找分号检查子句是否被忽略。最后一个子句是增量语句。
 
-\begin{code}{java}{2-6}{lox/Parser.java，在forStatement()方法中添加：}
+\begin{code}{java}{2-6}{lox/Parser.java，在forStatement()方法中添加}
     consume(SEMICOLON, "Expect ';' after loop condition.");
     Expr increment = null;
     if (!check(RIGHT_PAREN)) {
@@ -5222,7 +5367,7 @@ arguments \rightarrow\quad expression \quad ( \quad \mathtt{"},\mathtt{"} \quad 
 
 该方法定义为：
 
-\begin{code}{java}{}{lox/Parser.java，在unary()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在unary()方法后添加}
   private Expr call() {
     Expr expr = primary();
 
@@ -5242,7 +5387,7 @@ arguments \rightarrow\quad expression \quad ( \quad \mathtt{"},\mathtt{"} \quad 
 
 解析参数列表的代码在下面的工具方法中：
 
-\begin{code}{java}{}{lox/Parser.java，在unary()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在unary()方法后添加}
   private Expr finishCall(Expr callee) {
     List<Expr> arguments = new ArrayList<>();
     if (!check(RIGHT_PAREN)) {
@@ -5270,7 +5415,7 @@ arguments \rightarrow\quad expression \quad ( \quad \mathtt{"},\mathtt{"} \quad 
 
 Lox的Java解释器实际上并不需要限制，但是设置一个最大的参数数量限制可以简化第三部分中的字节码解释器。即使是在这样奇怪的地方里，我们也希望两个解释器能够相互兼容，所以我们为jlox添加同样的限制。
 
-\begin{code}{java}{2-4}{lox/Parser.java，在finishCall()方法中添加：}
+\begin{code}{java}{2-4}{lox/Parser.java，在finishCall()方法中添加}
       do {
         if (arguments.size() >= 255) {
           error(peek(), "Can't have more than 255 arguments.");
@@ -5291,7 +5436,7 @@ import java.util.List;
 
 跟之前一样，解释工作从新的调用表达式节点对应的新的visit方法开始。
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitBinaryExpr()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitBinaryExpr()方法后添加}
   @Override
   public Object visitCallExpr(Expr.Call expr) {
     Object callee = evaluate(expr.callee);
@@ -5471,7 +5616,7 @@ parameters \rightarrow\quad IDENTIFIER \quad ( \quad \mathtt{"},\mathtt{"} \quad
 
 这就类似于前面的arguments规则，区别在于参数是一个标识符，而不是一个表达式。这对于解析器来说是很多要处理的新语法，但是生成的AST节点没这么复杂。
 
-\begin{code}{java}{2-3}{tool/GenerateAst.java，在main()方法中添加：}
+\begin{code}{java}{2-3}{tool/GenerateAst.java，在main()方法中添加}
       "Expression : Expr expression",
       "Function   : Token name, List<Token> params," +
                   " List<Stmt> body",
@@ -5482,7 +5627,7 @@ parameters \rightarrow\quad IDENTIFIER \quad ( \quad \mathtt{"},\mathtt{"} \quad
 
 在解析器中，我们把新的声明添加进去。
 
-\begin{code}{java}{2}{lox/Parser.java，在declaration()方法中添加：}
+\begin{code}{java}{2}{lox/Parser.java，在declaration()方法中添加}
     try {
       if (match(FUN)) return function("function");
       if (match(VAR)) return varDeclaration();
@@ -5490,7 +5635,7 @@ parameters \rightarrow\quad IDENTIFIER \quad ( \quad \mathtt{"},\mathtt{"} \quad
 
 像其它语句一样，函数是通过前面的关键字来识别的。当我们遇到fun时，我们就调用function。这步操作对应于function语法规则，因为我们已经匹配并消费了fun关键字。我们会一步步构建这个方法，首先从下面的代码开始：
 
-\begin{code}{java}{}{lox/Parser.java，在expressionStatement()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在expressionStatement()方法后添加}
   private Stmt.Function function(String kind) {
     Token name = consume(IDENTIFIER, "Expect " + kind + " name.");
   }
@@ -5500,7 +5645,7 @@ parameters \rightarrow\quad IDENTIFIER \quad ( \quad \mathtt{"},\mathtt{"} \quad
 
 接下来，我们要解析参数列表和包裹着它们的一对小括号。
 
-\begin{code}{java}{2-14}{lox/Parser.java，在function()方法中添加：}
+\begin{code}{java}{2-14}{lox/Parser.java，在function()方法中添加}
     Token name = consume(IDENTIFIER, "Expect " + kind + " name.");
     consume(LEFT_PAREN, "Expect '(' after " + kind + " name.");
     List<Token> parameters = new ArrayList<>();
@@ -5524,7 +5669,7 @@ parameters \rightarrow\quad IDENTIFIER \quad ( \quad \mathtt{"},\mathtt{"} \quad
 
 最后，我们解析函数主体，并将其封装为一个函数节点。
 
-\begin{code}{java}{2-4}{lox/Parser.java，在function()方法中添加：}
+\begin{code}{java}{2-4}{lox/Parser.java，在function()方法中添加}
     consume(RIGHT_PAREN, "Expect ')' after parameters.");
     consume(LEFT_BRACE, "Expect '{' before " + kind + " body.");
     List<Stmt> body = block();
@@ -5555,7 +5700,7 @@ class LoxFunction implements LoxCallable {
 
 使用如下方式实现LoxCallable的call()方法：
 
-\begin{code}{java}{}{lox/LoxFunction.java，在LoxFunction()方法后添加：}
+\begin{code}{java}{}{lox/LoxFunction.java，在LoxFunction()方法后添加}
   @Override
   public Object call(Interpreter interpreter,
                      List<Object> arguments) {
@@ -5589,7 +5734,12 @@ count(3);
 
 假设一下，如果我们在最内层的嵌套调用中即将打印1的时候暂停了解释器。打印2和3的外部调用还没有打印出它们的值，所以在内存的某个地方一定有环境仍然存储着这样的数据：n在一个上下文中被绑定到3，在另一个上下文中被绑定到2，而在最内层调用中绑定为1，比如：
 
-这就是为什么我们在每次*调用*时创建一个新的环境，而不是在函数声明时创建。我们前面看到的call()方法就是这样做的。在调用开始的时候，它创建了一个新环境。然后它以同步的方式遍历形参和实参列表。对于每一对参数，它用形参的名字创建一个新的变量，并将其与实参的值绑定。
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/functions/recursion.png}
+\end{figure}
+
+这就是为什么我们在每次\textit{调用}时创建一个新的环境，而不是在函数声明时创建。我们前面看到的call()方法就是这样做的。在调用开始的时候，它创建了一个新环境。然后它以同步的方式遍历形参和实参列表。对于每一对参数，它用形参的名字创建一个新的变量，并将其与实参的值绑定。
 
 所以，对于类似下面这样的代码：
 
@@ -5603,6 +5753,11 @@ add(1, 2, 3);
 
 在调用add()时，解释器会创建类似下面这样的内容：
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/functions/binding.png}
+\end{figure}
+
 然后call()会告诉解释器在这个新的函数局部环境中执行函数体。在此之前，当前环境是函数被调用的位置所处的环境。现在，我们转入了为函数创建的新的参数空间中。
 
 这就是将数据传入函数所需的全部内容。通过在执行函数主体时使用不同的环境，用同样的代码调用相同的函数可以产生不同的结果。
@@ -5613,7 +5768,7 @@ add(1, 2, 3);
 
 完成了吗？好的。注意当我们绑定参数时，我们假设参数和参数列表具有相同的长度。这是安全的，因为visitCallExpr()在调用call()之前会检查元数。它依靠报告其元数的函数来做到这一点。
 
-\begin{code}{java}{}{lox/LoxFunction.java，在LoxFunction()方法后添加：}
+\begin{code}{java}{}{lox/LoxFunction.java，在LoxFunction()方法后添加}
   @Override
   public int arity() {
     return declaration.params.size();
@@ -5622,7 +5777,7 @@ add(1, 2, 3);
 
 这基本就是我们的函数对象表示了。既然已经到了这一步，我们也可以实现toString()。
 
-\begin{code}{java}{}{lox/LoxFunction.java，在LoxFunction()方法后添加：}
+\begin{code}{java}{}{lox/LoxFunction.java，在LoxFunction()方法后添加}
   @Override
   public String toString() {
     return "<fn " + declaration.name.lexeme + ">";
@@ -5643,7 +5798,7 @@ print add; // "<fn add>".
 
 我们很快就会回头来完善LoxFunction，但是现在已足够开始进行解释了。现在，我们可以访问函数声明节点了。
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitExpressionStmt()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitExpressionStmt()方法后添加}
   @Override
   public Void visitFunctionStmt(Stmt.Function stmt) {
     LoxFunction function = new LoxFunction(stmt);
@@ -5705,7 +5860,7 @@ return nil;
 
 在AST生成器中，添加一个新节点。
 
-\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加：}
+\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加}
       "Print      : Expr expression",
       "Return     : Token keyword, Expr value",
       "Var        : Token name, Expr initializer",
@@ -5713,7 +5868,7 @@ return nil;
 
 其中保留了return关键字标记（这样我们可以使用该标记的位置来报告错误），以及返回的值（如果有的话）。我们像解析其它语句一样来解析它，首先识别起始的关键字。
 
-\begin{code}{java}{2}{lox/Parser.java，在statement()方法中添加：}
+\begin{code}{java}{2}{lox/Parser.java，在statement()方法中添加}
     if (match(PRINT)) return printStatement();
     if (match(RETURN)) return returnStatement();
     if (match(WHILE)) return whileStatement();
@@ -5721,7 +5876,7 @@ return nil;
 
 分支会跳转到：
 
-\begin{code}{java}{}{lox/Parser.java，在printStatement()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在printStatement()方法后添加}
   private Stmt returnStatement() {
     Token keyword = previous();
     Expr value = null;
@@ -5862,15 +6017,25 @@ counter(); // "2".
 
 如果你以前从未遇到过带有嵌套函数的语言，那么这可能看起来很疯狂，但用户确实希望它能工作。唉，如果你现在运行它，当count()的函数体试图查找i时，会在对counter()的调用中得到一个未定义的变量错误，这是因为当前的环境链看起来像是这样的：
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/functions/global.png}
+\end{figure}
+
 当我们调用count()时（通过counter中保存的引用），我们会为函数体创建一个新的空环境，它的父环境就是全局环境。我们丢失了i所在的makeCounter()环境。
 
 我们把时间往回拨一点。我们在makeCounter()的函数体中声明count()时，环境链的样子是下面这样：
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/functions/body.png}
+\end{figure}
 
 所以，在函数声明的地方，我们可以看到i。但是当我们从makeCounter()返回并退出其主体时，解释器会丢弃这个环境。因为解释器不会保留count()外围的环境，所以要靠函数对象本身来保存它。
 
 这种数据结构被称为\textbf{闭包}，因为它“封闭”并保留着函数声明的外围变量。闭包早在Lisp时代就已经存在了，语言黑客们想出了各种方法来实现闭包。在jlox中，我们将采用最简单的方式。在LoxFunction中，我们添加一个字段来存储环境。
 
-\begin{code}{java}{2}{lox/LoxFunction.java，在LoxFunction类中添加：}
+\begin{code}{java}{2}{lox/LoxFunction.java，在LoxFunction类中添加}
   private final Stmt.Function declaration;
   private final Environment closure;
   LoxFunction(Stmt.Function declaration) {
@@ -5901,6 +6066,11 @@ counter(); // "2".
 \end{code}
 
 这样就创建了一个环境链，从函数体开始，经过函数被声明的环境，然后到全局作用域。运行时环境链与源代码的文本嵌套相匹配，跟我们想要的一致。当我们调用该函数时，最终的结果是这样的：
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/functions/closure.png}
+\end{figure}
 
 如你所见，现在解释器可以在需要的时候找到i，因为它在环境链中。现在尝试运行makeCounter()的例子，起作用了！ 
 
@@ -6018,7 +6188,7 @@ var a = "global";
 
 在你执行这段代码之前，先思考一下它\textit{应该}输出什么。
 
-好的......清楚了吗？如果你熟悉其它语言中的闭包，你们你可能期望会输出两次“global”。对showA()的第一次调用肯定会打印“global”，因为我们甚至还没有执行到内部变量a的声明。而根据我们的规则，一个变量表达式总数解析为同一个变量，这意味着对showA()的第二次调用也应该打印出同样的内容。
+好的...清楚了吗？如果你熟悉其它语言中的闭包，你们你可能期望会输出两次“global”。对showA()的第一次调用肯定会打印“global”，因为我们甚至还没有执行到内部变量a的声明。而根据我们的规则，一个变量表达式总数解析为同一个变量，这意味着对showA()的第二次调用也应该打印出同样的内容。
 
 唉，它输出的是：
 
@@ -6035,11 +6205,26 @@ block
 
 让我们通过这个有问题的例子，看看每一步的环境是什么样的。首先，我们在全局作用域内声明a。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/resolving-and-binding/environment-1.png}
+\end{figure}
+
 这为我们提供了一个环境，其中只有一个变量。然后我们进入代码块，并执行showA()的声明。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/resolving-and-binding/environment-2.png}
+\end{figure}
 
 我们得到一个对应该代码块的新环境。在这个环境中，我们声明了一个名称showA，它绑定到为表示函数而创建的LoxFunction对象。该对象中有一个closure字段，用于捕获函数声明时的环境，因此它有一个指向该代码块环境的引用。
 
 现在我们调用showA()。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/resolving-and-binding/environment-3.png}
+\end{figure}
 
 解释器为showA()的函数体动态地创建了一个新环境。它是空的，因为该函数没有声明任何变量。该环境的父环境是该函数的闭包——外部的代码块环境。
 
@@ -6047,7 +6232,17 @@ block
 
 接下来，我们声明第二个a，这次是在代码块内。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/resolving-and-binding/environment-4.png}
+\end{figure}
+
 它和showA()在同一个代码块中——同一个作用域，所以它进入了同一个环境，也就是showA()的闭包所指向的环境。这就是有趣的地方了。我们再次调用showA()。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/resolving-and-binding/environment-5.png}
+\end{figure}
 
 我们再次为showA()的函数体创建了一个新的空环境，将其连接到该闭包，并运行函数体。当解释器遍历环境链去查找a时，它会发现代码块环境中新的变量a。
 
@@ -6074,6 +6269,11 @@ block
 
 如果我们将这一技术应用于环境，那么每次你声明一个变量时，都会返回一个新的环境，其中包含所有先前声明的变量和一个新名称。声明一个变量会执行隐式分割，在声明变量之前与之后都有一个环境：
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/resolving-and-binding/split.png}
+\end{figure}
+
 当函数被声明时，闭包保留对正在运行的Environment实例的引用。由于该代码块中后续的任何声明都会生成新的Environment对象，闭包就不会看到新的变量，我们的问题也得到修复。
 
 这是解决该问题的合法方式，也是在Scheme解释器中实现变量环境的经典方式。对于Lox，我们可以这样做，但是这意味着要回头修改一大堆现有的代码。
@@ -6092,7 +6292,17 @@ block
 
 相对地，我们将以最充分利用现有Environment类的方式来存储解析结果。回想一下，在有问题的例子中，a的访问是如何被解释的。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/resolving-and-binding/environment-3.png}
+\end{figure}
+
 在第一次（正确的）求值中，我们会检查链中的环境，并找到a的全局声明。然后，当内部的a在块作用域中声明时，它会遮蔽全局的变量a。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/resolving-and-binding/environment-5.png}
+\end{figure}
 
 下一次查找会遍历环境链，在第二个环境中找到a并停止。每个环境都对应于一个声明变量的词法作用域。如果我们能够保证变量查找总是在环境链上遍历相同数量的链接，也就可以保证每次都可以在相同的作用域中找到相同的变量。
 
@@ -6147,7 +6357,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
 我们从块语法开始，因为它们创建了局部作用域——魔法出现的地方。
 
-\begin{code}{java}{}{lox/Resolver.java，在Resolver()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在Resolver()方法后添加}
   @Override
   public Void visitBlockStmt(Stmt.Block stmt) {
     beginScope();
@@ -6159,7 +6369,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
 这里会开始一个新的作用域，遍历块中的语句，然后丢弃该作用域。有趣的部分都在这些辅助方法中。我们先看一个简单的。
 
-\begin{code}{java}{}{lox/Resolver.java，在Resolver()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在Resolver()方法后添加}
   void resolve(List<Stmt> statements) {
     for (Stmt statement : statements) {
       resolve(statement);
@@ -6169,7 +6379,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
 它会遍历语句列表，并解析其中每一条语句。它会进一步调用：
 
-\begin{code}{java}{}{lox/Resolver.java，在visitBlockStmt()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitBlockStmt()方法后添加}
   private void resolve(Stmt stmt) {
     stmt.accept(this);
   }
@@ -6177,7 +6387,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
 在此过程中，让我们添加一个后续解析表达式时会用到的重载方法。
 
-\begin{code}{java}{}{lox/Resolver.java，在resolve(Stmt stmt)方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在resolve(Stmt stmt)方法后添加}
   private void resolve(Expr expr) {
     expr.accept(this);
   }
@@ -6187,7 +6397,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
 真正有趣的部分是围绕作用域的。一个新的块作用域是这样创建的：
 
-\begin{code}{java}{}{lox/Resolver.java，在resolve()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在resolve()方法后添加}
   private void beginScope() {
     scopes.push(new HashMap<String, Boolean>());
   }
@@ -6195,7 +6405,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
 词法作用域在解释器和解析器中都有使用。它们的行为像一个栈。解释器是使用链表（Environment对象组成的链）来实现栈的，在解析器中，我们使用一个真正的Java Stack。
 
-\begin{code}{java}{2}{lox/Resolver.java，在Resolver类中添加：}
+\begin{code}{java}{2}{lox/Resolver.java，在Resolver类中添加}
   private final Interpreter interpreter;
   private final Stack<Map<String, Boolean>> scopes = new Stack<>();
   Resolver(Interpreter interpreter) {
@@ -6207,7 +6417,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
 由于作用域被存储在一个显式的栈中，退出作用域很简单。
 
-\begin{code}{java}{}{lox/Resolver.java，在beginScope()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在beginScope()方法后添加}
   private void endScope() {
     scopes.pop();
   }
@@ -6219,7 +6429,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
 解析一个变量声明，会在当前最内层的作用域map中添加一个新的条目。这看起来很简单，但是我们需要做一些小动作。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitBlockStmt()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitBlockStmt()方法后添加}
   @Override
   public Void visitVarStmt(Stmt.Var stmt) {
     declare(stmt.name);
@@ -6269,7 +6479,7 @@ var a = "outer";
 
 要做到这一点，当我们访问表达式时，我们需要知道当前是否在某个变量的初始化式中。我们通过将绑定拆分为两步来实现。首先是\textbf{声明}。
 
-\begin{code}{java}{}{lox/Resolver.java，在endScope()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在endScope()方法后添加}
   private void declare(Token name) {
     if (scopes.isEmpty()) return;
 
@@ -6282,7 +6492,7 @@ var a = "outer";
 
 在声明完变量后，我们在变量当前存在但是不可用的作用域中解析变量的初始化表达式。一旦初始化表达式完成，变量也就绪了。我们通过\textbf{define}来实现。
 
-\begin{code}{java}{}{lox/Resolver.java，在declare()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在declare()方法后添加}
   private void define(Token name) {
     if (scopes.isEmpty()) return;
     scopes.peek().put(name.lexeme, true);
@@ -6295,7 +6505,7 @@ var a = "outer";
 
 变量声明——以及我们即将讨论的函数声明——会向作用域map中写数据。在我们解析变量表达式时，需要读取这些map。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitVarStmt()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitVarStmt()方法后添加}
   @Override
   public Void visitVariableExpr(Expr.Variable expr) {
     if (!scopes.isEmpty() &&
@@ -6313,7 +6523,7 @@ var a = "outer";
 
 在检查之后，我们实际上使用了这个辅助方法来解析变量：
 
-\begin{code}{java}{}{lox/Resolver.java，在define()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在define()方法后添加}
   private void resolveLocal(Expr expr, Token name) {
     for (int i = scopes.size() - 1; i >= 0; i--) {
       if (scopes.get(i).containsKey(name.lexeme)) {
@@ -6332,7 +6542,7 @@ var a = "outer";
 
 另一个引用变量的表达式就是赋值表达式。解析方法如下：
 
-\begin{code}{java}{}{lox/Resolver.java，在visitVarStmt()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitVarStmt()方法后添加}
   @Override
   public Void visitAssignExpr(Expr.Assign expr) {
     resolve(expr.value);
@@ -6347,7 +6557,7 @@ var a = "outer";
 
 最后是函数。函数既绑定名称又引入了作用域。函数本身的名称被绑定在函数声明时所在的作用域中。当我们进入函数体时，我们还需要将其参数绑定到函数内部作用域中。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitBlockStmt()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitBlockStmt()方法后添加}
   @Override
   public Void visitFunctionStmt(Stmt.Function stmt) {
     declare(stmt.name);
@@ -6362,7 +6572,7 @@ var a = "outer";
 
 那么我们可以使用下面的方法来解析函数体：
 
-\begin{code}{java}{}{lox/Resolver.java，在resolve()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在resolve()方法后添加}
   private void resolveFunction(Stmt.Function function) {
     beginScope();
     for (Token param : function.params) {
@@ -6384,7 +6594,7 @@ var a = "outer";
 
 一个表达式语句中包含一个需要遍历的表达式。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitBlockStmt()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitBlockStmt()方法后添加}
   @Override
   public Void visitExpressionStmt(Stmt.Expression stmt) {
     resolve(stmt.expression);
@@ -6394,7 +6604,7 @@ var a = "outer";
 
 if语句包含一个条件表达式，以及一个或两个分支语句。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitFunctionStmt()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitFunctionStmt()方法后添加}
   @Override
   public Void visitIfStmt(Stmt.If stmt) {
     resolve(stmt.condition);
@@ -6408,7 +6618,7 @@ if语句包含一个条件表达式，以及一个或两个分支语句。
 
 与表达式语句类似，print语句也包含一个子表达式。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitIfStmt()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitIfStmt()方法后添加}
   @Override
   public Void visitPrintStmt(Stmt.Print stmt) {
     resolve(stmt.expression);
@@ -6418,7 +6628,7 @@ if语句包含一个条件表达式，以及一个或两个分支语句。
 
 return语句也是相同的。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitPrintStmt()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitPrintStmt()方法后添加}
   @Override
   public Void visitReturnStmt(Stmt.Return stmt) {
     if (stmt.value != null) {
@@ -6431,7 +6641,7 @@ return语句也是相同的。
 
 与if语句一样，对于while语句，我们会解析其条件，并解析一次循环体。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitVarStmt()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitVarStmt()方法后添加}
   @Override
   public Void visitWhileStmt(Stmt.While stmt) {
     resolve(stmt.condition);
@@ -6440,11 +6650,11 @@ return语句也是相同的。
   }
 \end{code}
 
-这样就涵盖了所有的语句。接下来是表达式......
+这样就涵盖了所有的语句。接下来是表达式...
 
 我们的老朋友二元表达式。我们要遍历并解析两个操作数。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitAssignExpr()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitAssignExpr()方法后添加}
   @Override
   public Void visitBinaryExpr(Expr.Binary expr) {
     resolve(expr.left);
@@ -6455,7 +6665,7 @@ return语句也是相同的。
 
 调用也是类似的——我们遍历参数列表并解析它们。被调用的对象也是一个表达式（通常是一个变量表达式），所以它也会被解析。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitBinaryExpr()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitBinaryExpr()方法后添加}
   @Override
   public Void visitCallExpr(Expr.Call expr) {
     resolve(expr.callee);
@@ -6470,7 +6680,7 @@ return语句也是相同的。
 
 括号表达式比较简单。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitCallExpr()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitCallExpr()方法后添加}
   @Override
   public Void visitGroupingExpr(Expr.Grouping expr) {
     resolve(expr.expression);
@@ -6480,7 +6690,7 @@ return语句也是相同的。
 
 字面量表达式是最简单的。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitGroupingExpr()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitGroupingExpr()方法后添加}
   @Override
   public Void visitLiteralExpr(Expr.Literal expr) {
     return null;
@@ -6491,7 +6701,7 @@ return语句也是相同的。
 
 因为静态分析没有控制流或短路处理，逻辑表达式与其它的二元运算符是一样的。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitLiteralExpr()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitLiteralExpr()方法后添加}
   @Override
   public Void visitLogicalExpr(Expr.Logical expr) {
     resolve(expr.left);
@@ -6502,7 +6712,7 @@ return语句也是相同的。
 
 接下来是最后一个节点，我们解析它的一个操作数。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitLogicalExpr()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitLogicalExpr()方法后添加}
   @Override
   public Void visitUnaryExpr(Expr.Unary expr) {
     resolve(expr.right);
@@ -6516,7 +6726,7 @@ return语句也是相同的。
 
 让我们看看解析器有什么用处。每次访问一个变量时，它都会告诉解释器，在当前作用域和变量定义的作用域之间隔着多少层作用域。在运行时，这正好对应于当前环境与解释器可以找到变量值的外围环境之间的\textit{environments}数量。解析器通过调用下面的方法将这个数字传递给解释器：
 
-\begin{code}{java}{}{lox/Interpreter.java，在execute()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在execute()方法后添加}
   void resolve(Expr expr, int depth) {
     locals.put(expr, depth);
   }
@@ -6538,7 +6748,7 @@ return语句也是相同的。
 
 与之前一样，使用集合需要先引入一些包名称。
 
-\begin{code}{java}{2}{lox/Interpreter.java，添加：}
+\begin{code}{java}{2}{lox/Interpreter.java，添加}
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -6546,7 +6756,7 @@ import java.util.List;
 
 还有：
 
-\begin{code}{java}{2}{lox/Interpreter.java，添加：}
+\begin{code}{java}{2}{lox/Interpreter.java，添加}
 import java.util.List;
 import java.util.Map;
 class Interpreter implements Expr.Visitor<Object>,
@@ -6564,7 +6774,7 @@ class Interpreter implements Expr.Visitor<Object>,
 
 这里引用了：
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitVariableExpr()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitVariableExpr()方法后添加}
   private Object lookUpVariable(Token name, Expr expr) {
     Integer distance = locals.get(expr);
     if (distance != null) {
@@ -6579,7 +6789,7 @@ class Interpreter implements Expr.Visitor<Object>,
 
 如果我们\textit{确实}查到了一个距离值，那这就是个局部变量，我们可以利用静态分析的结果。我们不会调用get()方法，而是调用下面这个Environment中的新方法：
 
-\begin{code}{java}{}{lox/Environment.java，在define()方法后添加：}
+\begin{code}{java}{}{lox/Environment.java，在define()方法后添加}
   Object getAt(int distance, String name) {
     return ancestor(distance).values.get(name);
   }
@@ -6587,7 +6797,7 @@ class Interpreter implements Expr.Visitor<Object>,
 
 原先的get()方法会动态遍历外围的环境链，搜索每一个环境，查看变量是否包含在其中。但是现在我们明确知道链路中的哪个环境中会包含该变量。我们使用下面的辅助方法直达这个环境：
 
-\begin{code}{java}{}{lox/Environment.java，在define()方法后添加：}
+\begin{code}{java}{}{lox/Environment.java，在define()方法后添加}
   Environment ancestor(int distance) {
     Environment environment = this;
     for (int i = 0; i < distance; i++) {
@@ -6618,7 +6828,7 @@ class Interpreter implements Expr.Visitor<Object>,
 
 又一次，我们要查找变量的作用域距离。如果没有找到，我们就假定它是全局变量并采用跟之前一样的方式来处理；否则，我们使用下面的新方法：
 
-\begin{code}{java}{}{lox/Environment.java，在getAt()方法后添加：}
+\begin{code}{java}{}{lox/Environment.java，在getAt()方法后添加}
   void assignAt(int distance, Token name, Object value) {
     ancestor(distance).values.put(name.lexeme, value);
   }
@@ -6659,7 +6869,7 @@ fun bad() {
 
 我们可以在解析的时候静态地检测到这个错误。
 
-\begin{code}{java}{2-5}{lox/Resolver.java，在declare()方法中添加：}
+\begin{code}{java}{2-5}{lox/Resolver.java，在declare()方法中添加}
     Map<String, Boolean> scope = scopes.peek();
     if (scope.containsKey(name.lexeme)) {
       Lox.error(name,
@@ -6690,7 +6900,7 @@ return "at top level";
 
 我们不是使用一个简单的Boolean值，而是使用下面这个有趣的枚举：
 
-\begin{code}{java}{}{lox/Resolver.java，在Resolver()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在Resolver()方法后添加}
   private enum FunctionType {
     NONE,
     FUNCTION
@@ -6699,7 +6909,7 @@ return "at top level";
 
 现在看来又得蠢，但是我们稍后会添加更多案例，到时候它将更有意义。当我们解析函数声明时，将其作为参数传入。
 
-\begin{code}{java}{2}{lox/Resolver.java，在visitFunctionStmt()方法中，替换1行：}
+\begin{code}{java}{2}{lox/Resolver.java，在visitFunctionStmt()方法中，替换1行}
     define(stmt.name);
     resolveFunction(stmt, FunctionType.FUNCTION);
     return null;
@@ -6835,7 +7045,7 @@ class Breakfast {
 
 在AST生成器中，classDecl语法规则有自己的语句节点。
 
-\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加：}
+\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加}
       "Block      : List<Stmt> statements",
       "Class      : Token name, List<Stmt.Function> methods",
       "Expression : Expr expression",
@@ -6845,7 +7055,7 @@ class Breakfast {
 
 类可以出现在任何允许名称声明的地方，由前导的class关键字来触发。
 
-\begin{code}{java}{2-3}{lox/Parser.java，在declaration()方法中添加：}
+\begin{code}{java}{2-3}{lox/Parser.java，在declaration()方法中添加}
     try {
       if (match(CLASS)) return classDeclaration();
       if (match(FUN)) return function("function");
@@ -6853,7 +7063,7 @@ class Breakfast {
 
 进一步调用：
 
-\begin{code}{java}{}{lox/Parser.java，在declaration()方法后添加：}
+\begin{code}{java}{}{lox/Parser.java，在declaration()方法后添加}
   private Stmt classDeclaration() {
     Token name = consume(IDENTIFIER, "Expect class name.");
     consume(LEFT_BRACE, "Expect '{' before class body.");
@@ -6875,7 +7085,7 @@ class Breakfast {
 
 我们将名称和方法列表封装到Stmt.Class节点中，这样就完成了。以前，我们会直接进入解释器中，但是现在我们需要先进入分析器中对节点进行分析。【译者注：为了区分parse和resolve，这里将resolver称为分析器，用于对代码中的变量进行分析】
 
-\begin{code}{java}{}{lox/Resolver.java，在visitBlockStmt()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitBlockStmt()方法后添加}
   @Override
   public Void visitClassStmt(Stmt.Class stmt) {
     declare(stmt.name);
@@ -6888,7 +7098,7 @@ class Breakfast {
 
 现在我们解释一下类的声明。
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitBlockStmt()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitBlockStmt()方法后添加}
   @Override
   public Void visitClassStmt(Stmt.Class stmt) {
     environment.define(stmt.name.lexeme, null);
@@ -6959,7 +7169,7 @@ class LoxClass implements LoxCallable {
 
 实现该接口需要两个方法。
 
-\begin{code}{java}{}{lox/LoxClass.java，在toString()方法后添加：}
+\begin{code}{java}{}{lox/LoxClass.java，在toString()方法后添加}
   @Override
   public Object call(Interpreter interpreter,
                      List<Object> arguments) {
@@ -7029,7 +7239,7 @@ call $\rightarrow$ primary ( "(" arguments? ")" | "." IDENTIFIER )* ;
 
 语法树节点是：
 
-\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加：}
+\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加}
       "Call     : Expr callee, Token paren, List<Expr> arguments",
       "Get      : Expr object, Token name",
       "Grouping : Expr expression",
@@ -7053,9 +7263,14 @@ call $\rightarrow$ primary ( "(" arguments? ")" | "." IDENTIFIER )* ;
 
 外面的while循环对应于语法规则中的*。随着查找括号和点，我们会沿着标记构建一系列的call和get，就像：
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/classes/zip.png}
+\end{figure}
+
 新的Expr.Get节点实例会被送入分析器。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitCallExpr()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitCallExpr()方法后添加}
   @Override
   public Void visitGetExpr(Expr.Get expr) {
     resolve(expr.object);
@@ -7065,7 +7280,7 @@ call $\rightarrow$ primary ( "(" arguments? ")" | "." IDENTIFIER )* ;
 
 好吧，没什么好说的。因为属性是动态查找的，所以不会解析它们。在解析过程中，我们只递归到点符左边的表达式中。实际的属性访问发生在解释器中。
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitCallExpr()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitCallExpr()方法后添加}
   @Override
   public Object visitGetExpr(Expr.Get expr) {
     Object object = evaluate(expr.object);
@@ -7082,7 +7297,7 @@ call $\rightarrow$ primary ( "(" arguments? ")" | "." IDENTIFIER )* ;
 
 如果该对象是LoxInstance，我们就要求它去查找该属性。现在必须给LoxInstance一些实际的状态了。一个map就行了。
 
-\begin{code}{java}{2}{lox/LoxInstance.java，在LoxInstance类中添加：}
+\begin{code}{java}{2}{lox/LoxInstance.java，在LoxInstance类中添加}
   private LoxClass klass;
   private final Map<String, Object> fields = new HashMap<>();
   LoxInstance(LoxClass klass) {
@@ -7090,7 +7305,7 @@ call $\rightarrow$ primary ( "(" arguments? ")" | "." IDENTIFIER )* ;
 
 map中的每个键是一个属性名称，对应的值就是该属性的值。查找实例中的一个属性：
 
-\begin{code}{java}{}{lox/LoxInstance.java，在LoxInstance()方法后添加：}
+\begin{code}{java}{}{lox/LoxInstance.java，在LoxInstance()方法后添加}
   Object get(Token name) {
     if (fields.containsKey(name.lexeme)) {
       return fields.get(name.lexeme);
@@ -7105,7 +7320,7 @@ map中的每个键是一个属性名称，对应的值就是该属性的值。�
 
 因此，我们首先要做的就是看看这个实例中是否真的包含给定名称的字段。只有这样，我们才会返回其值。其它情况下，我们会引发一个错误。
 
-注意我是如何从讨论“属性”转换到讨论“字段”的。这两者之间有一个微妙的区别。字段是直接保存在实例中的命名状态。属性是get表达式可能返回的已命名的*东西*。每个字段都是一个属性，但是正如我们稍后将看到的，并非每个属性都是一个字段。
+注意我是如何从讨论“属性”转换到讨论“字段”的。这两者之间有一个微妙的区别。字段是直接保存在实例中的命名状态。属性是get表达式可能返回的已命名的\textit{东西}。每个字段都是一个属性，但是正如我们稍后将看到的，并非每个属性都是一个字段。
 
 理论上，我们现在可以读取对象的属性。但是由于没有办法将任何状态真正填充到实例中，所以也没有字段可以访问。在我们测试读取之前，我们需要先支持写入。
 
@@ -7126,11 +7341,16 @@ assignment &\rightarrow\quad ( \quad call \quad \mathtt{"}.\mathtt{"} \quad )? \
 
 与getter不同，setter不使用链。但是，对call 规则的引用允许在最后的点符号之前出现任何高优先级的表达式，包括任何数量的\textit{getters}，如：
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/classes/setter.png}
+\end{figure}
+
 注意，这里只有最后一部分.meat是\textit{setter}。.omelette和.filling部分都是\textit{get}表达式。
 
 就像我们有两个独立的AST节点用于变量访问和变量赋值一样，我们也需要一个setter节点来补充getter节点。
 
-\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加：}
+\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加}
       "Logical  : Expr left, Token operator, Expr right",
       "Set      : Expr object, Token name, Expr value",
       "Unary    : Token operator, Expr right",
@@ -7142,7 +7362,7 @@ assignment &\rightarrow\quad ( \quad call \quad \mathtt{"}.\mathtt{"} \quad )? \
 
 我们在该转换中添加另一个子句，将左边的Expr.Get表达式转化为相应的Expr.Set表达式。
 
-\begin{code}{java}{2-4}{lox/Parser.java，在assignment()方法中添加：}
+\begin{code}{java}{2-4}{lox/Parser.java，在assignment()方法中添加}
         return new Expr.Assign(name, value);
       } else if (expr instanceof Expr.Get) {
         Expr.Get get = (Expr.Get)expr;
@@ -7152,7 +7372,7 @@ assignment &\rightarrow\quad ( \quad call \quad \mathtt{"}.\mathtt{"} \quad )? \
 
 这就是语法解析。我们将该节点推入分析器中。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitLogicalExpr()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitLogicalExpr()方法后添加}
   @Override
   public Void visitSetExpr(Expr.Set expr) {
     resolve(expr.value);
@@ -7165,7 +7385,7 @@ assignment &\rightarrow\quad ( \quad call \quad \mathtt{"}.\mathtt{"} \quad )? \
 
 这又会把我们引向解释器。
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitLogicalExpr()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitLogicalExpr()方法后添加}
   @Override
   public Object visitSetExpr(Expr.Set expr) {
     Object object = evaluate(expr.object);
@@ -7183,7 +7403,7 @@ assignment &\rightarrow\quad ( \quad call \quad \mathtt{"}.\mathtt{"} \quad )? \
 
 我们先计算出被设置属性的对象，然后检查它是否是一个LoxInstance。如果不是，这就是一个运行时错误。否则，我们计算设置的值，并将其保存到该实例中。这一步依赖于LoxInstance中的一个新方法。
 
-\begin{code}{java}{}{lox/LoxInstance.java，在get()方法后添加：}
+\begin{code}{java}{}{lox/LoxInstance.java，在get()方法后添加}
   void set(Token name, Object value) {
     fields.put(name.lexeme, value);
   }
@@ -7197,7 +7417,12 @@ assignment &\rightarrow\quad ( \quad call \quad \mathtt{"}.\mathtt{"} \quad )? \
 
 我们的解析器已经解析了方法声明，所以我们在这部分做的不错。我们也不需要为方法\textit{调用}添加任何新的解析器支持。我们已经有了.(getter)和()(函数调用)。“方法调用”只是简单地将这些串在一起。
 
-这引出了一个有趣的问题。当这两个表达式分开时会发生什么？假设这个例子中的方法method是object的类中的一个方法，而不是实例中的 一个字段，下面的代码应该做什么？
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/classes/method.png}
+\end{figure}
+
+这引出了一个有趣的问题。当这两个表达式分开时会发生什么？假设这个例子中的方法method是object的类中的一个方法，而不是实例中的一个字段，下面的代码应该做什么？
 
 \begin{code}{java}{}{}
 var m = object.method;
@@ -7349,7 +7574,7 @@ bill.sayName(); // ?
 
 方法是通过下面的代码进行查找的：
 
-\begin{code}{java}{}{lox/LoxClass.java，在LoxClass()方法后添加：}
+\begin{code}{java}{}{lox/LoxClass.java，在LoxClass()方法后添加}
   LoxFunction findMethod(String name) {
     if (methods.containsKey(name)) {
       return methods.get(name);
@@ -7375,7 +7600,7 @@ Bacon().eat(); // Prints "Crunch crunch crunch!".
 
 我们可以在对象上定义行为和状态，但是它们并没有被绑定在一起。在一个方法中，我们没有办法访问“当前”对象（调用该方法的实例）的字段，也不能调用同一个对象的其它方法。
 
-为了获得这个实例，它需要一个名称。Smalltalk、Ruby和Swift使用"self"。Simula、C++、Java等使用“this”。Python按惯例使用“self”，但从技术上讲，你可以随便叫它什么。
+为了获得这个实例，它需要一个名称。Smalltalk、Ruby和Swift使用“self”。Simula、C++、Java等使用“this”。Python按惯例使用“self”，但从技术上讲，你可以随便叫它什么。
 
 对于Lox来说，因为我们通常遵循Java风格，我们会使用“this”。在方法体中，this表达式计算结果为调用该方法的实例。或者，更确切地说，由于方法是分为两个步骤进行访问和调用的，因此它会引用调用方法的对象。
 
@@ -7415,9 +7640,24 @@ cake.taste(); // Prints "The German chocolate cake is delicious!".
 
 当我们第一次执行类定义时，我们为taste()创建了一个LoxFunction。它的闭包是类外围的环境，在这个例子中就是全局环境。所以我们在类的方法map中保存的LoxFunction看起来像是这样的：
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/classes/closure.png}
+\end{figure}
+
 当我们执行cake.taste这个get表达式时，我们会创建一个新的环境，其中将this绑定到了访问该方法的对象（这里是cake）。然后我们创建一个\textit{新}的LoxFunction，它的代码与原始的代码相同，但是使用新环境作为其闭包。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/classes/bound-method.png}
+\end{figure}
+
 这个是在执行方法名的get表达式时返回的LoxFunction。当这个函数稍后被一个()表达式调用时，我们像往常一样为方法主体创建一个环境。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/classes/call.png}
+\end{figure}
 
 主体环境的父环境，也就是我们先前创建并在其中将this绑定到当前对象的那个环境。因此，在函数主体内使用this都可以成功解析到那个实例。
 
@@ -7511,7 +7751,7 @@ callback();
 
 剩下的任务就是解释那些this表达式。与分析器类似，与解释变量表达式是一样的。
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitSetExpr()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitSetExpr()方法后添加}
   @Override
   public Object visitThisExpr(Expr.This expr) {
     return lookUpVariable(expr.keyword, expr);
@@ -7566,7 +7806,7 @@ fun notAMethod() {
 
 一旦这么方法完成了分析，我们通过恢复旧值来“弹出”堆栈。
 
-\begin{code}{java}{2}{lox/Resolver.java,在visitClassStmt()方法中添加：}
+\begin{code}{java}{2}{lox/Resolver.java,在visitClassStmt()方法中添加}
     endScope();
     currentClass = enclosingClass;
     return null;
@@ -7574,7 +7814,7 @@ fun notAMethod() {
 
 当我们解析this表达式时，如果表达式没有出现在一个方法体内，currentClass就为我们提供了报告错误所需的数据。
 
-\begin{code}{java}{2-6}{lox/Resolver.java，在visitThisExpr()方法中添加：}
+\begin{code}{java}{2-6}{lox/Resolver.java，在visitThisExpr()方法中添加}
   public Void visitThisExpr(Expr.This expr) {
     if (currentClass == ClassType.NONE) {
       Lox.error(expr.keyword,
@@ -7605,7 +7845,7 @@ fun notAMethod() {
 
 在LoxClass的LoxCallable实现中，我们再增加几行。
 
-\begin{code}{java}{3-6}{lox/LoxClass.java,在call()方法中添加：}
+\begin{code}{java}{3-6}{lox/LoxClass.java,在call()方法中添加}
                      List<Object> arguments) {
     LoxInstance instance = new LoxInstance(this);
     LoxFunction initializer = findMethod("init");
@@ -7654,7 +7894,7 @@ print foo.init();
 
 然而，我通常不喜欢为满足实现而妥协，如果我们让init()方法总是返回this（即使是被直接调用时），它会使clox中的构造函数实现更加简单。为了保持jlox与之兼容，我们在LoxFunction中添加了一些针对特殊情况的代码。
 
-\begin{code}{java}{3}{lox/LoxFunction.java，在call()方法中添加：}
+\begin{code}{java}{3}{lox/LoxFunction.java，在call()方法中添加}
       return returnValue.value;
     }
     if (isInitializer) return closure.getAt(0, "this");
@@ -7713,7 +7953,7 @@ class Foo {
 
 这肯定不会按照用户的期望执行，所以我们不妨把它作为一种静态错误。回到分析器中，我们为FunctionType添加另一种情况。
 
-\begin{code}{java}{2}{lox/Resolver.java，在FunctionType枚举中添加：}
+\begin{code}{java}{2}{lox/Resolver.java，在FunctionType枚举中添加}
     FUNCTION,
     INITIALIZER,
     METHOD
@@ -7721,7 +7961,7 @@ class Foo {
 
 我们通过被访问方法的名称来确定我们是否在分析一个初始化方法。
 
-\begin{code}{java}{2-4}{lox/Resolver.java，在visitClassStmt()方法中添加：}
+\begin{code}{java}{2-4}{lox/Resolver.java，在visitClassStmt()方法中添加}
       FunctionType declaration = FunctionType.METHOD;
       if (method.name.lexeme.equals("init")) {
         declaration = FunctionType.INITIALIZER;
@@ -7731,7 +7971,7 @@ class Foo {
 
 当我们稍后遍历return语句时，我们会检查该字段，如果从init()方法内部返回一个值时就抛出一个错误。
 
-\begin{code}{java}{2-5}{lox/Resolver.java，在visitReturnStmt()方法中添加：}
+\begin{code}{java}{2-5}{lox/Resolver.java，在visitReturnStmt()方法中添加}
     if (stmt.value != null) {
       if (currentFunction == FunctionType.INITIALIZER) {
         Lox.error(stmt.keyword,
@@ -7752,7 +7992,7 @@ class Foo {
 
 有时候这实际上是有用的，所以我们不想完全禁止它。相对地，它应该返回this而不是nil。这在LoxFunction中很容易解决。
 
-\begin{code}{java}{2}{lox/LoxFunction.java，在call()方法中添加：}
+\begin{code}{java}{2}{lox/LoxFunction.java，在call()方法中添加}
     } catch (Return returnValue) {
       if (isInitializer) return closure.getAt(0, "this");
       return returnValue.value;
@@ -7883,7 +8123,7 @@ classDecl &\rightarrow\quad \mathtt{"}class\mathtt{"} \quad IDENTIFIER \quad ( \
 
 新的解析器代码直接遵循语法。
 
-\begin{code}{java}{2-6}{lox/Parser.java，在classDeclaration()中添加：}
+\begin{code}{java}{2-6}{lox/Parser.java，在classDeclaration()中添加}
     Token name = consume(IDENTIFIER, "Expect class name.");
     Expr.Variable superclass = null;
     if (match(LESS)) {
@@ -7903,7 +8143,7 @@ classDecl &\rightarrow\quad \mathtt{"}class\mathtt{"} \quad IDENTIFIER \quad ( \
 
 如果我们没有解析到超类子句，超类表达式将是null。我们必须确保后面的操作会对其进行检查。首先是分析器。
 
-\begin{code}{java}{2-4}{lox/Resolver.java，在visitClassStmt()方法中添加：}
+\begin{code}{java}{2-4}{lox/Resolver.java，在visitClassStmt()方法中添加}
     define(stmt.name);
     if (stmt.superclass != null) {
       resolve(stmt.superclass);
@@ -7921,7 +8161,7 @@ class Oops < Oops {}
 
 这种代码不可能做什么有用的事情，如果我们尝试让运行时去执行它，将会打破解释器对继承链中没有循环的期望。最安全的做法是静态地检测这种情况，并将其作为一个错误报告出来。
 
-\begin{code}{java}{2-6}{lox/Resolver.java，在visitClassStmt()方法中添加：}
+\begin{code}{java}{2-6}{lox/Resolver.java，在visitClassStmt()方法中添加}
     define(stmt.name);
     if (stmt.superclass != null &&
         stmt.name.lexeme.equals(stmt.superclass.name.lexeme)) {
@@ -7933,7 +8173,7 @@ class Oops < Oops {}
 
 如果代码分析没有问题，AST节点就会被传递到解释器。
 
-\begin{code}{java}{2-9}{lox/Interpreter.java，在visitClassStmt()方法中添加：}
+\begin{code}{java}{2-9}{lox/Interpreter.java，在visitClassStmt()方法中添加}
   public Void visitClassStmt(Stmt.Class stmt) {
     Object superclass = null;
     if (stmt.superclass != null) {
@@ -7975,7 +8215,7 @@ class Subclass < NotAClass {} // ?!
 
 字段我们在这里声明：
 
-\begin{code}{java}{2}{lox/LoxClass.java，在LoxClass类中添加：}
+\begin{code}{java}{2}{lox/LoxClass.java，在LoxClass类中添加}
   final String name;
   final LoxClass superclass;
   private final Map<String, LoxFunction> methods;
@@ -7991,7 +8231,7 @@ Lox是一种动态类型的语言，所以我们的要求要简单得多。基�
 
 这符合继承的目标之一——为用户提供一种跨类重用代码的方式。在我们的解释器中实现这一点是非常容易的。
 
-\begin{code}{java}{3-5}{lox/LoxClass.java，在findMethod()方法中添加：}
+\begin{code}{java}{3-5}{lox/LoxClass.java，在findMethod()方法中添加}
       return methods.get(name);
     }
     if (superclass != null) {
@@ -8075,7 +8315,7 @@ method();
 
 因此，super表达式本身只包含super关键字和要查找的方法名称。对应的语法树节点为：
 
-\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加：}
+\begin{code}{java}{2}{tool/GenerateAst.java，在main()方法中添加}
       "Set      : Expr object, Token name, Expr value",
       "Super    : Token keyword, Token method",
       "This     : Token keyword",
@@ -8083,7 +8323,7 @@ method();
 
 按照语法，需要在我们现有的primary方法中添加新代码。
 
-\begin{code}{java}{3-9}{lox/Parser.java，在primary()方法中添加：}
+\begin{code}{java}{3-9}{lox/Parser.java，在primary()方法中添加}
       return new Expr.Literal(previous().literal);
     }
     if (match(SUPER)) {
@@ -8124,33 +8364,40 @@ class C < B {}
 C().test();
 \end{code}
 
-将这个程序转换为Java、c\#或c++，它将输出“A method”，这也是我们希望Lox做的。当这个程序运行时，在test方法体中，this是C的一个实例，C是超类是B，但这不是查找应该开始的地方。如果是这样，我们就会命中B的method()。
+将这个程序转换为Java、C\#或c++，它将输出“A method”，这也是我们希望Lox做的。当这个程序运行时，在test方法体中，this是C的一个实例，C是超类是B，但这不是查找应该开始的地方。如果是这样，我们就会命中B的method()。
 
 相反，查找应该从包含super表达式的类的超类开始。在这个例子中，由于test()是在B中定义的，它内部的super表达式应该在B的超类A中开始查找。
 
-执行流程看起来是这样的：
-
-\begin{enumerate}
-  \item 我们在C的一个实例上调用test()。
-  \item 这就进入了从B中继承的test()方法，其中又会调用super.method()。
-  \item B的超类是A，所以链接到A中的method()，程序会打印出“A method”。
-\end{enumerate}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/inheritance/classes.png}
+\end{figure}
 
 因此，为了对super表达式求值，我们需要访问围绕方法调用的类的超类。可惜的是，在解释器中执行super表达式的地方，我们并没有那么容易获得。
 
 我们可以从LoxFunction添加一个字段，以存储指向拥有该方法的LoxClass的引用。解释器会保存执行当前执行的LoxFunction的引用，这样稍后在遇到super表达式时就可以找到它。从它开始，可以得到方法的LoxClass，然后找到它的超类。
 
-这需要很多管道。在上一章中，我们添加对this的支持时遇到了类似的问题。在那种情况下，我们使用已有的环境和闭包机制保存了指向当前对象的引用。那我们是否可以做类似的事情来存储超类？嗯，如果答案是否定的，我就不会问这个问题了，所以……是的。
+这需要很多管道。在上一章中，我们添加对this的支持时遇到了类似的问题。在那种情况下，我们使用已有的环境和闭包机制保存了指向当前对象的引用。那我们是否可以做类似的事情来存储超类？嗯，如果答案是否定的，我就不会问这个问题了，所以...是的。
 
-一个重要的区别是，我们在方法被访问时绑定了this。同一个方法可以在不同的实例上被调用，而且每个实例都需要有自己的this。对于super表达式，超类是*类声明本身*的一个固定属性。每次对某个super表达式求值时，超类都是同一个。
+一个重要的区别是，我们在方法被访问时绑定了this。同一个方法可以在不同的实例上被调用，而且每个实例都需要有自己的this。对于super表达式，超类是\textit{类声明本身}的一个固定属性。每次对某个super表达式求值时，超类都是同一个。
 
 这意味着我们可以在执行类定义时，为超类创建一个环境。在定义方法之前，我们创建一个新环境，将类的超类与名称super绑定。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/inheritance/superclass.png}
+\end{figure}
+
 当我们为每个方法创建LoxFunction运行时表示时，也就是这个方法闭包中获取的环境。之后，放方法被调用时会绑定this，超类环境会成为方法环境的父环境，就像这样：
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/inheritance/environments.png}
+\end{figure}
 
 这是一个复杂的机制，但是我们会一步一步完成它。在我们可以在运行时创建环境之前，我们需要在分析器中处理对应的作用域。
 
-\begin{code}{java}{3-6}{lox/Resolver.java，在visitClassStmt()方法中添加：}
+\begin{code}{java}{3-6}{lox/Resolver.java，在visitClassStmt()方法中添加}
       resolve(stmt.superclass);
     }
     if (stmt.superclass != null) {
@@ -8162,7 +8409,7 @@ C().test();
 
 如果该类声明有超类，那么我们就在其所有方法的外围创建一个新的作用域。在这个作用域中，我们会定义名称super。一旦我们完成了对该类中方法的分析，就丢弃这个作用域。
 
-\begin{code}{java}{2}{lox/Resolver.java，在visitClassStmt()方法中添加：}
+\begin{code}{java}{2}{lox/Resolver.java，在visitClassStmt()方法中添加}
     endScope();
     if (stmt.superclass != null) endScope();
     currentClass = enclosingClass;
@@ -8172,7 +8419,7 @@ C().test();
 
 在作用域链中定义super后，我们就能够分析super表达式了。
 
-\begin{code}{java}{}{lox/Resolver.java，在visitSetExpr()方法后添加：}
+\begin{code}{java}{}{lox/Resolver.java，在visitSetExpr()方法后添加}
   @Override
   public Void visitSuperExpr(Expr.Super expr) {
     resolveLocal(expr, expr.keyword);
@@ -8184,7 +8431,7 @@ C().test();
 
 这段代码在解释器中也有对应。当我们执行子类定义时，创建一个新环境。
 
-\begin{code}{java}{7-10}{lox/Interpreter.java，在visitClassStmt()方法中添加：}
+\begin{code}{java}{7-10}{lox/Interpreter.java，在visitClassStmt()方法中添加}
         throw new RuntimeError(stmt.superclass.name,
             "Superclass must be a class.");
       }
@@ -8200,7 +8447,7 @@ C().test();
 
 在这个环境中，我们保存指向超类的引用——即我们在运行时现在拥有的超类的实际LoxClass对象。然后我们为每个方法创建LoxFunction。这些函数将捕获当前环境（也就是我们刚刚绑定“super”的那个）作为其闭包，像我们需要的那样维系着超类。一旦这些完成，我们就弹出环境。
 
-\begin{code}{java}{3-5}{lox/Interpreter.java，在visitClassStmt()方法中添加：}
+\begin{code}{java}{3-5}{lox/Interpreter.java，在visitClassStmt()方法中添加}
     LoxClass klass = new LoxClass(stmt.name.lexeme,
         (LoxClass)superclass, methods);
     if (superclass != null) {
@@ -8211,7 +8458,7 @@ C().test();
 
 我们现在已经准备好解释super表达式了。这会分为很多部分，所以我们逐步构建这个方法。
 
-\begin{code}{java}{}{lox/Interpreter.java，在visitSetExpr()方法后添加：}
+\begin{code}{java}{}{lox/Interpreter.java，在visitSetExpr()方法后添加}
   @Override
   public Object visitSuperExpr(Expr.Super expr) {
     int distance = locals.get(expr);
@@ -8226,7 +8473,7 @@ C().test();
 
 不幸的是，在super表达式中，我们没有一个方便的节点可以让分析器将this对应的跳数保存起来。幸运的是，我们可以控制环境链的布局。绑定this的环境总是存储在保存super的环境中。
 
-\begin{code}{java}{3-4}{lox/Interpreter.java，在visitSuperExpr()方法中添加：}
+\begin{code}{java}{3-4}{lox/Interpreter.java，在visitSuperExpr()方法中添加}
     LoxClass superclass = (LoxClass)environment.getAt(
         distance, "super");
     LoxInstance object = (LoxInstance)environment.getAt(
@@ -8238,7 +8485,7 @@ C().test();
 
 现在我们准备查找并绑定方法，从超类开始。
 
-\begin{code}{java}{3-5}{lox/Interpreter.java，在visitSuperExpr()方法中添加：}
+\begin{code}{java}{3-5}{lox/Interpreter.java，在visitSuperExpr()方法中添加}
     LoxInstance object = (LoxInstance)environment.getAt(
         distance - 1, "this");
     LoxFunction method = superclass.findMethod(expr.method.lexeme);
@@ -8250,7 +8497,7 @@ C().test();
 
 基本上就是这样了。当然，除了我们可能找不到方法之外。所以，我们要对其检查。
 
-\begin{code}{java}{2-5}{lox/Interpreter.java，在visitSuperExpr()方法中添加：}
+\begin{code}{java}{2-5}{lox/Interpreter.java，在visitSuperExpr()方法中添加}
     LoxFunction method = superclass.findMethod(expr.method.lexeme);
     if (method == null) {
       throw new RuntimeError(expr.method,
@@ -8303,7 +8550,7 @@ super.notEvenInAClass();
 
 我们将用它来区分我们是否在一个由超类的类中。当我们分析一个类的声明时，如果该类是一个子类，我们就设置该值。
 
-\begin{code}{java}{2}{lox/Resolver.java，在visitClassStmt()方法中添加：}
+\begin{code}{java}{2}{lox/Resolver.java，在visitClassStmt()方法中添加}
     if (stmt.superclass != null) {
       currentClass = ClassType.SUBCLASS;
       resolve(stmt.superclass);
@@ -8311,7 +8558,7 @@ super.notEvenInAClass();
 
 然后，当我们分析super表达式时，会检查当前是否在一个允许使用super表达式的作用域中。
 
-\begin{code}{java}{2-8}{lox/Resolver.java，在visitSuperExpr()方法中添加：}
+\begin{code}{java}{2-8}{lox/Resolver.java，在visitSuperExpr()方法中添加}
   public Void visitSuperExpr(Expr.Super expr) {
     if (currentClass == ClassType.NONE) {
       Lox.error(expr.keyword,
@@ -8408,7 +8655,7 @@ super.notEvenInAClass();
 
 我们的Java解释器jlox教会了我们许多编程语言的基础知识，但我们仍然有许多东西需要学习。首先，如果你在jlox中运行任何Lox程序，你会发现它非常慢。它所使用的解释方式——直接遍历AST，对于某些实际应用来说已经足够了，但是对于通用脚本语言来说还有很多不足之处。
 
-另外，我们隐式地依赖于JVM本身的运行时特性。我们想当然地认为像`instanceof`这样的语句在Java中是可以工作的。而且我们从未担心过内存管理，因为JVM的垃圾收集器为我们解决了这个问题。
+另外，我们隐式地依赖于JVM本身的运行时特性。我们想当然地认为像instanceof这样的语句在Java中是可以工作的。而且我们从未担心过内存管理，因为JVM的垃圾收集器为我们解决了这个问题。
 
 当我们专注于高层次概念时，我们可以忽略这些。但现在我们已经对解释器了如指掌，是时候深入到这些底层，从头开始构建我们自己的虚拟机，只用C语言标准库就可以了……
 
@@ -8453,6 +8700,11 @@ print after - before;
 
 这些是真正的优势。但是，另一方面，它的内存使用效率不高。每一段语法都会变成一个AST节点。像1+2这样的Lox表达式会变成一连串的对象，对象之间有很多指针，就像：
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/chunks-of-bytecode/ast.png}
+\end{figure}
+
 每个指针都会给对象增加32或64比特的开销。更糟糕的是，将我们的数据散布在一个松散连接的对象网络中的堆上，会对空间局部性造成影响。
 
 现代CPU处理数据的速度远远超过它们从RAM中提取数据的速度。为了弥补这一点，芯片中有多层缓存。如果它需要的一块存储数据已经在缓存中，它就可以更快地被加载。我们谈论的是100倍以上的提速。
@@ -8492,6 +8744,11 @@ print after - before;
 模拟层增加了开销，这是字节码比本地代码慢的一个关键原因。但作为回报，它为我们提供了可移植性。用像C这样的语言来编写我们的虚拟机，它已经被我们所关心的所有机器所支持，这样我们就可以在任何我们喜欢的硬件上运行我们的模拟器。
 
 这就是我们的新解释器clox要走的路。我们将追随Python、Ruby、Lua、OCaml、Erlang和其它主要语言实现的脚步。在许多方面，我们的VM设计将与之前的解释器结构并行。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/chunks-of-bytecode/phases.png}
+\end{figure}
 
 当然，我们不会严格按照顺序实现这些阶段。像我们之前的解释器一样，我们会反复地构建实现，每次只构建一种语言特性。在这一章中，我们将了解应用程序的框架，并创建用于存储和表示字节码块的数据结构。
 
@@ -8579,7 +8836,17 @@ typedef struct {
 
 当添加元素时，如果计数小于容量，那么数组中已有可用空间。我们将新元素直接存入其中，并修改计数值。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/chunks-of-bytecode/insert.png}
+\end{figure}
+
 如果没有多余的容量，那么这个过程会稍微复杂一些。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/chunks-of-bytecode/grow.png}
+\end{figure}
 
 \begin{enumerate}
   \item 分配一个容量更大的新数组。
@@ -9048,6 +9315,11 @@ typedef enum {
 
 为了处理这样的情况，我们的字节码像大多数其它字节码一样，允许指令有\textbf{操作数}。这些操作数以二进制数据的形式存储在指令流的操作码之后，让我们对指令的操作进行参数化。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/chunks-of-bytecode/format.png}
+\end{figure}
+
 每个操作码会定义它有多少操作数以及各自的含义。例如，一个像“return”这样简单的操作可能没有操作数，而一个“加载局部变量”的指令需要一个操作数来确定要加载哪个变量。每次我们向clox添加一个新的操作码时，我们都会指定它的操作数是什么样子的——集它的\textbf{指令格式}。
 
 在这种情况下，OP\_CONSTANT会接受一个单字节的操作数，该操作数指定从块的常量数组中加载哪个常量。由于我们还没有编译器，所以我们在测试字节码块中“手动编译”一个指令。
@@ -9060,7 +9332,7 @@ typedef enum {
   writeChunk(&chunk, OP_RETURN);
 \end{code}
 
-我们将常量值添加到字节码块的常量池中。这会返回常量在数组中的索引。然后我们写常量操作指令，从操作码开始。之后，我们写入一字节的常量索引操作数。注意， `writeChunk()` 可以写操作码或操作数。对于该函数而言，它们都是原始字节。
+我们将常量值添加到字节码块的常量池中。这会返回常量在数组中的索引。然后我们写常量操作指令，从操作码开始。之后，我们写入一字节的常量索引操作数。注意，writeChunk()可以写操作码或操作数。对于该函数而言，它们都是原始字节。
 
 如果我们现在尝试运行下面的代码，反汇编器会遇到问题，因为它不知道如何解码新指令。让我们来修复这个问题。
 
