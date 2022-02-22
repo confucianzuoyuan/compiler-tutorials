@@ -9922,7 +9922,7 @@ typedef struct {
 
 ...stackTop永远指向正好超过栈顶元素的元素。
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{image/a-virtual-machine/stack-crepe.png}
 \end{figure}
@@ -9936,6 +9936,65 @@ typedef struct {
 
 typedef struct {
 \end{code}
+
+由于我们的虚拟机的栈的大小是固定的，所以很容易由于某些指令序列的执行而在栈上压入过多的值，导致栈空间溢出——也就是经典的“栈溢出（stack overflow）”。我们可以按需动态的扩展栈空间的大小，但现在我们还是要保持代码的简单。由于虚拟机使用了值（Value），所以我们需要导入相关依赖。
+
+\begin{code}{c}{2}{vm.h}
+#include "chunk.h"
+#include "value.h"
+
+#define STACK_MAX 256
+\end{code}
+
+由于虚拟机有一些很有意思的状态，所以我们也需要初始化状态。
+
+\begin{code}{c}{2}{vm.c，在initVM()中添加}
+void initVM() {
+  resetStack();
+}
+\end{code}
+
+这需要使用下面的辅助函数：
+
+\begin{code}{c}{}{vm.c，在变量vm后面添加}
+static void resetStack() {
+  vm.stackTop = vm.stack;
+}
+\end{code}
+
+由于栈的数组直接在VM结构体中进行了内联声明，所以我们无需专门分配内存。我们甚至无需清空数组中不使用的单元——我们只是不再访问这些单元，直到有数据存储到这些单元中我们才会重新访问。我们唯一需要初始化的就是stackTop，来让它指向数组的最开始的位置，这样就表示栈是空的。
+
+栈通常支持两种操作：压栈和弹栈
+
+\begin{code}{c}{2-3}{vm.h，在interpret()后面添加}
+InterpretResult interpret(Chunk* chunk);
+void push(Value value);
+Value pop();
+
+#endif
+\end{code}
+
+你可以将一个新的值压到栈顶，也可以将最近压栈的元素从栈中弹出。下面是第一个函数：
+
+\begin{code}{c}{}{vm.c，在freeVM()后面添加}
+void push(Value value) {
+  *vm.stackTop = value;
+  vm.stackTop++;
+}
+\end{code}
+
+如果你的C语言指针语法和指针操作已经忘的差不多了，那么上面的代码是一个比较好的对指针的温习。第一行将value保存到了栈顶对应的数组中的单元里。还记得吗？stackTop必须指向正好\textit{超过}最后一个使用的元素的位置，也就是指向下一个可用的位置。第一行代码将值保存在了栈顶的单元中。然后我们让指针加1，使得指针指向下一个未使用的数组单元。因为前一个单元已经被占用了。
+
+弹栈操作是压栈的镜像操作：
+
+\begin{code}{c}{}{vm.c，添加到push()后面}
+Value pop() {
+  vm.stackTop--;
+  return *vm.stackTop;
+}
+\end{code}
+
+首先，我们将栈指针（stack pointer，sp）\textit{移回}到最近使用的数组单元。然后我们查找指针对应的数组元素并返回。我们不需要显式地“删除”栈顶的元素——将stackTop指针向下移动已经表明现在指向的单元已经不再使用了。
 
 \subsection{栈的跟踪}
 
