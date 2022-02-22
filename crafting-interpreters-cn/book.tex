@@ -9882,6 +9882,61 @@ print echo(echo(1) + echo(2)) + echo(echo(4) + echo(5));
 
 \subsection{虚拟机的栈}
 
+也许上面的看起来没什么启发，但我\textit{喜欢}基于栈的虚拟机。当你第一次看到一个魔术时，会感觉很神奇。但当你了解了魔术是如何工作的——通常是一些机械手段或者刻意的误导——惊奇感就消失了。而计算机科学中有一些想法，即使我们将这些想法拆分并搞懂所有的来龙去脉之后，一些最初的闪光点仍然存在。基于栈的虚拟机就是其中之一。
+
+正如你将在本章中看到的，在基于栈的虚拟机中执行指令是非常简单的。在后面的章节中，你将会发现将源语言编译成基于栈的虚拟机的指令集同样很简单。而且，这种架构足够快，可以用在生产环境中。这中感觉就像在编程语言这个游戏中作弊一样。
+
+好的，让我们继续写代码！下面是栈的代码：
+
+\begin{code}{c}{4-5}{vm.h，在VM结构体中添加}
+typedef struct {
+  Chunk* chunk;
+  uint8_t* ip;
+  Value stack[STACK_MAX];
+  Value* stackTop;
+} VM;
+\end{code}
+
+我们使用C语言的数组特性来实现栈的语义。栈的底部——用来保存第一个压栈的值，也就是最后一个弹栈的值——指向数组索引为0的元素，然后在上面继续压栈。如果我们要将“crepe”——我最喜欢的栈式早餐餐点——的所有字母压栈，那么按照压栈的顺序看，压栈完成以后的C语言数组会像下面一样：
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/a-virtual-machine/array.png}
+\end{figure}
+
+由于随着值的压入或者弹出，栈会生长或者收缩，所以我们需要跟踪栈顶在数组中的位置。和ip的实现相同，我们使用了一个指针而不是数组索引来指向栈顶的位置，因为指针的解引用操作比每次需要时从索引计算偏移量更快。
+
+指针指向的数组元素是刚刚\textit{超过}栈顶元素的数组元素，这看起来似乎有点奇怪，但几乎每个栈的实现都是这样做的。这意味着我们可以通过指向数组中的0元素来表示栈为空栈。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/a-virtual-machine/stack-empty.png}
+\end{figure}
+
+如果我们指向的是栈顶的元素的话，那么对于空栈我们需要指向数组索引为-1的元素。这在C语言中是未定义行为。当我们压栈时：
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/a-virtual-machine/stack-c.png}
+\end{figure}
+
+...stackTop永远指向正好超过栈顶元素的元素。
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{image/a-virtual-machine/stack-crepe.png}
+\end{figure}
+
+我一般会这样来帮助记忆：stackTop指向下一个将要压栈的元素会去的数组中的位置。栈最多能保存的元素数量（至少目前如此）如下：
+
+\begin{code}{c}{2-3}{vm.h}
+#include "chunk.h"
+
+#define STACK_MAX 256
+
+typedef struct {
+\end{code}
+
 \subsection{栈的跟踪}
 
 \section{一个算术计算器}
@@ -9889,6 +9944,19 @@ print echo(echo(1) + echo(2)) + echo(echo(4) + echo(5));
 \subsection{二元运算符}
 
 \section{挑战}
+
+\begin{enumerate}
+  \item 请为下面的表达式生成字节码指令序列：
+
+\begin{code}{js}{}{}
+1 * 2 + 3
+1 + 2 * 3
+3 - 2 - 1
+1 + 2 * 3 - 4 / -5
+\end{code}
+
+  （要注意Lox没有针对负数字面量的语法，所以-5是5的取负操作。）
+\end{enumerate}
 
 \section{设计笔记：基于寄存器的字节码}
 
