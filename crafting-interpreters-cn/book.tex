@@ -9998,9 +9998,135 @@ Value pop() {
 
 \subsection{栈的跟踪}
 
+我们有一个在工作的栈，但很难\textit{看到}这个栈的工作过程。当我们开始实现更加复杂的指令以及编译和运行更大的代码片段时，我们会在栈中压入大量的值。如果我们能够让栈在一定程度上可视化，那么在开发虚拟机时会省不少事情。
+
+所以，当我们在追踪程序的执行过程时，我们会在执行指令之前将栈里面的内容打印出来：
+
+\begin{code}{c}{2-8}{vm.c，在run()中添加}
+#ifdef DEBUG_TRACE_EXECUTION
+    printf("          ");
+    for (Value* slot = vm.stack; slot < vm.stackTop; slot++) {
+      printf("[ ");
+      printValue(*slot);
+      printf(" ]");
+    }
+    printf("\n");
+    disassembleInstruction(vm.chunk,
+\end{code}
+
+我们编写了一个循环，打印出数组中的每个值，从栈底一直打印到栈顶。这使得我们可以观察到每条指令对栈做了哪些事情。打印出的结果非常冗长，但是当我们需要解决一些很讨厌的bug时，打印的内容将会很有帮助。
+
+有栈在手，我们可以再回头看已经实现的两条指令。常量指令：
+
+\begin{code}{c}{3}{vm.c，在run()中替换2行}
+      case OP_CONSTANT: {
+        Value constant = READ_CONSTANT();
+        push(constant);
+        break;
+\end{code}
+
+在上一章中，我对OP\_CONSTANT指令如何“加载”一个常量表示了怀疑。现在我们有了一个栈，你就知道了实际产生一个值意味着什么：它会被压栈。
+
+\begin{code}{c}{2-3}{vm.c，在run()中添加}
+      case OP_RETURN: {
+        printValue(pop());
+        printf("\n");
+        return INTERPRET_OK;
+\end{code}
+
+接着我们让OP\_RETURN指令做弹栈操作并在退出前打印弹出的元素的值。当我们为clox添加真正的函数功能时，将会修改这部分代码。但对于现在而言，上面的代码给我们提供了一种方法来让虚拟机执行简单的指令序列并显示结果。
+
 \section{一个算术计算器}
 
+我们虚拟机的核心和灵魂现在已经到位。字节码循环负责分派和执行指令。栈随着值流过它而增长和缩小。这两部分都可以工作，但很难感受到它们与我们目前仅有的两个基本指令交互时的巧妙程度。所以让我们来教我们的解释器做算术运算。
+
+我们将从最简单的算术运算开始，一元取负运算。
+
+\begin{code}{js}{}{}
+var a = 1.2;
+print -a; // -1.2.
+\end{code}
+
+前缀运算符“-”接受一个操作数，即要取负的值。并产生取负的结果。我们还没有开始实现解析器的功能，但我们可以添加上述语法可以编译到的字节码指令。
+
+\begin{code}{c}{2}{chunk.h，在OpCode枚举中添加}
+  OP_CONSTANT,
+  OP_NEGATE,
+  OP_RETURN,
+\end{code}
+
+我们将这样来执行这条指令：
+
+\begin{code}{c}{2}{vm.c，在run()中添加}
+      }
+      case OP_NEGATE:   push(-pop()); break;
+      case OP_RETURN: {
+\end{code}
+
+这条指令需要一个值作为操作数，这个值通过弹栈来获取。然后对值取负，再压栈。是不是很简单！我们还可以对这条指令进行反汇编。
+
+\begin{code}{c}{3-4}{debug.c，在disassembleInstruction()中添加}
+    case OP_CONSTANT:
+      return constantInstruction("OP_CONSTANT", chunk, offset);
+    case OP_NEGATE:
+      return simpleInstruction("OP_NEGATE", offset);
+    case OP_RETURN:
+\end{code}
+
+好，让我们来测试一下代码的功能：
+
+\begin{code}{c}{2}{main.c，在main()中添加}
+  writeChunk(&chunk, constant, 123);
+  writeChunk(&chunk, OP_NEGATE, 123);
+
+  writeChunk(&chunk, OP_RETURN, 123);
+\end{code}
+
+在加载常量之后，但在将结果返回之前，我们执行取负指令。并用常量的取负结果替换了栈上的常量。然后OP\_RETURN指令将它打印出来：
+
+\begin{code}{js}{}{}
+-1.2
+\end{code}
+
+好神奇！
+
 \subsection{二元运算符}
+
+好吧，一元运算符可能没\textit{那么}让人印象深刻。栈上仍然只有一个值。为了让栈的深度大一些，我们需要二元运算符。Lox有四个二元算术运算符：加法，减法，乘法和除法。我们将要一次性实现这些运算符。
+
+\begin{code}{c}{2-5}{chunk.h，在OpCode枚举类型中添加}
+  OP_CONSTANT,
+  OP_ADD,
+  OP_SUBTRACT,
+  OP_MULTIPLY,
+  OP_DIVIDE,
+  OP_NEGATE,
+\end{code}
+
+回到字节码循环中，它们是这样执行的：
+
+\begin{code}{c}{2-5}{vm.c，在run()中添加}
+      }
+      case OP_ADD:      BINARY_OP(+); break;
+      case OP_SUBTRACT: BINARY_OP(-); break;
+      case OP_MULTIPLY: BINARY_OP(*); break;
+      case OP_DIVIDE:   BINARY_OP(/); break;
+      case OP_NEGATE:   push(-pop()); break;
+\end{code}
+
+这四个指令之间的唯一区别是它们最终使用哪个底层C语言运算符来组合两个操作数。围绕核心算术表达式的是一些样板代码，用于从栈中弹出操作数然后将计算结果压栈。当我们稍后添加动态类型时，样板代码将会增长。为了避免重复编写四次差不多的代码，我将它封装在一个宏中。
+
+\begin{code}{c}{2-7}{vm.c，在run()中添加}
+#define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
+#define BINARY_OP(op) \
+    do { \
+      double b = pop(); \
+      double a = pop(); \
+      push(a op b); \
+    } while (false)
+
+  for (;;) {
+\end{code}
 
 \section{挑战}
 
