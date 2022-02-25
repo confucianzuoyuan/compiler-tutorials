@@ -10128,6 +10128,118 @@ print -a; // -1.2.
   for (;;) {
 \end{code}
 
+我承认这是对C预处理器的一个冒险使用。我很犹豫要不要这样做，但在后面的章节中你就会发现当我们想要为每个操作数和其它内容添加类型检查功能时，这样做会很方便。差不多的代码重复写四次是很痛苦的一件事情。
+
+如果你还不是很熟悉有关宏的一些技巧，那么外层的do while循环可能看起来很鬼畜。这个宏会展开成一系列的语句。作为一个很小心的宏定义编写者，我会保证当宏被展开时，宏定义中的语句在同一个作用域中结束。比如你像下面这样编写宏定义：
+
+\begin{code}{c}{}{}
+#define WAKE_UP() makeCoffee(); drinkCoffee();
+\end{code}
+
+那么如果像下面使用这个宏定义：
+
+\begin{code}{c}{}{}
+if (morning) WAKE_UP();
+\end{code}
+
+我们的意图是当morning为真时，执行宏定义中的两条语句。但是上面的代码经过宏展开变成了：
+
+\begin{code}{c}{}{}
+if (morning) makeCoffee(); drinkCoffee();;
+\end{code}
+
+晕死。if只能触碰到宏定义中的\textit{第一条}语句。你可能觉得使用块（block）能解决这个问题。
+
+\begin{code}{c}{}{}
+#define WAKE_UP() { makeCoffee(); drinkCoffee(); }
+\end{code}
+
+这样好了一些，但你可能还会下面这样的危险：
+
+\begin{code}{c}{}{}
+if (morning)
+  WAKE_UP();
+else
+  sleepIn();
+\end{code}
+
+运行上面的代码，会得到一个编译错误。因为宏展开成块之后，块的后面有一个分号“；”。在宏定义中引入do while循环看起来很有趣，但这个宏定义向我们展示了一种方式：宏定义中的块里面可以包含多条语句同时\textit{还}允许宏的末尾可以有分号“；”。
+
+我们刚说道哪儿了？好吧，宏定义的主体代码所做的事情是很直接的。就是二元运算符接受两个操作数，所以需要弹栈两次。然后在使用这两个操作数进行二元运算，然后将计算结果压栈。
+
+特别要注意的一点是两次弹栈的\textit{顺序}。可以看到我们将第一个弹栈的数赋值给了变量b，而不是a。方向是反过来的。计算操作数的时候，运算符左边的操作数先计算，然后计算右边的操作数。这意味着左边的操作数先被压栈，右边的操作数后压栈。所以右边的操作数在栈顶。所以，我们第一次弹栈得到的操作数是b。
+
+举个例子，如果我们编译3 - 1，指令之间的数据流如下所示：
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/a-virtual-machine/reverse.png}
+\end{figure}
+
+就像我们之前在run()函数中使用宏定义一样，在函数尾部同样需要将上面定义的宏清楚掉：
+
+\begin{code}{c}{2}{vm.c，在run()函数中添加}
+#undef READ_CONSTANT
+#undef BINARY_OP
+}
+\end{code}
+
+最后是反汇编功能的支持：
+
+\begin{code}{c}{3-10}{debug.c，在disassembleInstruction()中添加}
+    case OP_CONSTANT:
+      return constantInstruction("OP_CONSTANT", chunk, offset);
+    case OP_ADD:
+      return simpleInstruction("OP_ADD", offset);
+    case OP_SUBTRACT:
+      return simpleInstruction("OP_SUBTRACT", offset);
+    case OP_MULTIPLY:
+      return simpleInstruction("OP_MULTIPLY", offset);
+    case OP_DIVIDE:
+      return simpleInstruction("OP_DIVIDE", offset);
+    case OP_NEGATE:
+\end{code}
+
+算术指令的格式都很简单，例如OP\_RETURN指令。即使算术\textit{运算符}需要接收操作数——操作数在栈上——算术运算\textit{字节码}指令是不需要这样做的。
+
+让我们使用刚写好的指令来对一个比较大的表达式求值吧：
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{image/a-virtual-machine/chunk.png}
+\end{figure}
+
+在我们已经写好的字节码块的基础上，我们再写一些额外的指令将上面的AST手工编译成字节码指令。
+
+\begin{code}{c}{4-14}{main.c，在main()函数中添加}
+  int constant = addConstant(&chunk, 1.2);
+  writeChunk(&chunk, OP_CONSTANT, 123);
+  writeChunk(&chunk, constant, 123);
+
+  constant = addConstant(&chunk, 3.4);
+  writeChunk(&chunk, OP_CONSTANT, 123);
+  writeChunk(&chunk, constant, 123);
+
+  writeChunk(&chunk, OP_ADD, 123);
+
+  constant = addConstant(&chunk, 5.6);
+  writeChunk(&chunk, OP_CONSTANT, 123);
+  writeChunk(&chunk, constant, 123);
+
+  writeChunk(&chunk, OP_DIVIDE, 123);
+  writeChunk(&chunk, OP_NEGATE, 123);
+
+  writeChunk(&chunk, OP_RETURN, 123);
+\end{code}
+
+先进行加法运算。针对左边的常量1.2的指令已经在那里了，所以我们再为3.4提供一条指令。然后我们使用OP\_ADD指令将两个常量相加，并将结果压栈。这样我们就搞定了除法运算左边的操作数。接下来我们将常量5.6压栈，然后被两数相加的结果相除。然后对计算结果取负。
+
+要注意OP\_ADD指令的输出是如何隐式地流动并成为OP\_DIVIDE指令的一个操作数的，而且并没有使用任何指令来将OP\_ADD和OP\_DIVIDE耦合起来。这就是栈的魔力。栈可以让我们自由的组合指令，而无需显式的引入数据流方面的操作和复杂性。栈就像一个共享的空间，所有的指令都可以写入栈也可以从栈中读取。
+
+在上面的这个小字节码块中，栈的深度也仅仅容纳了两个值，但是当我们开始编译更加复杂的Lox源代码到字节码时，我们编译出的字节码块会使用更加多的栈空间。同时，作为练习，你可以使用手工编写字节码指令序列的方式来计算一些不同的具有嵌套结构的算术表达式，然后看一下值是如何在指令和栈之间流动的。
+
+你可以把上面的字节码块复制保存下来，因为这是我们最后一个使用手工方式编写的字节码块。当我们再次造访字节码相关的代码时，我们将实现一个编译器来自动产生字节码块。
+
 \section{挑战}
 
 \begin{enumerate}
