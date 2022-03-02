@@ -1868,50 +1868,6 @@ popq %rbp                  # 恢复旧的基指针
 ret                        # 返回到调用者
 \end{minted}
 
-\section{简介}
-
-\section{开源汇编工具}
-
-\section{X86汇编语言}
-
-\subsection{寄存器和数据类型}
-
-\subsection{寻址模式}
-
-\subsection{基本算术}
-
-\subsection{比较和跳转}
-
-\subsection{栈}
-
-\subsection{函数调用}
-
-\subsection{叶子函数的定义}
-
-\subsection{复杂函数的定义}
-
-\section{ARM汇编语言}
-
-\subsection{寄存器和数据类型}
-
-\subsection{寻址模式}
-
-\subsection{基本算术}
-
-\subsection{比较和分支}
-
-\subsection{栈}
-
-\subsection{函数调用}
-
-\subsection{叶子函数的定义}
-
-\subsection{复杂函数的定义}
-
-\subsection{64位的不同之处}
-
-\section{深入阅读}
-
 \chapter{代码生成}
 
 \section{介绍}
@@ -1967,7 +1923,7 @@ f: function void ( x: integer, y: integer ) =
 }
 \end{minted}
 
-在这种情况下，x的位置为0，y的位置为1，并且z的位置是2。现在回头看图10.5，它显示了X86-64处理器上的栈的布局。位置0位于地址-8(\%rbp)，位置1位于-16(\%rbp)，位置2位于-24(\%rbp)。
+在这种情况下，x的位置为0，y的位置为1，并且z的位置是2。现在回头看图10.5，它显示了x86\_64处理器上的栈的布局。位置0位于地址-8(\%rbp)，位置1位于-16(\%rbp)，位置2位于-24(\%rbp)。
 
 鉴于此，我们现在可以扩展symbol\_codegen方法来返回字符串，表示局部变量和参数的精确的栈地址，而且只知道当前符号在栈帧中的位置。
 
