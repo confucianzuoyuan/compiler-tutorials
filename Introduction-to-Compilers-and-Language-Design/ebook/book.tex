@@ -1914,19 +1914,319 @@ ret                        # 返回到调用者
 
 \chapter{代码生成}
 
-\section{简介}
+\section{介绍}
 
-\section{函数的代码生成}
+恭喜，你已经进入到编译器的最后阶段了！扫描和解析源代码，构建AST，执行类型检查，并生成一个中间表示，我们现在准备生成代码。
+
+首先，我们将采用一种简单的方法来生成代码，让我们单独考虑程序的每个元素。表达式和语句将作为一个独立的单元生成，因为它们没有引用邻居节点。这很容易且直接，但这种方法很保守且会生成大量的非最优代码。但这是可以工作的，并为我们提供一个思考更复杂的技术的起点。
+
+这些示例将侧重于x86\_64汇编代码，但想要适配ARM和其他汇编语言也不是很难。在前面的阶段，我们将为程序的每个元素定义一个方法。decl\_codegen将为声明生成代码，stmt\_codegen用于语句的代码生成，expr\_codegen用于表达式的代码生成，等等。这些相关语句如图 11.1 所示。
+
+一旦我们学会了这种代码生成的基本方法，我们就为下一章做好了准备，我们将在其中考虑更复杂的生成高度优化代码的方法。
+
+\section{支持函数}
+
+在生成一些代码之前，我们需要编写一些帮助函数来跟踪一些细节。要生成表达式，我们需要一些\textbf{scratch寄存器}来保存运算符之间的中间值。一共三个函数，接口如下：
+
+\begin{minted}{c}
+int scratch_alloc();
+void scratch_free( int r );
+const char * scratch_name( int r );
+\end{minted}
+
+回顾第10章，可以看到每个寄存器都有它的用途：一些用于函数参数，一些用于栈帧管理，还有一些用于保存临时值。如下表所示：
+
+然后，编写scratch\_alloc，查找表中未使用的寄存器，将其标记为使用中，并返回寄存器编号r。scratch\_free应该将指定的寄存器标记为可用。scratch\_name方法的参数是寄存器编号r，返回值是寄存器的名称。用完scratch寄存器是可能的，但也不太可能，正如我们将在下面看到的。现在，如果从头分配找不到空闲寄存器，则输出错误消息并停止程序。
+
+接下来，我们将需要生成大量唯一的、匿名的用来指示跳转和条件分支目标的标签。生成和显示标签的两个函数如下：
+
+\begin{minted}{c}
+int label_create();
+const char * label_name( int label );
+\end{minted}
+
+label\_create只是增加一个全局计数器并返回当前值。标签名称以字符串形式返回该标签，以便标签15表示为.L15。
+
+最后，我们需要一种从程序中的符号映射到表示这些符号的汇编语言代码。为此，编写一个生成符号地址的函数：
+
+\begin{minted}{c}
+const char * symbol_codegen( struct symbol *s );
+\end{minted}
+
+此函数返回一个字符串，它是指令的片段，表示给定符号所需的地址计算。编写symbol\_codegen函数首先要检查符号的作用域。全局变量的处理很简单：汇编语言中的名称与源代码中的名称相同。如果我们有一个symbol结构体表示全局变量count:integer，那么symbol\_codegen方法应该返回count。
+
+表示局部变量和函数参数的符号应该返回一个地址计算，该计算产生局部变量或参数在栈上的地址。在类型检查阶段，我们为每个符号分配一个唯一的编号，从参数开始，然后是每个局部变量。从而奠定了地址计算的基础。
+
+例如，假设我们有以下函数定义：
+
+\begin{minted}{c}
+f: function void ( x: integer, y: integer ) =
+{
+    z: integer = 10;
+    return x + y + z;
+}
+\end{minted}
+
+在这种情况下，x的位置为0，y的位置为1，并且z的位置是2。现在回头看图10.5，它显示了X86-64处理器上的栈的布局。位置0位于地址-8(\%rbp)，位置1位于-16(\%rbp)，位置2位于-24(\%rbp)。
+
+鉴于此，我们现在可以扩展symbol\_codegen方法来返回字符串，表示局部变量和参数的精确的栈地址，而且只知道当前符号在栈帧中的位置。
 
 \section{表达式的代码生成}
 
+为表达式生成汇编代码的基本方法是执行AST或DAG的后序遍历，并为每个节点输出一条或多条指令。主要思想是跟踪保存每个中间值的寄存器的状态。为此，添加一个reg字段到AST或DAG节点的结构体中，这个字段用来保存寄存器的编号，编号由scratch\_alloc方法返回。当我们访问每个节点时，输出一条指令并将保存value的寄存器的编号放入reg字段。当节点不再需要时，调用scratch\_free释放寄存器。
+
+假设我们要为下面的DAG生成X86汇编代码，其中a、b和c是全局整数：
+
+后序遍历将按以下顺序访问节点：
+
+\begin{enumerate}
+  \item 访问a节点，调用scratch\_alloc分配一个新的寄存器(0)并将其保存在node->reg。然后发出指令MOVQ a, R0将值加载到寄存器(0)中。
+  \item 访问3节点。调用scratch\_alloc方法来分配一个新的寄存器(1)，然后输出指令MOVQ \$3, R1。
+  \item 访问IADD节点。通过检查这个节点的两个孩子节点，我们可以看到它们的值被分别保存在了寄存器R0和寄存器R1中。所以我们可以输出指令将它们加起来：ADDQ R0, R1。这是一个破坏性的两地址指令，计算结果将被存放在R1中。R0不再被使用，所以我们调用scratch\_free(0)来释放掉R0寄存器的使用。
+  \item 访问b节点。调用scratch\_alloc方法来分配一个新的寄存器(0)，然后输出指令MOVQ b, R0。
+  \item 访问ISUB节点。然后输出SUBQ R0, R1，并将结果留在R1寄存器中。然后释放寄存器R0。
+  \item 访问c节点，但不输出任何指令，因为它是赋值操作的目标。
+  \item 访问ASSIGN节点，然后输出指令MOVQ R1, c。
+\end{enumerate}
+
+>注意寄存器R0的真正的名字是scratch\_name(0)，也就是\%rbx。为了保证例子的清晰易懂，我们这里把它们叫做R0,R1。
+
+下面是和上面例子中相同的代码，这里使用了调用scratch\_name返回的真实的寄存器名字：
+
+\begin{minted}{nasm}
+MOVQ    a, %rbx
+MOVQ   $3, %r10
+ADDQ %r10, %rbx
+MOVQ    b, %rbx
+SUBQ %rbx, %r10
+MOVQ %r10, c
+\end{minted}
+
+下面是如何用代码来实现。写一个名为expr\_codegen的函数来对左孩子和右孩子递归调用expr\_codegen函数。这将会导致每个孩子节点都生成汇编代码，并将结果存储在register字段所对应的寄存器中。当前节点生成的汇编代码使用那些寄存器，并将不再使用的寄存器释放掉。11.3图给了这种实现的骨架代码。
+
+需要对基本的过程做一些额外的改进。
+
+首先，不是所有的符号都是简单的全局变量。当一个符号是一条指令的一部分时，使用方法symbol\_codegen来返回一个字符串，这个字符串是那个符号的特定的地址。例如，如果这个符号是函数的第一个参数的话，那么指令序列中的第一条指令应该像下面一样：
+
+\begin{minted}{nasm}
+MOVQ -8(%rbp), %rbx
+\end{minted}
+
+第二，一些DAG中的节点需要多条指令，为了适应指令集的特点。可以回忆一下，X86的IMUL指令只有一个参数，因为第一个参数一直在\%rax寄存器中，而计算结果也会一直保存在\%rax寄存器中，溢出的部分则保存在\%rdx寄存器中。为了执行乘法运算，我们必须将一个孩子寄存器放入\%rax寄存器中，然后和另一个孩子寄存器相乘，然后将结果从\%rax中移动到目标scratch寄存器中。例如，表达式(x*10)将会翻译成下面的汇编代码：
+
+\begin{minted}{nasm}
+MOV  $10, %rbx
+MOV  x,   %r10
+MOV  %rbx, %rax
+IMUL %r10
+MOV  %rax, %r11
+\end{minted}
+
+当然，这也意味着在乘法运算的过程中，\%rax和\%rdx这两个寄存器无法在其他地方使用。由于我们有着大量的scratch寄存器来使用，所以在我们的基本的代码生成程序中只会将\%rdx保留下来不做它用。
+
+\begin{minted}{c}
+void expr_codegen( struct expr *e ) {
+  if (!e) return;
+  
+  switch(e->kind) {
+    // 叶子节点：分配寄存器和加载值
+    case EXPR_NAME:
+      e->reg = scratch_alloc();
+      printf("MOVQ %s, %s\n",
+        symbol_codegen(e->symbol),
+        scratch_name(e->reg));
+      break;
+    // 内部节点：生成孩子节点的汇编代码，然后相加
+    case EXPR_ADD:
+      expr_codegen(e->left);
+      expr_codegen(e->right);
+      printf("ADDQ %s, %s\n",
+        scratch_name(e->left->reg),
+        scratch_name(e->right->reg));
+      e->reg = e->right->reg;
+      scratch_free(e->left->reg);
+      break;
+    case EXPR_ASSIGN:
+      expr_codegen(e->left);
+      printf("MOVQ %s, %s\n",
+        scratch_name(e->left->reg),
+        symbol_codegen(e->right->symbol));
+      e->reg = e->left->reg;
+      break;
+    ...
+  }
+}
+\end{minted}
+
+第三，我们如何调用函数？还记得函数的调用只是一个CALL节点，所有函数的参数是一颗非平衡树结构，节点是ARG类型。图11.4提供了表达式a=f(10,b+c)的DAG表示和生成的汇编代码。
+
+代码生成程序首先必须对每个ARG节点求值，计算出每个左孩子节点的值。如果机器有栈调用约定，那么每个ARG节点都对应了一个栈的PUSH操作。如果机器有寄存器调用约定，那么先产生所有参数的汇编代码，然后将每个参数都拷贝到合适的寄存器中。然后输出CALL指令调用函数，当然需要先保存所有的调用者保存的寄存器(caller-saved registers)。当函数调用返回以后，将返回值所在寄存器\%rax中的值移动到一个新分配的scratch寄存器，然后恢复调用者保存的寄存器(caller-saved registers)。
+
+最后，要注意表达式的副作用。每个表达式都有一个计算出来的值，这个值保存在一个scratch寄存器中，可以被父节点使用。一些表达式除了计算出值以外，还有一些其他副作用。对于一些运算符，很容易忽略掉其中一个。
+
+例如，表达式(x=10)求值结果是10，这意味着你可以在任何一个地方使用这个表达式。所以我们可以这样写代码y=x=10或者f(x=10)。而这个表达式同时还有一个副作用，那就是将10储存到变量x里面。当你为x=10这个表达式生成汇编代码时，要保证处理赋值这个副作用，还要将10这个求值结果储存到某个寄存器当中。
+
 \section{语句的代码生成}
 
-\section{条件表达式的代码生成}
+既然我们将表达式的代码生成放在了一个单独的函数expr\_codegen中，我们就可以在表达式的代码生成的基础上构建更大规模的代码了。stmt\_codegen将会为所有的控制流语句生成汇编代码。首先写一个stmt\_codegen脚手架代码如下：
 
-\section{声明的代码生成}
+\begin{minted}{c}
+void stmt_codegen( struct stmt *s ) {
+  if (!s) return;
+  
+  switch(s->kind) {
+    case STMT_EXPR:
+      ...
+      break;
+    case STMT_DECL:
+      ...
+      break;
+    ...
+  }
+  stmt_codegen(s->next);
+}
+\end{minted}
+
+现在先来按顺序考虑一下每种语句的代码生成，先从最简单的情形开始。如果一个语句描述了一个局部变量的声明STMT\_DECL，那么只需要通过调用decl\_codegen来代理这件事情就好了：
+
+\begin{minted}{c}
+case STMT_DECL:
+  decl_codegen(s->decl);
+  break;
+\end{minted}
+
+包含一个表达式的语句(STMT\_EXPR)只需要我们在这个表达式上调用expr\_codegen，然后再释放掉保存表达式最顶层的值的scratch寄存器就可以了。（事实上，每次调用expr\_codegen时，都会有一个scratch寄存器应该被释放。）
+
+\begin{minted}{c}
+case STMT_EXPR:
+  expr_codegen(s->expr);
+  scratch_free(s->expr->reg);
+  break;
+\end{minted}
+
+return语句必须对一个表达式求值，然后将求值结果移动到目标寄存器\%rax中（这个寄存器一般用来保存函数的返回值），然后跳转到函数的结尾汇编代码，这段代码一般会弹栈，恢复到调用点。（可以看下面的内容来获取函数开头汇编代码的详细信息。）
+
+\begin{minted}{c}
+case STMT_RETURN:
+  expr_codegen(s->expr);
+  printf("MOV %s, %%rax\n", scratch_name(s->expr->reg));
+  printf("JMP .%s_epilogue\n", function_name);
+  scratch_free(s->expr->reg);
+  break;
+\end{minted}
+
+（细心的读者会发现上面这段代码需要知道包含了return语句的函数的名字。你需要寻找一种方法将这个信息一直传递下去。）
+
+控制流语句更加有趣。比较好的方法是，先来考虑一下我们想要生成的汇编代码是什么样子，再回过头来去考虑生成代码的程序如何编写。
+
+下面是针对条件语句的一个代码模板：
+
+为了将上述条件语句表达为汇编语言，我们必须对控制表达式进行求值，求值结果需要保存在一个已知的寄存器中。一个CMP表达式用来测试求值结果是否为零（也就是false）。如果表达式求值结果是false，那么我们必须使用JE指令（jump-if-equal）来跳转到false分支。否则，我们会继续执行true分支。在true分支的结尾处，我们必须JMP跳过else分支，从条件语句的结尾处继续执行。
+
+一旦我们有了想要的汇编代码的雏形，编写代码生成程序就很容易了。首先，生成两个标签，然后针对每个表达式调用expr\_codegen方法，针对每个语句调用stmt\_codegen。然后替换一些额外的指令来构建整个程序结构。
+
+\begin{minted}{c}
+case STMT_IF:
+  int else_label = label_create();
+  int done_label = label_create();
+  expr_codegen(s->expr);
+  printf("CMP $0, %s\n", scratch_name(s->expr->reg));
+  scratch_free(s->expr->reg);
+  printf("JE %s\n", label_name(else_label));
+  stmt_codegen(s->body);
+  printf("JMP %s\n", label_name(done_label));
+  printf("%s:\n", label_name(else_label));
+  stmt_codegen(s->else_body);
+  printf("%s:\n", label_name(done_label));
+  break;
+\end{minted}
+
+可以用相似的方式来处理循环语句。下面是for循环语句的模板：
+
+下面是对应的汇编代码的模板。首先，对初始化表达式进行求值。然后，针对每一次循环的迭代执行，对控制表达式进行求值。如果求值为false，则跳转到循环的末尾处。如果求值为true，则执行循环体，然后继续对控制表达式进行下一次求值。
+
+代码生成程序的编写留做作业完成。要注意的是，for循环中的三个表达式都是可以省略的。如果init-expr被省略或者next-expr被省略，则它们不起任何作用。如果expr被省略，则求值结果默认为true。
+
+很多语言都有循环控制结构，例如：continue语句和break语句。在这些情况下，编译器必须跟踪当前循环语句产生的标签。然后将它们转化为JMP跳转到顶层标签的汇编代码，或者跳转到done-label标签的汇编代码。
+
+B-Minor语言中的print语句是一种比较特殊的命令语句。根据表达式求值类型的不同会打印不同的内容。例如，下面的print语句必须为integer，boolean和string这三种不同的类型产生稍微不同的汇编代码：
+
+\begin{minted}{text}
+i : integer = 10;
+b : boolean = true;
+s : string = "\n";
+print i, b, s;
+\end{minted}
+
+很明显，并没有简单的汇编代码可以用来显示一个integer。在这种情况下，我们可以将上面的任务归约到一些我们已经知道的抽象。不同数据类型的打印可以分别代理到不同的函数调用来实现打印功能。例如：print i, b, s等同于：
+
+\begin{minted}{text}
+print_integer(i);
+print_boolean(b);
+print_string(s);
+\end{minted}
+
+所以，为print语句生成汇编代码，我们只需要简单的为每个表达式去创建打印的汇编代码就可以了。表达式的类型可以使用expr\_typecheck来确定，然后生成对应函数调用的汇编代码就可以了。
+
+当然，上面的这三个函数都必须实现，并链接到每一个B-Minor程序的实例中。这些函数，和其他的一些函数都包含在了B-Minor的\textbf{运行时库}中。按照惯例，越高级的编程语言，对运行时库的支持就越好。
+
+\textbf{条件表达式的代码生成}
+
+既然我们已经知道如何为控制流语句生成汇编代码，我们就要回过头来去讨论一下表达式的代码生成的另一个方面。条件表达式（判断相等，大于等于，小于等于，等等）比较两个数据然后返回一个布尔值。它们一般出现在控制流表达式中，但也可以用作简单的值类型，例如：
+
+\begin{minted}{text}
+b : boolean = x < y;
+\end{minted}
+
+问题在于并没有一个单独的指令来简单的执行比较操作然后将结果放入寄存器中。相反，我们得走很长的路。我们需要创建一个控制流结构来比较两个表达式，然后构建需要的结果。
+
+例如，如果我们有一个条件表达式如下：
+
+那么产生的汇编代码的模板如下：
+
+当然，对于不同的条件运算符，需要在合适的地方使用不同的跳转指令。稍作改变，我们就可以使用相同的方式来实现很多语言中都有的三元条件运算符（x?a:b）。
+
+上面这种方法的一个有意思的一点是如果我们使用最明显的方法来为if语句if (x>y){...}生成汇编代码的话，我们将会在汇编代码中生成两个条件结构。第一个条件结构计算了x>y的结果并存放在了寄存器中。第二个条件结构计算了结果和零的比较结果，然后跳转到语句的true或者false分支。通过细致的编程，我们可以检测出这种普通的情形，然后只生成一个条件语句来对表达式进行求值，然后只使用一次条件跳转，来跳转到对应的分支。
+
+\section{声明语句的代码生成}
+
+最后，生成整个程序的汇编代码其实就是遍历每一个声明语句，然后输出声明语句的汇编代码。声明语句一般分为三种情形：全局变量的声明，局部变量的声明，以及全局函数的声明。（B-Minor语言不允许声明局部函数。）
+
+全局数据的声明相对比较简单，只需要输出一个标签加上一些合适的指令（用来保留必要的空间），以及数据的初始值就可以了。例如，下面这些B-Minor中的数据的声明，作用域是全局的：
+
+\begin{minted}{text}
+i : integer = 10;
+s : string = "hello";
+b : array [4] boolean = {true, false, true, false};
+\end{minted}
+
+应该生成下面对应的指令：
+
+\begin{minted}{nasm}
+.data
+i: .quad 10
+s: .string "hello"
+b: .quad 1, 0, 1, 0
+\end{minted}
+
+要注意一个全局变量只能使用一个常量（而不是普通的表达式）来进行初始化，因为程序的数据段只能包含常量（不能包含代码）。如果程序员不小心把代码放在了全局变量的初始化代码中，类型检查器将会在代码生成之前报错。
+
+输出一个局部变量的声明的汇编代码要更加的简单。（局部变量的声明仅仅发生在在函数声明的内部的stmt\_codegen调用decl\_codegen时。）这里，你可以假设局部变量的空间已经被函数序幕（function prologue）建立起来了，所以无需任何栈的操作。尽管如此，如果一个变量声明有初始化表达式（x:integer=y*10）的话，我们需要为表达式生成汇编代码，并将结果保存在局部变量中，然后释放寄存器。
+
+函数声明是最后一部分内容。为了生成一个函数的汇编代码，我们必须输出一个带有函数名的标签，后面跟着函数序幕的汇编代码。函数序幕必须考虑参数的数量以及局部变量的数量，然后在栈上分配合适的空间。接下来的汇编代码是函数体的汇编代码。最后是函数尾声（function epilogue）汇编代码。函数尾声必须有一个独一无二的标签，这样return语句可以很容易的跳转过去。
 
 \section{练习}
+
+\begin{enumerate}
+  \item 如果使用本章描述的技术，请编写一个合法的表达式，这个表达式需要耗尽6个可用的scratch寄存器。一般来说，为一颗任意的表达式树生成汇编代码，需要多少寄存器？
+  \item 当使用寄存器调用约定时，为什么需要为函数的所有实际参数都生成值，然后才能将这些值移动到参数寄存器中去？
+  \item 全局变量可以有非常量的初始化表达式吗？解释一下为什么。
+  \item 假设B-Minor有switch语句。写出两个实现switch语句的不同的汇编代码模板。
+  \item 根据本章提供的方法，为X86-64体系结构编写完整的代码生成器。
+  \item 编写一些测试程序来测试B-Minor语言的各种特性。
+  \item 比较一下你写的编译器生成的汇编代码和gcc生成的汇编代码有什么区别？
+  \item 添加一个额外的代码生成器来生成ARM汇编语言程序或者LLVM的中间表示（IR）。
+\end{enumerate}
 
 \chapter{优化}
 
