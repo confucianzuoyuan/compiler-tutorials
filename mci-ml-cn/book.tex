@@ -242,7 +242,7 @@
 		\node[rectangle,draw=black,right = of 11,text width=1cm,align=center,minimum height=2.5cm,minimum width=2.5cm] (12) {指令选择};
 		\node[rectangle,right = of 12,text width=0.5cm] (13) {汇编};
 		\node[rectangle,draw=black,left = of 8,text width=1cm,align=center,minimum height=2.5cm,minimum width=2.5cm] (14) {语法分析};
-		\node[rectangle,left = of 14,text width=0.5cm] (15) {单词符号};
+		\node[rectangle,left = of 14,text width=0.5cm] (15) {标记符号};
 		\node[rectangle,draw=black,left = of 15,text width=1cm,align=center,minimum height=2.5cm,minimum width=2.5cm] (16) {词法分析};
 		\node[rectangle,left = of 16,text width=0.5cm] (17) {源程序};
 		\node[rectangle,below = of 7,text width=0.5cm] (18) {帧};
@@ -272,7 +272,7 @@
 
 每个学生都不应缺少反复多次“\textit{思考-实现-重新设计}”，从而获得正确的抽象这样一种学习经历。但是，想要学生在一个学期内实现一个编译器是不现实的。因此，我在书中给出了一个项目框架，其中的模块和接口都经过深思熟虑，而且尽可能地使之既精巧又通用。
 
-\textit{抽象语法}（Abstract Syntax）、IR\textit{树}（IR Tree）和\textit{汇编}（Assem）之类的接口是数据结构的形式，例如语法分析动作阶段建立\textit{抽象语法}数据结构，并将它传递给语义分析阶段。另一些接口是抽象数据类型：\textit{翻译}接口是一组可由语义分析阶段调用的函数；\textit{单词符号}（Token）接口是函数形式，分析器通过调用它而得到输入程序中的下一个单词符号。
+\textit{抽象语法}（Abstract Syntax）、IR\textit{树}（IR Tree）和\textit{汇编}（Assem）之类的接口是数据结构的形式，例如语法分析动作阶段建立\textit{抽象语法}数据结构，并将它传递给语义分析阶段。另一些接口是抽象数据类型：\textit{翻译}接口是一组可由语义分析阶段调用的函数；\textit{标记符号}（Token）接口是函数形式，分析器通过调用它而得到输入程序中的下一个标记符号。
 
 \textbf{各个阶段的描述}
 
@@ -285,7 +285,7 @@
     \toprule
     \textbf{章号} & \textbf{阶段} & \textbf{描述} \\
     \midrule
-    2 & 词法分析 & 将源文件分解成一个个独立的\textit{单词符号} \\
+    2 & 词法分析 & 将源文件分解成一个个独立的\textit{标记符号} \\
     \midrule
     3 & 语法分析 & 分析程序的短语结构 \\
     \midrule
@@ -491,7 +491,7 @@ val prog =
 因此，在实现这些程序时，不要使用引用变量，数组或者赋值表达式等ML语言的语法特性。
 
 \begin{enumerate}
-  \item 写一个函数(maxargs : stm $\rightarrow$ int)，告知给定语句中任意子表达式内的print语句的参数个数。例如，maxargs(prog)是2。
+  \item 写一个函数(maxargs : stm $\rightarrow$ int)，告知给定语句中所有子表达式内的print语句中包含最大参数数量的print语句的参数个数。例如，maxargs(prog)是2。
   \item 写一个函数interp : stm $\rightarrow$ unit，对一个用这种直线式程序语言写的程序进行“解释”。使用“函数式”的风格来编写这个函数——不使用赋值（:=）或者数组特性——维护一个（变量，整型）偶对\footnote{pair}所组成的列表，然后再解释每个AssignStm时，产生这个列表的新版本。
 \end{enumerate}
 
@@ -556,7 +556,12 @@ val lookup : table * id -> int
   \end{minted}
   \begin{enumerate}
     \item 实现函数member，若查找到了相应项，返回true，否则返回false。
-    \item 扩充这个程序使其不仅能判别成员关系，而且还能将键值
+    \item 扩充这个程序使其不仅包含成员关系，而且还包含了键值（key）到绑定的映射。
+    \begin{minted}{sml}
+      datatype 'a tree = ...
+      insert : 'a tree * key * 'a -> 'a tree
+      lookup : 'a tree * key -> 'a
+    \end{minted}
     \item 这个程序构造的树是不平衡的；用下述插入顺序说明树的形成过程：
     \begin{enumerate}
       \item t s p i p f b s t
@@ -568,7 +573,88 @@ val lookup : table * id -> int
 
 \chapter{词法分析}
 
-\section{词法单词}
+\epigraph{\textbf{词法的}（lex-i-cal）：与语言的单词或词汇有关，但有别于语言的文法和结构。}{韦氏词典}
+
+为了将一个程序从一种语言翻译成另一种语言，编译器必须首先把程序的各种成分拆开，并搞清其结构和含义，然后再用另一种方式把这些成分组合起来。编译器的前端执行分析，后端进行合成。
+
+分析一般分为以下三种。
+
+\begin{itemize}
+  \item \textbf{词法分析：}将输入分解成一个个独立的词法符号，即“标记符号”（token），简称标记。
+  \item \textbf{语法分析：}分析程序的短语结构。
+  \item \textbf{语义分析：}推算程序的含义。
+\end{itemize}
+
+词法分析器以字符流作为输入，生成一系列的名字、关键字和标点符号，同时抛弃标记之间的空白符和注释。程序中每个地方都有可能出现空白符和注释，如果让语法分析器来处理它们就会使得语法分析过于复杂，这便是将词法分析从语法分析中分离出去的主要原因。
+
+词法分析并不太复杂，但是我们却使用能力强大的形式化方法和工具来实现它，因为类似的形式化方法对语法分析研究很有帮助，并且类似的工具还可以应用于编译器以外的其他领域。
+
+\section{词法标记}
+
+词法标记是字符组成的序列，可以将其看作程序设计语言的文法单位。程序设计语言的词法标记可以归类为有限的几组标记类型。例如，典型程序设计语言的一些标记类型为：
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{ll}
+    \textbf{类型} & \textbf{例子} \\
+    \midrule
+    ID & foo \; n14 \; last \\
+    NUM & 73 \; 0 \; 00 \; 515 \; 082 \\
+    REAL & 66.1 \; .5 \; 10. \; 1e67 \; 5.5e-10 \\
+    IF & if \\
+    COMMA & , \\
+    NOTEQ & != \\
+    LPAREN & ( \\
+    RPAREN & ) \\
+  \end{tabular}
+\end{table}
+
+IF、VOID、RETURN等由字母字符组成的标记成为\textit{保留字}（reserved word），在多数语言中，它们不能作为标识符使用。
+
+不是标记的例子有：
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{ll}
+    注释 & /* try again */ \\
+    预处理命令 & \#include <stdio.h> \\
+    预处理命令 & \#define NUMS 5 , 6 \\
+    宏 & NUMS \\
+    空格符、制表符和换行符 & \\
+  \end{tabular}
+\end{table}
+
+在能力较弱而需要宏预处理器的语言中，由预处理器处理源程序的字符流，并生成另外的字符流，然后由词法分析器读入这个新产生的字符流。这种宏处理过程也可以与词法分析集成到一起。
+
+对于下面一段程序：
+
+\begin{minted}{c}
+  float match0(char *s) /* find a zero */
+  {if (!strncmp(s, "0.0", 3))
+    return 0.;
+  }
+\end{minted}
+
+词法分析器将返回下列标记流：
+
+\begin{minted}{text}
+  FLOAT    ID(match0)    LPAREN    CHAR    STAR    ID(s)    RPAREN
+  LBRACE     IF  LPAREN     BANG    ID(strncmp)    LPAREN    ID(s)
+  COMMA      STRING(0.0)    COMMA     NUM(3)     RPAREN     RPAREN
+  RETURN     REAL(0.0)    SEMI  RBRACE    EOF
+\end{minted}
+
+其中报告了每个标记的标记类型。这些标记中的一些（如标识符和字面量）有\textit{语义值}与之相连，因此，词法分析器还给出了除标记类型之外的附加信息。
+
+应当如何描述程序设计语言的词法规则？词法分析器又应当用什么样的语言来编写呢？
+
+我们可以用自然语言来描述一种语言的词法标记。例如，下面是对C或Java中标识符的一种描述：
+
+\begin{quote}
+  \textit{标识符是字母和数字组成的序列，第一个字符必须是字母。下划线“\_”视为字母。大小写字母不同。如果经过若干标记分析后输入流已到达一个给定的字符，则下一个标记将由有可能组成一个标记的最长字符串所组成。其中的空格符、制表符、换行符和注释都将被忽略，除非它们作为独立的一类标记。另外需要有某种空白符来分隔相邻的标识符、关键字和常数。}
+\end{quote}
+
+任何合理的程序设计语言都可以用来实现特定的词法分析器。我们将用\textit{正则表达式}的形式语言来指明词法标记，用\textit{确定的有限自动机}来实现词法分析器，并用数学的方法将两者联系起来。这样将得到一个简单且可读性更好的词法分析器。
 
 \section{正则表达式}
 
