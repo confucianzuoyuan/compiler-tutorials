@@ -359,10 +359,9 @@ Tiger编译器中某些模块的源代码、某些程序设计习题的框架源
 
 这个语言的非形式语义如下。每一个$Stm$是一个语句，每一个$Exp$是一个表达式。$s_1;s_2$表示先执行语句$s_1$，再执行语句$s_2$。$i := e$表示先计算表达式$e$的值，然后把计算结果赋给变量$i$。print($e_1,e_2,\cdots,e_n$)表示从左到右输出所有表达式的值，这些值之间用空格分开并以换行符结束。
 
-\textit{标识符表达式}，例如$i$，表示变量$i$的当前内容。\textit{数}按命名它的整数计值。\textit{操作符表达式}$e_1$ op $e_2$表示先计算$e_1$再计算$e_2$，然后按给定的二元操作符计算表达式结果。\textit{表达式序列}$(s,e)$的行为类似于C语言中的逗号操作符，在计算表达式$e$（并返回其结果）之前先计算语句$s$的副作用。
+\textit{标识符表达式}，例如$i$，表示变量$i$的当前内容。\textit{数}按命名它的整数计值。\textit{运算符表达式}$e_1$ op $e_2$表示先计算$e_1$再计算$e_2$，然后按给定的二元运算符计算表达式结果。\textit{表达式序列}$(s,e)$的行为类似于C语言中的逗号运算符，在计算表达式$e$（并返回其结果）之前先计算语句$s$的副作用。
 
 例如，执行下面这段程序：
-
 
 \begin{minted}{sml}
 a := 5+3; b := (print(a, a-1), 10*a); print(b);  
@@ -657,6 +656,88 @@ IF、VOID、RETURN等由字母字符组成的标记成为\textit{保留字}（re
 任何合理的程序设计语言都可以用来实现特定的词法分析器。我们将用\textit{正则表达式}的形式语言来指明词法标记，用\textit{确定的有限自动机}来实现词法分析器，并用数学的方法将两者联系起来。这样将得到一个简单且可读性更好的词法分析器。
 
 \section{正则表达式}
+
+我们说\textit{语言}（language）是字符串组成的集合，字符串是\textit{符号}（symbol）的有限序列。符号本身来自有限\textit{字母表}（alphabet）。
+
+Pascal语言是所有组成合法Pascal程序的字符串的集合，素数语言是构成素数的所有十进制数字字符串的集合，C语言保留字是C程序设计语言中不能作为标识符使用的所有字母数字字符串组成的集合。这3种语言中，前两种是无限集合，后一种是有限集合。在这3种语言中，字母表都是ASCII字符集。
+
+以这种方式谈论语言时，我们并没有给其中的字符串赋予任何含义，而只是企图确定每个字符串是否属于其语言。
+
+为了用有限的描述来指明这类（很可能是无限的）语言，我们将使用\textit{正则表达式}（regular expression）表示法。每个正则表达式代表一个字符串集合。
+
+\begin{itemize}
+  \item \textbf{符号}（symbol）：对于语言字母表中的每个符号\textbf{a}，正则表达式\textbf{a}表示仅包含字符串a的语言。
+  \item \textbf{或}（alternation）：对于给定的两个正则表达式\textbf{M}和\textbf{N}，或运算符（|）形成一个新的正则表达式\textbf{M | N}。如果一个字符串属于语言\textbf{M}或者语言\textbf{N}，则它属于语言\textbf{M | N}。因此，\textbf{a | b}组成的语言包含a和b这两个字符串。
+  \item \textbf{联结}（concatenation）：对于给定的两个正则表达式\textbf{M}和\textbf{N}，联结运算符（$\boldsymbol{\cdot}$）形成一个新的正则表达式$\textbf{M}\boldsymbol{\cdot}\textbf{N}$。如果一个字符串是任意两个字符串$\alpha$和$\beta$的联结，且$\alpha$属于语言\textbf{M}，$\beta$属于语言\textbf{N}，则该字符串属于$\textbf{M}\boldsymbol{\cdot}\textbf{N}$组成的语言。因此，正则表达式$(\textbf{a} | \textbf{b})\boldsymbol{\cdot} \textbf{a}$定义了包含两个字符串aa和ba的语言。
+  \item $\epsilon$（epsilon）：正则表达式$\epsilon$表示仅含一个空字符串的语言。因此，$(\textbf{a}\boldsymbol{\cdot}\textbf{b})|\epsilon$表示语言\{"", "ab"\}。
+  \item \textbf{重复}（repetition）：对于给定的正则表达式\textbf{M}，它的克林闭包（Kleene closure）是$\textbf{M}^*$。如果一个字符串是由$M$中的字符串经零至多次联结运算的结果，则该字符串属于$\textbf{M}^*$。因此，$((\textbf{a}|\textbf{b})\boldsymbol{\cdot}\textbf{a})^*$表示无穷集合\{"", "aa", "ba", "aaaa", "baaa", "aaba", "baba", "aaaaaa", $\cdots$\}。
+\end{itemize}
+
+通过使用符号、或、联结、$\epsilon$和克林闭包，我们可以规定与程序设计语言词法单词相对应的ASCII字符集。首先，考虑若干例子：
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{ll}
+    $(\textbf{0}|\textbf{1})^*\boldsymbol{\cdot}\textbf{0}$ & 由2的倍数组成的二进制数。\\
+    $\textbf{b}^*(\textbf{abb}^*)^*(\textbf{a}|\epsilon)$ & 由a和b组成，但a不连续出现的字符串。\\
+    $(\textbf{a}|\textbf{b})^*\textbf{aa}(\textbf{a}|\textbf{b})^*$ & 由a和b组成，且有连续出现a的字符串。\\
+  \end{tabular}
+\end{table}
+
+在书写正则表达式时，我们有时会省略联结运算符或$\epsilon$符号，并假定克林闭包的优先级高于联结运算，联结运算的优先级高于或运算，所以$\textbf{ab}|\textbf{c}$表示$(\textbf{a}\boldsymbol{\cdot}\textbf{b})|\textbf{c}$，而$(\textbf{a}|)$表示$(\textbf{a}|\epsilon)$。
+
+还有一些更为简洁的缩写形式：[\textbf{abcd}]表示$(\textbf{a}|\textbf{b}|\textbf{c}|\textbf{d})$，[\textbf{b-g}]表示[\textbf{bcdefg}]，[\textbf{b-gM-Qkr}]表示[\textbf{bcdefgMNOPQkr}]，\textbf{M}?表示$(\textbf{M}|\epsilon)$，$\textbf{M}^+$表示$\textbf{M}\boldsymbol{\cdot}\textbf{M}^*$。这些扩充很方便，但它们并没有扩充正则表达式的描述能力：任何可以用这些简写形式描述的字符串集合都可以用基本运算符集合来描述。图\ref{fig:2-1}概括了所有这些运算符。
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tabular}{ll}
+    \toprule
+    \textbf{a} & 一个表示字符本身的原始字符 \\
+    $\epsilon$ & 空字符串 \\
+               & 空字符串的另一种写法 \\
+    \textbf{M} | \textbf{N} & 或运算符，在\textbf{M}和\textbf{N}之间选择 \\
+    \textbf{M} $\boldsymbol{\cdot}$ \textbf{N} & 联结，\textbf{M}之后跟随\textbf{N} \\
+    \textbf{MN} & 联结的另一种写法 \\
+    $\textbf{M}^*$ & 重复（0次或0次以上） \\
+    $\textbf{M}^+$ & 重复（1次或1次以上） \\
+    \textbf{M}? & 选择，\textbf{M}的0次或1次的出现 \\
+    {[}\textbf{a-zA-Z}{]} & 字符集 \\
+    . & 句点表示除换行符之外的任意单个字符 \\
+    " a. + * " & 引号，引号中的字符串表示文字字符串本身 \\
+    \bottomrule
+  \end{tabular}
+  \caption{正则表达式表示符号}
+  \label{fig:2-1}
+\end{figure}
+
+使用这种语言，我们便可以指明程序设计语言的词法标记（见图\ref{fig:2-2}）。对于每一个标记，我们提供一段ML代码，报告识别的是哪种标记类型。
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tabular}{ll}
+    if & (IF); \\
+    {[}\textbf{a-z}{]}{[}\textbf{a-z0-9}{]}* & (ID); \\
+    {[}\textbf{0-9}{]}+ & (NUM); \\
+    ({[}\textbf{0-9}{]}+"."{[}\textbf{0-9}{]}*) | ({[}\textbf{0-9}{]}*"."{[}\textbf{0-9}{]}+) & (REAL); \\
+    ("--"{[}\textbf{a-z}{]}*"\textbackslash n") | (" " | "\textbackslash n" | "\textbackslash t")+ & (continue()); \\
+    . & (error(); continue()); \\
+  \end{tabular}
+  \caption{某些标记的正则表达式}
+  \label{fig:2-2}
+\end{figure}
+
+图\ref{fig:2-2}第5行的描述虽然识别注释或空白，但是不提交给语法分析器，而是忽略它们并重新开始词法分析。这个分析器识别的注释以两个短横线开始，且只包含字母字符，并以换行符结束。
+
+最后，词法规范应当是\textit{完整的}，它应当总是能与输入中的某些初始子串相匹配；使用一个可以与任意字符相匹配的规则，我们便总能做到这一点（在这种情况下，将打印出“illegal character”错误信息，然后再继续进行）。
+
+图\ref{fig:2-2}中的规则存在着二义性。例如，对于if8，应当将它看成一个标识符，还是两个标记if和8？字符串if 89是以一个标识符开头还是以一个保留字开头？Lex，ML-Lex以及其他类似的词法分析器使用了两条消除二义性的重要规则。
+
+\begin{itemize}
+  \item \textbf{最长匹配}：初始输入子串中，取可与任何正则表达式匹配的那个最长的字符串作为下一个标记。
+  \item \textbf{规则优先}：对于一个\textit{特定的}最长初始子串，第一个与之匹配的正则表达式决定了这个子串的标记类型。也就是说，正则表达式规则的书写顺序有意义。
+\end{itemize}
+
+因此，依据最长匹配规则，if8是一个标识符；根据规则优先，if是一个保留字。
 
 \section{有限自动机}
 
