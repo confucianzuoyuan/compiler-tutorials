@@ -741,6 +741,82 @@ Pascal语言是所有组成合法Pascal程序的字符串的集合，素数语�
 
 \section{有限自动机}
 
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[node distance = 1cm, initial text = $ $]
+    \node[state, initial] (1) {1};
+    \node[state, right = of 1] (2) {2};
+    \node[state, accepting, right = of 2] (3) {3};
+
+    \draw[->] (1) edge[bend left,above] node{\textbf{i}} (2);
+    \draw[->] (2) edge[bend left,above] node{\textbf{f}} (3);
+
+    \node[rectangle,below = of 2] {\textbf{IF}}; 
+  \end{tikzpicture}
+  \begin{tikzpicture}[node distance = 1cm, initial text = $ $]
+    \node[state, initial] (1) {1};
+    \node[state, accepting, right = of 1] (2) {2};
+
+    \draw[->] (1) edge[bend left,above] node{\textbf{a-z}} (2);
+    \draw[->] (2) edge[loop above] node{\textbf{a-z}} (2);
+    \draw[->] (2) edge[loop right] node{\textbf{0-9}} (2);
+
+    \node[rectangle,below left = of 2] {\textbf{ID}};
+  \end{tikzpicture}
+  \begin{tikzpicture}[node distance = 1cm, initial text = $ $]
+    \node[state, initial] (1) {1};
+    \node[state, accepting, right = of 1] (2) {2};
+
+    \draw[->] (1) edge[bend left,above] node{\textbf{0-9}} (2);
+    \draw[->] (2) edge[loop right] node{\textbf{0-9}} (2);
+
+    \node[rectangle,below left = of 2] {\textbf{NUM}};
+  \end{tikzpicture}
+  \begin{tikzpicture}[node distance = 1cm, initial text = $ $]
+    \node[state, initial] (1) {1};
+    \node[state, right = of 1] (2) {2};
+    \node[state, accepting, right = of 2] (3) {3};
+    \node[state, below right = of 1] (4) {4};
+    \node[state, accepting, right = of 4] (5) {5};
+
+    \draw[->] (1) edge[bend left, above] node{\textbf{0-9}} (2);
+    \draw[->] (2) edge[loop above] node{\textbf{0-9}} (2);
+    \draw[->] (3) edge[loop above] node{\textbf{0-9}} (3);
+    \draw[->] (2) edge[bend left, above] node{$\boldsymbol{\cdot}$} (3);
+    \draw[->] (1) edge[above] node{$\boldsymbol{\cdot}$} (4);
+    \draw[->] (4) edge[bend left,below] node{\textbf{0-9}} (5);
+    \draw[->] (5) edge[loop right] node{\textbf{0-9}} (5);
+
+    \node[rectangle,below right = of 4] {\textbf{REAL}};
+  \end{tikzpicture}
+  \begin{tikzpicture}[node distance = 1cm, initial text = $ $]
+    \node[state, initial] (1) {1};
+    \node[state, right = of 1] (2) {2};
+    \node[state, right = of 2] (3) {3};
+    \node[state, accepting, right = of 3] (4) {4};
+    \node[state, accepting, below right = of 2] (5) {5};
+
+    \draw[->] (1) edge[below] node{-} (2);
+    \draw[->] (2) edge[below] node{-} (3);
+    \draw[->] (3) edge[below] node{\textbackslash n} (4);
+    \draw[->] (3) edge[loop above] node{\textbf{a-z}} (3);
+    \draw[->] (1) edge[bend right,below] node{空白符，等等} (5);
+    \draw[->] (5) edge[loop right] node{空白符，等等} (5);
+
+    \node[rectangle,below = of 5] {空白};
+  \end{tikzpicture}
+  \begin{tikzpicture}[node distance = 2cm, initial text = $ $]
+    \node[state, initial] (1) {1};
+    \node[state, accepting, right = of 1] (2) {2};
+
+    \draw[->] (1) edge[below] node{除了\textbackslash n} (2);
+
+    \node[rectangle,below right = of 1] {\textbf{error}}; 
+  \end{tikzpicture}
+  \caption{词法标记的有限自动机。圆圈表示状态，双圆圈表示终态。初态是进入边没有来源的状态。标有多个字符的边是多条平行边的缩写}
+  \label{fig:2-3}
+\end{figure}
+
 \section{非确定性有限自动机}
 
 \subsection{将正则表达式转换为NFA}
