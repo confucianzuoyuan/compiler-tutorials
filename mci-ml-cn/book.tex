@@ -9,6 +9,7 @@
 \usepackage{diagbox}
 \usepackage{tabularx,tikz}
 \usepackage{graphicx}
+\usepackage{mathtools}
 \usemintedstyle{xcode}
 \usetikzlibrary{
   shapes,
@@ -815,6 +816,189 @@ Pascal语言是所有组成合法Pascal程序的字符串的集合，素数语�
   \end{tikzpicture}
   \caption{词法标记的有限自动机。圆圈表示状态，双圆圈表示终态。初态是进入边没有来源的状态。标有多个字符的边是多条平行边的缩写}
   \label{fig:2-3}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[node distance = 1cm, initial text = $ $]
+    \node[state,initial] (1) {1};
+    \node[state,accepting,above left = of 1,label=above:ID,yshift=2cm] (2) {2};
+    \node[state,accepting,right = of 2,label=above:IF] (3) {3};
+    \node[state,accepting,right = of 3,label=above:ID,xshift=1cm] (4) {4};
+    \node[state,accepting,right = of 4,label=above:error,xshift=2cm] (5) {5};
+    \node[state,accepting,right = of 5,label=above:REAL] (6) {6};
+    \node[state,accepting,right = of 1,label=below:NUM,xshift=5cm] (7) {7};
+    \node[state,accepting,right = of 7,label=below:REAL] (8) {8};
+    \node[state,accepting,below = of 7,label=below:error,yshift=-1cm] (9) {9};
+    \node[state,right = of 9] (10) {10};
+    \node[state,accepting,right = of 10,label=below:空白] (11) {11};
+    \node[state,accepting,below left = of 1,label=below:空白,yshift=-2cm,xshift=-1cm] (12) {12};
+    \node[state,accepting,below right = of 1,label=below:error,yshift=-2cm,xshift=1cm] (13) {13};
+
+    \draw[->] (1) edge[below] node{\textbf{i}} (2);
+    \draw[->] (2) edge[below] node{\textbf{f}} (3);
+    \draw[->] (3) edge[above] node{\textbf{0-9, a-z}} (4);
+    \draw[->] (4) edge[loop right] node{\begin{tabular}{l}
+      \textbf{0-9} \\
+      \textbf{a-z}
+    \end{tabular}} (4);
+    \draw[->] (1) edge[above] node{\textbf{0-9}} (7);
+    \draw[->] (7) edge[above] node{$\boldsymbol{\cdot}$} (8);
+    \draw[->] (7) edge[loop above] node{\textbf{0-9}} (7);
+    \draw[->] (8) edge[loop above] node{\textbf{0-9}} (8);
+    \draw[->] (1) edge[above] node{$\boldsymbol{\cdot}$} (5);
+    \draw[->] (1) edge[above] node{\begin{tabular}{l}
+      \textbf{a-h} \\ \textbf{j-z}
+    \end{tabular}} (4);
+    \draw[->] (6) edge[loop right] node{\textbf{0-9}} (6);
+    \draw[->] (5) edge[above] node{\textbf{0-9}} (6);
+    \draw[->] (1) edge[above] node{\begin{tabular}{l}
+      空白符， \\ 等等
+    \end{tabular}} (12);
+    \draw[->] (12) edge[loop right] node{\begin{tabular}{l}
+      空白符，\\ 等等
+    \end{tabular}} (12);
+    \draw[->] (1) edge[below] node{其他} (13);
+    \draw[->] (1) edge[above] node{-} (9);
+    \draw[->] (9) edge[above] node{-} (10);
+    \draw[->] (10) edge[above] node{\textbackslash n} (11);
+    \draw[->] (10) edge[loop below] node{\textbf{a-z}} (10);
+  \end{tikzpicture}
+  \caption{合并后的有限自动机}
+  \label{fig:2-4}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[node distance = 1cm, initial text = $ $]
+    \node[state,accepting,initial,initial where = above] (1) {};
+    \node[state,right = of 1] (2) {};
+    \node[state,accepting,right = of 2] (3) {};
+    \node[state,left = of 1] (4) {};
+    \node[state,left = of 4] (5) {};
+    \node[state,accepting,left = of 5] (6) {};
+
+    \draw[->] (1) edge[bend left,above] node{\textbf{a}} (2);
+    \draw[->] (2) edge[bend left,above] node{\textbf{a}} (3);
+    \draw[->] (3) edge[bend left,below] node{\textbf{a}} (2);
+    \draw[->] (1) edge[bend right,above] node{\textbf{a}} (4);
+    \draw[->] (4) edge[bend right,above] node{\textbf{a}} (5);
+    \draw[->] (5) edge[bend right,above] node{\textbf{a}} (6);
+    \draw[->] (6) edge[bend right,below] node{\textbf{a}} (4);
+  \end{tikzpicture}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tabular}{llll}
+    \toprule
+    \textbf{最后的终态} & \textbf{当前状态} & \textbf{当前输入} & \textbf{接收动作} \\
+    \midrule
+    0 & 1 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-1.2cm,yshift=0.02cm] (2) {$^\top$};
+      \node[rectangle,xshift=-1.2cm,yshift=-0.1cm] (3) {$_\perp$};
+    \end{tikzpicture} & \\
+    2 & 2 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-1.08cm,yshift=0.02cm] (2) {$^\top$};
+      \node[rectangle,xshift=-1.08cm,yshift=-0.1cm] (3) {$_\perp$};
+      \node[rectangle,xshift=-1.2cm,yshift=-0.02cm] (4) {$\vert$};
+    \end{tikzpicture} & \\
+    3 & 3 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-0.9cm] (2) {$^\top$};
+      \node[rectangle,xshift=-0.9cm,yshift=-0.1cm] (3) {$_\perp$};
+      \node[rectangle,xshift=-1.2cm,yshift=-0.02cm] (4) {$\vert$};
+    \end{tikzpicture} & \\
+    3 & 0 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-0.9cm,yshift=0.01cm] (2) {$^\top$};
+      \node[rectangle,xshift=-0.65cm,yshift=-0.1cm] (3) {$_\perp$};
+      \node[rectangle,xshift=-1.2cm,yshift=-0.02cm] (4) {$\vert$};
+    \end{tikzpicture} & 返回IF \\
+    \midrule
+    0 & 1 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-0.9cm] (2) {$^\top$};
+      \node[rectangle,xshift=-0.9cm,yshift=-0.1cm] (3) {$_\perp$};
+    \end{tikzpicture} & \\
+    12 & 12 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-0.65cm] (2) {$^\top$};
+      \node[rectangle,xshift=-0.65cm,yshift=-0.1cm] (3) {$_\perp$};
+      \node[rectangle,xshift=-0.9cm,yshift=0] (4) {$\vert$};
+    \end{tikzpicture} & \\
+    12 & 0 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-0.65cm] (2) {$^\top$};
+      \node[rectangle,xshift=-0.52cm,yshift=-0.12cm] (3) {$_\perp$};
+      \node[rectangle,xshift=-0.9cm,yshift=0] (4) {$\vert$};
+    \end{tikzpicture} & 找到空白；重新开始 \\
+    \midrule
+    0 & 1 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-0.65cm] (2) {$^\top$};
+      \node[rectangle,xshift=-0.65cm,yshift=-0.1cm] (3) {$_\perp$};
+    \end{tikzpicture} & \\
+    9 & 9 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-0.52cm] (2) {$^\top$};
+      \node[rectangle,xshift=-0.52cm,yshift=-0.1cm] (3) {$_\perp$};
+      \node[rectangle,xshift=-0.65cm,yshift=0] (4) {$\vert$};
+    \end{tikzpicture} & \\
+    9 & 10 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-0.52cm] (2) {$^\top$};
+      \node[rectangle,xshift=-0.41cm,yshift=-0.1cm] (3) {$_\perp$};
+      \node[rectangle,xshift=-0.66cm,yshift=-0.02cm] (4) {$\vert$};
+    \end{tikzpicture} & \\
+    9 & 10 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-0.52cm] (2) {$^\top$};
+      \node[rectangle,xshift=-0.19cm,yshift=-0.1cm] (3) {$_\perp$};
+      \node[rectangle,xshift=-0.66cm,yshift=-0.02cm] (4) {$\vert$};
+    \end{tikzpicture} & \\
+    9 & 10 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-0.52cm] (2) {$^\top$};
+      \node[rectangle,xshift=0cm,yshift=-0.1cm] (3) {$_\perp$};
+      \node[rectangle,xshift=-0.66cm,yshift=-0.02cm] (4) {$\vert$};
+    \end{tikzpicture} & \\
+    9 & 10 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-0.52cm] (2) {$^\top$};
+      \node[rectangle,xshift=0.1cm,yshift=-0.1cm] (3) {$_\perp$};
+      \node[rectangle,xshift=-0.66cm,yshift=-0.02cm] (4) {$\vert$};
+    \end{tikzpicture} & \\
+    9 & 0 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-0.52cm] (2) {$^\top$};
+      \node[rectangle,xshift=0.21cm,yshift=-0.11cm] (3) {$_\perp$};
+      \node[rectangle,xshift=-0.66cm,yshift=-0.02cm] (4) {$\vert$};
+    \end{tikzpicture} & 错误；非法标记“-”；重新开始\\
+    \midrule
+    0 & 1 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-0.52cm] (2) {$^\top$};
+      \node[rectangle,xshift=-0.52cm,yshift=-0.1cm] (3) {$_\perp$};
+    \end{tikzpicture} & \\
+    9 & 9 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-0.40cm] (2) {$^\top$};
+      \node[rectangle,xshift=-0.40cm,yshift=-0.1cm] (3) {$_\perp$};
+      \node[rectangle,xshift=-0.52cm,yshift=-0.04cm] (4) {$\vert$};
+    \end{tikzpicture} & \\
+    9 & 0 & \begin{tikzpicture}
+      \node[rectangle] (1) {if \; {-}{-}not-a-com};
+      \node[rectangle,xshift=-0.40cm] (2) {$^\top$};
+      \node[rectangle,xshift=-0.20cm,yshift=-0.1cm] (3) {$_\perp$};
+      \node[rectangle,xshift=-0.52cm,yshift=-0.04cm] (4) {$\vert$};
+    \end{tikzpicture} & 错误；非法标记“-”；重新开始 \\
+    \bottomrule
+  \end{tabular}
+  \caption{图\ref{fig:2-4}中自动机识别的几个单词。符号“|”指出每次调用词法分析器时的输入位置，符号“”指出自动机的当前位置，符号“”指出自动机最近一次处于终态时的位置}
+  \label{fig:2-5}
 \end{figure}
 
 \section{非确定性有限自动机}
