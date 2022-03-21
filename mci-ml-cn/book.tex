@@ -1107,7 +1107,7 @@ Pascal语言是所有组成合法Pascal程序的字符串的集合，素数语�
 
 我们可以归纳地定义正则表达式到NFA的转换。一个正则表达式或者是原语（单个符号或$\epsilon$），或者是由多个较小的表达式组合而成。
 
-图\ref{fig:2-6}展示了将正则表达式转换至NFA的规则。我们用图\ref{fig:2-2}中关于单词IF、ID、NUM以及error的一些表达式来举例说明这种转换算法。每个表达式都转换成了一个NFA，每个NFA的头是用不同标记类型标记的终态结点，并且每一个表达式的尾汇合成一个新的初始结点。由此得到的结果（在合并了某些等价的NFA状态之后）如图所示。
+图\ref{fig:2-6}展示了将正则表达式转换至NFA的规则。我们用图\ref{fig:2-2}中关于单词IF、ID、NUM以及error的一些表达式来举例说明这种转换算法。每个表达式都转换成了一个NFA，每个NFA的头是用不同标记类型标记的终态结点，并且每一个表达式的尾汇合成一个新的初始结点。由此得到的结果（在合并了某些等价的NFA状态之后）如图\ref{fig:2-7}所示。
 
 \begin{figure}[htbp]
   \centering
@@ -1135,7 +1135,148 @@ Pascal语言是所有组成合法Pascal程序的字符串的集合，素数语�
   \label{fig:2-6}
 \end{figure}
 
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    
+  \end{tikzpicture}
+  \caption{由4个正则表达式转换成的一个NFA}
+  \label{fig:2-7}
+\end{figure}
+
+\subsection{将NFA转换为DFA}
+
+如在2.3节看到的，用计算机程序实现确定的有限自动机（DFA）较容易。但实现NFA则要困难一些，因为大多数计算机都没有足够好的可以进行“猜测”的硬件。
+
+通过一次同时尝试所有可能的路径，可以避免这种猜测。我们用字符串in来模拟图\ref{fig:2-7}的NFA。首先从状态1开始。现在，替代猜测应采用哪个$\epsilon$转换，我们只是说此时NFA可能选择它们中的任何一个，因此，它是状态\{1,4,9,14\}当中的任何一个，即我们需要计算\{1\}的$\epsilon$\textit{闭包}。显然，不接收输入中的第一个字符，就不可能到达其他状态。
+
+现在要根据字符i来进行转换。从状态1可以到达状态2，从状态4可以到达状态5，从状态9则无处可去，而从状态14则可以到达状态15，由此得到状态集合\{2,5,15\}。但是，我们还必须计算$\epsilon$闭包：从状态5有一个$\epsilon$转换至状态8，从状态8有一个$\epsilon$转换至状态6。因此这个NFA一定属于状态集合\{2,5,6,8,15\}。
+
+对于下一个输入字符n，我们从状态6可到达状态7，但状态2、5、8和15都无相应的转换。因此得到状态集合\{7\}，它的$\epsilon$闭包是\{6,7,8\}。
+
+现在我们已经到达了字符串in的末尾，那么，这个NFA是否已经到达了终态呢？在我们得到的可能状态集合中，状态8是终态，因此in是一个ID标记。
+
+我们形式化地定义$\epsilon$闭包如下。令$\textbf{edge}(s,c)$是从状态$s$沿着标有$c$的一条边可以到达的所有NFA状态的集合。对于状态集合$S$，$\textbf{closure}(S)$是从$S$中的状态出发，无需接收任何字符，即只通过$\epsilon$边便可以到达的状态组成的集合。这种经过$\epsilon$边的概念可用数学方式表述，即$\textbf{closure}(S)$是满足如下条件的最小集合$T$：
+
+$$
+T = S \cup (\bigcup_{s \in T} \textbf{edge}(s,\epsilon))
+$$
+
+我们可以用迭代法来算出$T$：
+
+\begin{align*}
+& T \leftarrow S \\
+& \textbf{repeat} \; T' \leftarrow T \\
+&    \quad\quad\quad T  \leftarrow T' \cup (\bigcup_{s \in T'} \textbf{edge}(s,\epsilon)) \\
+& \textbf{until} \; T = T'
+\end{align*}
+
+这个算法为什么是正确的？因为$T$只可能在迭代中扩大，所以最终的$T$一定包含$S$。如果在一次迭代之后有$T=T'$，则$T$也一定包含$\bigcup_{s \in T'} \textbf{edge}(s,\epsilon)$。因为在NFA中只有有限个不同的状态，所以算法一定会终止。
+
+现在，当用前面描述的方法来模拟一个NFA时，假设我们位于由NFA状态$s_i$、$s_k$、$s_l$组成的集合$d=\{s_i,s_k,s_l\}$中。从$d$中的状态出发，并吃进输入符号$c$，将到达NFA的一个新的状态集合；我们称这个集合为$\textbf{DFAedge}(d,c)$：
+
+$$
+\textbf{DFAedge}(d,c)=\textbf{closure}(\bigcup_{s \in d} \textbf{edge}(s,c))
+$$
+
+利用\textbf{DFAedge}能够更加形式化地写出NFA模拟算法。如果NFA的初态是$s_1$，输入字符串中的字符是$c_1,\cdots,c_k$，则算法为：
+
+\begin{align*}
+& d \leftarrow \textbf{closure}(\{s_1\}) \\
+& \textbf{for} \; \textit{i} \leftarrow 1 \;\textbf{to}\; \textit{k} \\
+& \quad d \leftarrow \textbf{DFAedge}(d,c_i)
+\end{align*}
+
+状态集合运算是代价很高的运算——对进行词法分析的源程序中的每一个字符都做这种运算几乎是不现实的。但是，预先计算出所有的状态集合却是有可能的。我们可以由NFA构造一个DFA，使得NFA的每一个状态集合都对应于DFA的一个状态。因为NFA的状态个数有限（$n$个），所以这个DFA的状态个数也是有限的（至多为$2^n$个）。
+
+一旦有了\textbf{closure}和\textbf{DFAedge}的算法，就很容易构造出DFA。DFA的状态$d_1$就是$\textbf{closure}(s_1)$，这同NFA模拟算法一样。抽象而言，如果$d_j=\textbf{DFAedge}(d_i,c)$，则存在着一条从$d_i$到$d_j$的标记为$c$的边。令$\Sigma$是字母表。
+
+\begin{align*}
+& states[0] \leftarrow \{\}; \quad\quad states[1] \leftarrow \textbf{closure}(\{s_1\}) \\
+& p \leftarrow 1; \quad\quad j \leftarrow 0 \\
+& \textbf{while} \; j \leq p \\
+& \quad \textbf{foreach} \; c \in \Sigma \\
+& \quad\quad e \leftarrow \textbf{DFAedge}(states[j],c) \\
+& \quad\quad \textbf{if} \; e = states[i] \; for \; some \; i \leq p \\
+& \quad\quad\quad \textbf{then} \; trans[j,c] \leftarrow i \\
+& \quad\quad\quad \textbf{else} \;\; p \leftarrow p + 1 \\
+& \quad\quad\quad\quad\quad states[p] \leftarrow e \\
+& \quad\quad\quad\quad\quad trans[j,c] \leftarrow p \\
+& \quad j \leftarrow j + 1
+\end{align*}
+
+这个算法不访问DFA的不可到达状态。这一点特别重要，因为原则上DFA有$2^n$个状态，但实际上一般只能找到约$n$个状态是从初始状态可以到达的。这一点对避免DFA解释器的转换表出现指数级的膨胀很重要，因为这个转换表是编译器的一部分。
+
+只要$states[d]$中有任何状态是其NFA中的接受状态，状态$d$就是DFA的\textit{接受状态}。仅仅标志一个状态为\textit{接受状态}是不够的，我们还必须告知它识别的是什么标记，并且$states[d]$中还可能有多个状态是这个NFA的接受状态。在这种情况下，我们用一个适当的标记类型来标识$d$，这个适当的标记类型即组成词法规则的正则表达式中最先出现的那个标记类型。这就是\textit{规则优先}的实现方法。
+
+构造了DFA之后便可以删除“状态”数组，只保留“转换”数组用于词法分析。
+
+对图\ref{fig:2-7}的NFA应用这个DFA构造算法得到了图2-8的自动机。
+
+这个自动机还不是最理想的，也就是说，它不是识别相同语言的最小自动机。一般而言，我们称两个状态$s_1$和$s_2$是等价的，如果开始于$s_1$的机器接收字符串$\sigma$，则它从状态$s_2$开始也一定接收$\sigma$，反之亦然。图2-8中，标为[5,6,8,15]的状态和标为[6,7,8]的状态等价。标为[10,11,13,15]的状态与标为[11,12,13]的状态等价。若自动机存在两个等价状态$s_1$和$s_2$，则我们可以使得所有进入$s_2$的边都指向$s_1$而删除$s_2$。
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    
+  \end{tikzpicture}
+  \caption{NFA被转化为DFA}
+  \label{fig:2-8}
+\end{figure}
+
+那么如何才能找出所有等价的状态呢？若$s_1$和$s_2$同为接受状态或同为非接受状态，且对于任意符号$c$，$trans[s_1,c]=trans[s_2,c]$，则显然它们两者等价。容易看出[10,11,13,15]和[11,12,13]满足这个判别条件。但是这个条件的普遍性还不够充分，考虑下面的自动机：
+
+其中状态2和4等价，但是$trans[2,a] \neq trans[4,a]$。
+
+在构造出一个DFA后，用一个算法来找出它的等价状态，并将之最小化是很有好处的；见习题2.6。
+
+\section{ML-Lex：词法分析器的生成器}
+
+构造DFA是一种机械性的工作，很容易由计算机来实现，因此一种有意义的做法是，用\textit{词法分析器的自动生成器}来将正则表达式转换为DFA。
+
+ML-Lex就是这样的一个词法分析器的生成器，它由\textit{词法规范}生成一个ML程序。对于要进行分析的程序设计语言中的每一种标记类型，该规范包含一个正则表达式和一个\textit{动作}。这个动作将标记类型（可能和其他信息一起）传给编译器的下一个处理阶段。
+
+ML-Lex的输出是一个ML程序，即一个词法分析器。该分析器使用2.3节介绍的算法来解释DFA，并根据每一种匹配执行一段动作代码，这段动作代码是用于返回标记类型的ML语句。
+
+图\ref{fig:2-2}描述的标记类型在ML-Lex中的规范如程序\ref{code:2}所示。
+
+\begin{code}
+\captionof{listing}{图\ref{fig:2-2}描述的标记的ML-Lex规范}
+\label{code:2}
 \begin{minted}{sml}
+(* ML Declarations: *)
+  type lexresult = Tokens.token
+  fun eof() = Tokens.EOF(0,0)
+  %%
+(* Lex Definitions: *)
+  digits = [0-9]+
+  %%
+(* Regular Expressions and Actions *)
+  if                    => (Tokens.IF(yypos,yypos+2));
+  [a-z][a-z0-9]*        => (Tokens.ID(yytext,yypos,yypos+size yytext));
+  {digits}              => (Tokens.NUM(Int.fromString yytext,
+                                       yypos,yypos+size yytext));
+  ({digits}"."[0-9]*)|([0-9]*"."{digits})
+                        => (Tokens.REAL(Real.fromString yytext,
+                                        yypos,yypos+size yytext));
+  ("--"[a-z]*"\n")|(" ""\n""\t")+
+                        => (continue());
+                        => (ErrorMsg.error yypos "illegal character";
+                            continue());
+\end{minted}
+\end{code}
+
+该规范的第一部分，即位于第一个“\%\%”标志上面的部分，包含了ML编写的函数和类型。在这一部分里面，必须包含lexresult类型，这个类型是每次调用词法分析函数所产生的结果的类型；而eof函数，将会在词法分析引擎碰到文件结尾时被调用。这一部分也可以包含一些功能函数，作为第三部分的语义动作使用。
+
+这个规范的第二部分包含正则表达式的简写形式和状态说明。例如，在这一部分中的说明digits[0-9]+允许用名字\{digits\}代表正则表达式中非空的数字序列。
+
+第三部分包含正则表达式和动作。这些动作是一段原始的ML代码。每一个动作必须返回一个lexresult类型的值。在这个约定里面，lexresult是Tokens结构中的一个标记。
+
+动作代码中可以使用几个特殊的变量。由正则表达式匹配的字符串是yytext。匹配到的字符串的开始位置在文件中的位置是yypos。函数continue()递归地调用词法分析器。
+
+在这个特定的例子中，每种标记都是一个数据构造器，构造器接受两个整型参数来表示位置——输入文件中的位置——标记开始的位置和结束的位置。
+
+\begin{minted}[escapeinside=\#\#,mathescape=true]{sml}
   structure Tokens =
   struct
      type pos = int
@@ -1144,17 +1285,52 @@ Pascal语言是所有组成合法Pascal程序的字符串的集合，素数语�
                     | ID of string * pos * pos
                     | NUM of int * pos * pos
                     | REAL of real * pos * pos
-                      .
-                      .
-                      .
+                    #$\vdots$#
   end
 \end{minted}
 
-\subsection{将NFA转换为DFA}
+所以，我们将yypos和yypos + size(yytext)这两个值作为参数传递给构造器就可以了。有一些标记关联有\textit{语义值}。例如，ID的语义值是组成标识符的字符串，NUM的语义值是一个整数，而IF则没有语义值（因为每一个IF都有别于其他标记）。所以，ID构造器和NUM构造器都有一个额外的参数来作为语义值，而这个语义值可以从yytext变量计算出来。
 
-\section{ML-Lex：词法分析器的生成器}
+\textbf{初始状态}
+
+正则表达式是\textit{静态的}和\textit{说明性的}，自动机是\textit{动态的}和\textit{命令式的}；也就是说，你不必用一个算法来模拟就能看到正则表达式的成分和结构，但是理解自动机常常需要你在自己的头脑中来“执行”它。因此，正则表达式一般更适合于用来知名程序设计语言标记的词法结构。
+
+有时候一步一步地模拟自动机的状态转换过程也是一种合适的做法。ML-Lex有一种将状态和正则表达式混合到一起的机制。你可以声明一组\textit{初始状态}，每个正则表达式的前面可以有一组对它而言是合法的初始状态作为其前缀。动作代码可以明显地改变初态。这相当于我们有这样的一种有限自动机，其边标记的不是符号而是正则表达式。下面的例子给出了一种只由简单标识符、单词if和以“(* ”和“ *)”作为界定符的注释所组成的语言。
+
+尽管有可能写出与整个注释相匹配的单个正则表达式，但是随着注释变得越来越复杂，特别是在允许注释嵌套的情况下，这种正则表达式也会越来越复杂，甚至变得不可能。
+
+与这个机器对应的ML-Lex的规范为：
+
+其中INITIAL是“任何注释之外”的状态。最后一个规则是一种调整，其用途是使得ML-Lex进入此状态。任何不以<STATE>为前缀的正则表达式在所有状态中都能工作，这种特征很少有用处。
+
+利用一个全局变量，并在语义动作中适当增减此全局变量的值，这个例子便很容易扩充成可以处理嵌套的注释。
 
 \section{程序设计：词法分析}
+
+用ML-Lex写出一个Tiger语言的词法分析器。附录中描述了Tiger的词法标记。
+
+本章未对词法分析器应当如何初始化以及它应当如何与编译器的其他部分通信作出说明。你可以从ML-Lex使用手册中得到这些内容，而在\$TIGER/chap2目录中有一个最基本的“脚手架”文件可以帮助你入门。
+
+你应当在连同tiger.lex文件一起提交的文档中描述清楚以下问题：
+
+\begin{itemize}
+  \item 你是怎样处理注释的。
+  \item 你是怎样处理字符串的。
+  \item 错误处理。
+  \item 文本结束处理。
+  \item 你的词法分析器的其他令人感兴趣的特征。
+\end{itemize}
+
+在\$TIGER/chap2中有如下一些可用的支持文件。
+
+\begin{itemize}
+  \item tokens.sig，Tokens结构的签名。
+  \item tokens.sml，Tokens结构，包含token类型和构造器，你的词法分析器可以用它们来创建token类型的实例。以这种方式来完成词法分析非常重要，因为当把“真正的”语法分析器链接到这个词法分析器的后面，以及使用“真正的”Tokens结构时，所有的代码仍然可以运行。
+  \item errormsg.sml，ErrorMsg结构可以用来产生带有文件名和行号的错误信息。
+  \item driver.sml
+  \item tiger.lex
+  \item sources.cm
+\end{itemize}
 
 \section{推荐阅读}
 
