@@ -1327,13 +1327,106 @@ ML-Lex的输出是一个ML程序，即一个词法分析器。该分析器使用
   \item tokens.sig，Tokens结构的签名。
   \item tokens.sml，Tokens结构，包含token类型和构造器，你的词法分析器可以用它们来创建token类型的实例。以这种方式来完成词法分析非常重要，因为当把“真正的”语法分析器链接到这个词法分析器的后面，以及使用“真正的”Tokens结构时，所有的代码仍然可以运行。
   \item errormsg.sml，ErrorMsg结构可以用来产生带有文件名和行号的错误信息。
-  \item driver.sml
-  \item tiger.lex
-  \item sources.cm
+  \item driver.sml，一个运行你的词法分析器来分析输入文件的测试平台。
+  \item tiger.lex，tiger.lex文件的初始代码。
+  \item sources.cm，ML编译管理器的“makefile”。
 \end{itemize}
+
+在阅读附录（Tiger语言参考手册）时，要特别注意以\textbf{标识符}（Identifier）、\textbf{注释}（Comment）、\textbf{整型字面量}（Integer literal）和\textbf{字符串字面量}（String literal）作为标题的段落。
+
+Tiger语言的保留字是：while、for、to、break、let、in、end、function、var、type、array、if、then、else、do、of、nil。
+
+Tiger语言使用的符号是：
+
+, : ; ( ) [ ] \{ \} . + - * / = <> < <= > >= \& | :=
+
+对于字符串字面量，你的词法分析器返回的字符串值应当包含所有已转换到其含义的转义字符。
+
+没有负整型字面量。对于带负号的整型字面量，例如-32，要返回两个标记。
+
+检测没有闭合的注释（在文件末尾）和没有闭合的字符串。
+
+目录\$TIGER/testcases中含有几个简单的Tiger样例程序。
+
+开始时：首先创建一个目录，并复制\$TIGER/chap2中的内容到此目录。用Tiger语言编写一个小程序保存于文件test.tig中。然后，键入sml并输入命令CM.make()；CM（Compilation Manager，编译管理器）将会\textit{使得}系统运行ml-lex命令，如果需要的话，还会编译和链接需要的ML源文件。
+
+最后，Parse.parse "test.tig";命令将会利用一个测试台对该文件进行词法分析。
+
+\section{推荐阅读}
+
+Lex是第一个基于正则表达式的词法分析器的生成器[Lesk 1975]，它现在仍被广泛使用。
+
+将那种还未对它的边进行过$\epsilon$转换检查的状态保存在一个队列或栈中，可以更高效地计算闭包[Aho et al. 1986]。正则表达式可以直接转换成DFA而不需经过NFA[McNaughton and Yamada1960;Aho et al. 1986]。
+
+DFA转换表可能非常大，而且很稀疏。若用一个二维矩阵（状态$\times$符号）来表示这张表则会需要太多的存储空间。在实际中，这个表是经过压缩的。这样做减少了存储空间需求，但却增加了寻找下一状态需要的时间[Aho et al. 1986]。
+
+词法分析器，无论是自动生成的还是手工书写的，都必须有效地处理其输入。当然，输人可以放在缓冲区中，从而一次可以获取成批的字符，然后词法分析器可以每次处理缓冲区中的一个字符。每次读取字符时，词法分析器都必须检查是否已到达缓冲区的末尾。通过在缓冲区末尾放置一个敏感标记（sentinel），即一个不属于任何标记的字符，词法分析器就有可能只对每个标记进行一次检查，而不是对每个字符都进行检查[Aho et al. 1986]。Gray[1988]使用的一种设计可以只需每行检查一次，而不是每个标记检查一次，但它不能适合那种包含行结束字符的标记。Bumbulis和Cowan[1993]的方法只需对DFA中的每一次循环检查一次；当DFA中存在很长的路径时，这可减少检查的次数（相对每个字符一次）。
+
+自动生成的词法分析器常常受到速度太慢的批评。从原理上而言，有限自动机的操作非常简单，因而应该是高效的，但是通过转换表进行解释增加了开销。Gray[1988]指出直接将DFA转换为可执行代码（将状态作为case语句来实现），其速度可以和手工编写的词法分析器一样快。例如，Flex(fast lexical analyzer generator)[Paxson 1995]的速度就比Lex要快许多。
+
+\section{习题}
+
+\chapter{语法分析}
+
+\epigraph{\textbf{语法}（syn-tax）：组合单词以形成词组、从句或句子的方法。}{韦氏词典}
+
+ML-Lex中用一个符号替代某个正则表达式的缩写机制非常方便，这使我们想到用下面的方法来表示一个正则表达式：
+
+\begin{align*}
+digits &= [0-9]+ \\
+sum &= (digits\text{``}+\text{''})^*digits
+\end{align*}
+
+这两个正则表达式定义了形如28+301+9的求和表达式。
+
+但是，考虑下面的定义：
+
+\begin{align*}
+digits &= [0-9]+ \\
+sum &= expr\text{``}+\text{''}expr \\
+expr &= \text{``(''}sum\text{``)''}|digits
+\end{align*}
+
+它们定义的是如下形式的表达式：
+
+(109+23)
+
+61
+
+(1+(250+3))
+
+
+
+\section{上下文无关文法}
+
+\section{预测分析}
+
+\section{LR分析}
+
+\section{使用分析器的生成器}
+
+\section{错误恢复}
+
+\section{程序设计：语法分析}
 
 \section{推荐阅读}
 
 \section{习题}
+
+\chapter{抽象语法}
+
+\section{语义动作}
+
+\section{抽象语法分析树}
+
+\chapter{语义分析}
+
+\section{符号表}
+
+\section{Tiger编译器的绑定}
+
+\section{表达式的类型检查}
+
+\section{声明}
 
 \end{document}
