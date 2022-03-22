@@ -88,7 +88,7 @@
 %%%%%%%%%%%%%%%%%%%% Author Name %%%%%%%%%%%%%%%%%%%% 
 \node[left,black,minimum width=0.625*\paperwidth,minimum height=2cm, rounded corners] at ($(current page.north east)+(0,-13)$)
 {
-{\Large \textsc{[美] Andrew W.Appel \; Maia Ginsburg 著}}
+{\Large \textsc{Andrew W.Appel}}
 };
 
 %%%%%%%%%%%%%%%%%%%% Year %%%%%%%%%%%%%%%%%%%% 
@@ -1217,14 +1217,59 @@ $$
 
 \begin{figure}[htbp]
   \centering
-  \begin{tikzpicture}
-    
+  \scalebox{.5}{
+  \begin{tikzpicture}[node distance = 1cm]
+    \node[state] (1) {1,4,9,14};
+    \node[state,accepting,above right = of 1,xshift=2cm,label=above:ID] (2) {5,6,8,15};
+    \node[state,accepting,below right = of 1,xshift=2cm,label=above:NUM] (3) {10,11,13,15};
+    \node[state,accepting,above = of 2,label=above:ID] (4) {2,5,6,8,15};
+    \node[state,accepting,below = of 3,label=above:error] (5) {15};
+    \node[state,accepting,below right = of 4,label=right:IF,xshift=1cm,yshift=1cm] (6) {3,6,7,8};
+    \node[state,accepting,below right = of 6,xshift=2cm,label=above:ID] (7) {6,7,8};
+    \node[state,accepting,right = of 3,label=above:NUM] (8) {11,12,13};
+
+    \draw[->] (1) edge[above] node{i} (4);
+    \draw[->] (1) edge[above] node{a-h} (2);
+    \draw[->] (1) edge[below] node{j-z} (2);
+    \draw[->] (1) edge[below] node{0-9} (3);
+    \draw[->] (1) edge[bend right,below] node{其他} (5);
+    \draw[->] (4) edge[bend left,above] node{a-e,g-z,0-9} (7);
+    \draw[->] (4) edge[above] node{f} (6);
+    \draw[->] (6) edge[above] node{a-z,0-9} (7);
+    \draw[->] (2) edge[above] node{a-z} (7);
+    \draw[->] (2) edge[below] node{0-9} (7);
+    \draw[->] (3) edge[below] node{0-9} (8);
+    \draw[->] (8) edge[loop right] node{0-9} (8);
+    \draw[->] (7) edge[loop right] node{\begin{tabular}{l}
+      a-z \\ 0-9
+    \end{tabular}} (7);
   \end{tikzpicture}
+  }
   \caption{NFA被转化为DFA}
   \label{fig:2-8}
 \end{figure}
 
 那么如何才能找出所有等价的状态呢？若$s_1$和$s_2$同为接受状态或同为非接受状态，且对于任意符号$c$，$trans[s_1,c]=trans[s_2,c]$，则显然它们两者等价。容易看出[10,11,13,15]和[11,12,13]满足这个判别条件。但是这个条件的普遍性还不够充分，考虑下面的自动机：
+
+\begin{figure}[htbp]
+  \centering
+  \scalebox{.5}{
+    \begin{tikzpicture}[node distance = 1cm]
+      \node[state] (1) {|};
+      \node[state,accepting,above right = of 1] (2) {2};
+      \node[state,accepting,below right = of 1] (4) {4};
+      \node[state,right = of 2] (3) {3};
+      \node[state,right = of 4] (5) {5};
+
+      \draw[->,thick] (1) edge[above] node{a} (2);
+      \draw[->,thick] (1) edge[above] node{b} (4);
+      \draw[->,thick] (2) edge[bend left,above] node{a} (3);
+      \draw[->,thick] (3) edge[bend left,above] node{a} (2);
+      \draw[->,thick] (4) edge[bend left,above] node{a} (5);
+      \draw[->,thick] (5) edge[bend left,above] node{a} (4);
+    \end{tikzpicture}
+  }
+\end{figure}
 
 其中状态2和4等价，但是$trans[2,a] \neq trans[4,a]$。
 
@@ -1297,9 +1342,40 @@ ML-Lex的输出是一个ML程序，即一个词法分析器。该分析器使用
 
 有时候一步一步地模拟自动机的状态转换过程也是一种合适的做法。ML-Lex有一种将状态和正则表达式混合到一起的机制。你可以声明一组\textit{初始状态}，每个正则表达式的前面可以有一组对它而言是合法的初始状态作为其前缀。动作代码可以明显地改变初态。这相当于我们有这样的一种有限自动机，其边标记的不是符号而是正则表达式。下面的例子给出了一种只由简单标识符、单词if和以“(* ”和“ *)”作为界定符的注释所组成的语言。
 
+\begin{figure}[htbp]
+  \centering
+  \scalebox{.5}{
+  \begin{tikzpicture}[node distance = 1cm,initial text = $ $]
+    \node[state] (1) {INITIAL};
+    \node[state,right = of 1] (2) {COMMENT};
+    \node[state,draw=none,above left = of 1] (3) {};
+
+    \draw[->] (1) edge[bend left,above] node{(*} (2);
+    \draw[->] (2) edge[bend left,below] node{*)} (1);
+    \draw[->] (1) edge[loop left] node{[a-z]+} (1);
+    \draw[->] (1) edge[loop below] node{if} (1);
+    \draw[->] (2) edge[loop right] node{.} (2);
+    \draw[->] (3) edge[bend left] (1);
+  \end{tikzpicture}
+  }
+\end{figure}
+
 尽管有可能写出与整个注释相匹配的单个正则表达式，但是随着注释变得越来越复杂，特别是在允许注释嵌套的情况下，这种正则表达式也会越来越复杂，甚至变得不可能。
 
 与这个机器对应的ML-Lex的规范为：
+
+\begin{minted}{sml}
+            规范一般以如下代码开头...
+%%
+%s COMMENT
+%%
+<INITIAL>if         => (Tokens.IF(yypos,yypos+2));
+<INITIAL>[a-z]+     => (Tokens.ID(yytext,yypos,
+                                  yypos+size(yytext)));
+<INITIAL>"(*"       => (YYBEGIN COMMENT; continue());
+<COMMENT>"*)"       => (YYBEGIN INITIAL; continue());
+<COMMENT>.          => (continue();)
+\end{minted}
 
 其中INITIAL是“任何注释之外”的状态。最后一个规则是一种调整，其用途是使得ML-Lex进入此状态。任何不以<STATE>为前缀的正则表达式在所有状态中都能工作，这种特征很少有用处。
 
@@ -1365,6 +1441,19 @@ DFA转换表可能非常大，而且很稀疏。若用一个二维矩阵（状�
 自动生成的词法分析器常常受到速度太慢的批评。从原理上而言，有限自动机的操作非常简单，因而应该是高效的，但是通过转换表进行解释增加了开销。Gray[1988]指出直接将DFA转换为可执行代码（将状态作为case语句来实现），其速度可以和手工编写的词法分析器一样快。例如，Flex(fast lexical analyzer generator)[Paxson 1995]的速度就比Lex要快许多。
 
 \section{习题}
+
+\begin{enumerate}
+  \item 写出下面每一种标记的正则表达式。
+  \begin{enumerate}
+    \item 字母表\{a,b,c\}上满足后面条件的字符串：首次出现的a位于首次出现的b之前。
+    \item 字母表\{a,b,c\}上由偶数个a组成的字符串。
+    \item 是4的倍数的二进制数。
+    \item 大于101001的二进制数。
+    \item 字母表\{a,b,c\}上不包含连续子串baa的字符串。
+    \item C语言中非负整常数组成的语言，其中以0开头的数是\textit{八进制}常数，其他数是\textit{十进制}常数。
+    \item 使得方程$a^n+b^n=c^n$存在着整数解的二进制整数$n$。
+  \end{enumerate}
+\end{enumerate}
 
 \chapter{语法分析}
 
@@ -1449,7 +1538,7 @@ expr &= (a \; b \; c)expr \\
 expr &= \epsilon
 \end{align*}
 
-至此我们得到了一种非常简单的表示法，称为上下文无关文法(context-free grammar)。正如正则表达式以一种静态的、说明的方式来定义词法结构一样，文法以说明的方式来定义语法结构。但是我们需要比有限自动机更强大的方法来分析文法所描述的语言。
+至此我们得到了一种非常简单的表示法，称为上下文无关文法（context-free grammar）。正如正则表达式以一种静态的、说明的方式来定义词法结构一样，文法以说明的方式来定义语法结构。但是我们需要比有限自动机更强大的方法来分析文法所描述的语言。
 
 事实上，文法也可用来描述词法单词的结构；但对于此目的，使用正则表达式要更为适合，也更为简练。
 
@@ -1457,7 +1546,7 @@ expr &= \epsilon
 
 与前面类似，我们认为语言是由字符串组成的集合，每个字符串是由有限字母表中的符号组成的有限序列。对于语法分析而言，字符串是源程序，符号是词法单词，字母表是词法分析器返回的单词类型集合。
 
-一个上下文无关文法描述一种语言。文法有如下形式的产生式(production)集合: 
+一个上下文无关文法描述一种语言。文法有如下形式的产生式（production）集合: 
 
 $$
 symbol \rightarrow symbol \; symbol \cdots synbol
@@ -1465,7 +1554,29 @@ $$
 
 其中，产生式的右部有0至多个符号。每一个符号或者是终结符（terminal）——来自该语言字符串字母表中的单词，或者是非终结符（nonterminal）——出现在某个产生式的左部。单词决不会出现在产生式的左部。最后，有一个区别对待的非终结符，称为文法的开始符号（start symbol）。
 
-文法\ref{grammar:1}是一个直线式程序的文法例子。它的开始符号是$S$（当未明确给出开始符号时，约定第一个产生式左部的非终结符为开始符号）。此例中的终结符为:
+\renewcommand\tablename{文法}
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{llll}
+  \toprule
+  1 & $S$ & $\rightarrow$ & $S$ ; $S$ \\
+  2 & $S$ & $\rightarrow$ & id := $E$ \\
+  3 & $S$ & $\rightarrow$ & print ( $L$ ) \\
+  \midrule
+  4 & $E$ & $\rightarrow$ & id \\
+  5 & $E$ & $\rightarrow$ & num \\
+  6 & $E$ & $\rightarrow$ & $E+E$ \\
+  7 & $E$ & $\rightarrow$ & $(S,E)$ \\
+  \midrule
+  8 & $L$ & $\rightarrow$ & $E$ \\
+  9 & $L$ & $\rightarrow$ & $L,E$ \\
+  \bottomrule
+  \end{tabular}
+  \caption{直线式程序设计语言}\label{grammar:3-1}
+\end{table}
+\renewcommand\tablename{表}
+
+文法\ref{grammar:3-1}是一个直线式程序的文法例子。它的开始符号是$S$（当未明确给出开始符号时，约定第一个产生式左部的非终结符为开始符号）。此例中的终结符为:
 
 id print num . + ( ) := ;
 
@@ -1473,11 +1584,13 @@ id print num . + ( ) := ;
 
 id := num; id := id + (id := num + num, id)
 
-与它对应的源程序(在词法分析之前的)可以是:
+与它对应的源程序（在词法分析之前的）可以是:
 
 a := 7;
 
 b := c + (d := 5 + 6, d)
+
+标记（终结符）的类型为id、num、:=等。名字（a、b、c、d）和数字（7、5、6）是与其中一些标记关联的\textit{语义值}（semantic value）。
 
 \section{预测分析}
 
