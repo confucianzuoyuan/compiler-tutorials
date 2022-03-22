@@ -1137,9 +1137,55 @@ Pascal语言是所有组成合法Pascal程序的字符串的集合，素数语�
 
 \begin{figure}[htbp]
   \centering
-  \begin{tikzpicture}
-    
+  \scalebox{.5}{
+  \begin{tikzpicture}[node distance = 1cm]
+    \node[state] (1) {1};
+    \node[state,draw=none,above left = 1] (0) {};
+    \node[state,above right = of 1,yshift=1cm] (2) {2};
+    \node[state,accepting,right = of 2,label=above:IF] (3) {3};
+    \node[state,below right = of 3,xshift=2cm,yshift=1cm] (4) {4};
+    \node[state,right = of 4] (5) {5};
+    \node[state,right = of 5] (6) {6};
+    \node[state,right = of 6] (7) {7};
+    \node[state,right = of 7,accepting,label=above:ID] (8) {8};
+    \node[state,below right = of 1,yshift=-1cm] (14) {14};
+    \node[state,right = of 14,accepting,label=above:error] (15) {15};
+    \node[state,above right = of 15,xshift=2cm,yshift=-1cm] (9) {9};
+    \node[state,right = of 9] (10) {10};
+    \node[state,right = of 10] (11) {11};
+    \node[state,right = of 11] (12) {12};
+    \node[state,right = of 12,accepting,label=above:NUM] (13) {13};
+
+    \draw[->] (0) edge[bend left] (1);
+    \draw[->] (1) edge[above] node{i} (2);
+    \draw[->] (1) edge[above] node{$\epsilon$} (14);
+    \draw[->] (1) edge[above] node{$\epsilon$} (4);
+    \draw[->] (1) edge[above] node{$\epsilon$} (9);
+    \draw[->] (2) edge[above] node{f} (3);
+    \draw[->] (14) edge[bend left,above] node{任何} (15);
+    \draw[->] (14) edge[bend right,below] node{字符} (15);
+    \draw[->] (4) edge[bend left,above] node{a} (5);
+    \draw[->] (4) edge[bend right,below] node{z} (5);
+    \draw[->] (9) edge[bend left,above] node{0} (10);
+    \draw[->] (9) edge[bend right,below] node{9} (10);
+    \draw[->] (5) edge[bend left,above] node{$\epsilon$} (8);
+    \draw[->] (10) edge[bend left,above] node{$\epsilon$} (13);
+    \draw[->] (8) edge[bend left=60,below] node{$\epsilon$} (6);
+    \draw[->] (13) edge[bend left=60,below] node{$\epsilon$} (11);
+    \draw[->] (6) edge[bend left,above] node{a-z} (7);
+    \draw[->] (6) edge[bend right,below] node{0-9} (7);
+    \draw[->] (11) edge[bend left,above] node{0} (12);
+    \draw[->] (11) edge[bend right,below] node{9} (12);
+    \draw[->] (7) edge[above] node{$\epsilon$} (8);
+    \draw[->] (12) edge[above] node{$\epsilon$} (13);
+
+    \node[rectangle,right = of 9,xshift=-0.67cm,yshift=0.1cm] (16) {$\vdots$};
+    \node[rectangle,right = of 14,xshift=-0.67cm,yshift=0.1cm] (17) {$\vdots$};
+    \node[rectangle,right = of 4,xshift=-0.67cm,yshift=0.1cm] (18) {$\vdots$};
+    \node[rectangle,right = of 6,xshift=-0.67cm,yshift=0.1cm] (19) {$\vdots$};
+    \node[rectangle,right = of 11,xshift=-0.67cm,yshift=0.1cm] (20) {$\vdots$};
   \end{tikzpicture}
+  }
   \caption{由4个正则表达式转换成的一个NFA}
   \label{fig:2-7}
 \end{figure}
@@ -1211,9 +1257,9 @@ $$
 
 构造了DFA之后便可以删除“状态”数组，只保留“转换”数组用于词法分析。
 
-对图\ref{fig:2-7}的NFA应用这个DFA构造算法得到了图2-8的自动机。
+对图\ref{fig:2-7}的NFA应用这个DFA构造算法得到了图\ref{fig:2-8}的自动机。
 
-这个自动机还不是最理想的，也就是说，它不是识别相同语言的最小自动机。一般而言，我们称两个状态$s_1$和$s_2$是等价的，如果开始于$s_1$的机器接收字符串$\sigma$，则它从状态$s_2$开始也一定接收$\sigma$，反之亦然。图2-8中，标为[5,6,8,15]的状态和标为[6,7,8]的状态等价。标为[10,11,13,15]的状态与标为[11,12,13]的状态等价。若自动机存在两个等价状态$s_1$和$s_2$，则我们可以使得所有进入$s_2$的边都指向$s_1$而删除$s_2$。
+这个自动机还不是最理想的，也就是说，它不是识别相同语言的最小自动机。一般而言，我们称两个状态$s_1$和$s_2$是等价的，如果开始于$s_1$的机器接收字符串$\sigma$，则它从状态$s_2$开始也一定接收$\sigma$，反之亦然。图\ref{fig:2-8}中，标为[5,6,8,15]的状态和标为[6,7,8]的状态等价。标为[10,11,13,15]的状态与标为[11,12,13]的状态等价。若自动机存在两个等价状态$s_1$和$s_2$，则我们可以使得所有进入$s_2$的边都指向$s_1$而删除$s_2$。
 
 \begin{figure}[htbp]
   \centering
