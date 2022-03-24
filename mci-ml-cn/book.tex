@@ -97,10 +97,8 @@
 \frontmatter
 
 \tableofcontents
-%\listofchanges
 
 \mainmatter
-
 
 \chapter*{前言}
 
@@ -221,7 +219,6 @@
 \section{模块与接口}
 
 对于任何大型软件系统，如果设计者注意到了该系统的基本抽象和接口，那么对这个系统的理解和实现就要容易得多。图\ref{fig:1-1}展示了一个典型的编译器的各个阶段，每个阶段由一至多个软件模块来实现。
-
 
 \begin{figure}[htbp]
 	\centering
@@ -1502,6 +1499,10 @@ DFA转换表可能非常大，而且很稀疏。若用一个二维矩阵（状�
     \item \includegraphics[scale=0.6,valign=t]{exercise2.3-c.pdf}
   \end{enumerate}
   \item 将下面两个正则表达式转换为非确定性有限自动机。
+  \begin{enumerate}
+    \item (\textbf{if}|\textbf{then}|\textbf{else})
+    \item \textbf{a}((\textbf{b}|\textbf{a}*\textbf{c})\textbf{x})*|\textbf{x}*\textbf{a}
+  \end{enumerate}
   \item 将下面的NFA转换为确定性有限自动机。
   \item 在下面这个自动机中找出两个等价的状态，并合并它们产生一个识别相同语言且较小的自动机。重复这个过程直到没有等价状态为止。
   
@@ -1748,9 +1749,100 @@ b := c + (d := 5 + 6, d)
 
 \section{预测分析}
 
+\begin{minted}[frame=single]{sml}
+datatype token = IF | THEN | ELSE | BEGIN | END | PRINT
+               | SEMI | NUM | EQ
+               
+val tok = ref (getToken())
+fun advance() = tok := getToken()
+fun eat(t) = if (!tok=t) then advance() else error()
+
+fun S() = case !tok
+           of IF => (eat(IF); E(); eat(THEN); S();
+                     eat(ELSE); S())
+            | BEGIN => (eat(BEGIN); S(); L())
+            | PRINT => (eat(PRINT); E())
+and L() = case !tok
+           of END => (eat(END))
+            | SEMI => (eat(SEMI); S(); L())
+and E() = (eat(NUM); eat(EQ); eat(NUM))
+\end{minted}
+
+\begin{minted}[frame=single]{sml}
+fun S() = (E(); eat(EOF))
+and E() = case !tok
+           of ? => (E(); eat(PLUS); T())
+            | ? => (E(); eat(MINUS); T())
+            | ? => (T())
+and T() = case !tok
+           of ? => (T(); eat(TIMES); F())
+            | ? => (T(); eat(DIV); F())
+            | ? => (F())
+and F() = case !tok
+           of ID => (eat(ID))
+            | NUM => (eat(NUM))
+            | LPAREN => (eat(LPAREN); E(); eat(RPAREN))  
+\end{minted}
+
 \section{LR分析}
 
 \section{使用分析器的生成器}
+
+\SetupFloatingEnvironment{listing}{name=文法}
+\begin{code}
+\captionof{listing}{直线式程序的表示}
+\label{grammar:3-31}
+\begin{minted}[frame=single,fontsize=\footnotesize]{text}
+%%
+%term ID | WHILE | BEGIN | END | DO | IF | THEN | ELSE | SEMI | ASSIGN | EOF
+
+%nonterm prog | stm | stmlist
+
+%pos int
+%verbose
+%start prog
+%eop EOF %noshift EOF
+
+%%
+
+prog: stmlist                   ()
+
+stm : ID ASSIGN ID              ()
+    | WHILE ID DO stm           ()
+    | BEGIN stmlist END         ()
+    | IF ID THEN stm            ()
+    | IF ID THEN stm ELSE stm   ()
+
+stmlist : stm                   ()
+        | stmlist SEMI stm      ()
+\end{minted}
+\end{code}
+\SetupFloatingEnvironment{listing}{name=程序}
+
+\SetupFloatingEnvironment{listing}{name=文法}
+\begin{code}
+\captionof{listing}{直线式程序的表示}
+\label{grammar:3-35}
+\begin{minted}[frame=single,fontsize=\footnotesize]{text}
+%%
+%term INT | PLUS | MINUS | TIMES | UMINUS | EOF
+%nonterm exp
+%start exp
+%eop EOF
+
+%left PLUS MINUS
+%left TIMES
+%left UMINUS
+%%
+
+exp : INT                    ()
+    | exp PLUS exp           ()
+    | exp MINUS exp          ()
+    | exp TIMES exp          ()
+    | MINUS exp %prec UMINUS ()
+\end{minted}
+\end{code}
+\SetupFloatingEnvironment{listing}{name=程序}
 
 \section{错误恢复}
 
