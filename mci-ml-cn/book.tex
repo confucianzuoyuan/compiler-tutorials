@@ -1504,11 +1504,25 @@ DFA转换表可能非常大，而且很稀疏。若用一个二维矩阵（状�
     \item \textbf{a}((\textbf{b}|\textbf{a}*\textbf{c})\textbf{x})*|\textbf{x}*\textbf{a}
   \end{enumerate}
   \item 将下面的NFA转换为确定性有限自动机。
+  \begin{enumerate}
+    \item \includegraphics[scale=0.6,valign=t]{exercise2.5-a.pdf}
+    \item \includegraphics[scale=0.6,valign=t]{exercise2.5-b.pdf}
+    \item \includegraphics[scale=0.6,valign=t]{exercise2.5-c.pdf}
+  \end{enumerate}
   \item 在下面这个自动机中找出两个等价的状态，并合并它们产生一个识别相同语言且较小的自动机。重复这个过程直到没有等价状态为止。
+  
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.8\textwidth]{exercise2.6.pdf}
+  \end{figure}
   
   实际上，最小化有限自动机的通用算法是以相反的思路来工作的。它首先要找出的是所有不等价的状态偶对。若$X$是终结符而$Y$不是，或者（通过迭代）$X\rightarrow X'$且Y-Y但$X$和$Y$不等价，则状态$X$和$Y$不等价。用这种迭代方式寻找新的不等价状态偶对且由于没有更多的不等价状态而停止后，如果$X$、$Y$仍不是不等价偶对，则它们就是等价状态。参见Hopcroft和Ullman[1979]中的定理3.10。
   \item 任何接收至少一个字符串的DFA都能转换为一个正则表达式。将习题2.3c的DFA转换为正则表达式。提示：首先假装状态1是初态。然后，编写一个通到状态2并返回到状态1的正则表达式和一个类似的通到状态0并返回到状态1的正则表达式。或者查看Hopcroft和Ullman[1979]一书中定理2.4关于此算法的论述。
   \item 假设Lex使用下面这个DFA来找输入文件中的单词：
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.8\textwidth]{exercise2.8.pdf}
+  \end{figure}
   \begin{enumerate}
     \item Lex在匹配一个单词之前，必须在该单词之后再检测多少个字符?
     \item 设你对问题a的答案为$k$，写出一个至少包含两个单词的输入文件，使得Lex的第一次调用在返回第一个单词前需要检测该单词末尾之后的$k$个字符。若对问题a的答案为0，则写出一个包含至少两个单词的输人文件，并指出每个单词的结束点。
@@ -1534,7 +1548,7 @@ DFA转换表可能非常大，而且很稀疏。若用一个二维矩阵（状�
   
   然后给出该词法分析器分析字符串abaabbaba的每一步。注意，一定要给出此词法分析器重要的内部变量的值。该词法分析器将被反复调用以获得后继的单词。
   
-  \item 词法分析器Lex有一个超前查看操作符“/”，它使得正则表达式abc/def只有在abc之后跟有def时，才能匹配abc（但是def并不是所匹配字符串的一部分，而是下一个或几个单词的一部分)。Aho等人[1986]描述了一种不正确的实现超前查看的算法，并且Lex[Lesk 1975]中也使用了这种算法（对于(alab)/ba，当输入为aba时，该算法不能进行正确的识别。它在应当匹配a的地方匹配了ab）。Flex[Paxson1995]使用了一种更好的机制，这种机制对于(alab)/ba能正确工作，但对zx*/xy*却不能（但能打印出警告信息）。
+  \item 词法分析器Lex有一个\textit{超前查看}操作符“/”，它使得正则表达式abc/def只有在abc之后跟有def时，才能匹配abc（但是def并不是所匹配字符串的一部分，而是下一个或几个单词的一部分)。Aho等人[1986]描述了一种不正确的实现超前查看的算法，并且Lex[Lesk 1975]中也使用了这种算法（对于(alab)/ba，当输入为aba时，该算法不能进行正确的识别。它在应当匹配a的地方匹配了ab）。Flex[Paxson1995]使用了一种更好的机制，这种机制对于(alab)/ba能正确工作，但对zx*/xy*却不能（但能打印出警告信息）。
 
   请设计出一种更好的超前查看机制。
 \end{enumerate}
@@ -1656,7 +1670,7 @@ $$
   9 & $L$ & $\rightarrow$ & $L,E$ \\
   \bottomrule
   \end{tabular}
-  \caption{直线式程序设计语言}\label{grammar:3-1}
+  \caption{直线式程序的文法}\label{grammar:3-1}
 \end{table}
 \renewcommand\tablename{表}
 
@@ -1707,6 +1721,8 @@ b := c + (d := 5 + 6, d)
 
 推导\ref{derivation:3-1}既不是最左推导，也不是最右推导，因为这个句子的最左推导应当以下述推导开始：
 
+\begin{table}[htbp]
+\centering
 \begin{tabular}{l}
   $\underline{S}$ \\
   $\underline{S}$ ; $S$ \\
@@ -1716,24 +1732,94 @@ b := c + (d := 5 + 6, d)
   id := num ; id := $\underline{E} + E$ \\
   $\quad\vdots$ \\
 \end{tabular}
+\end{table}
 
 \subsection{语法分析树}
 
-语法分析树（parse tree，也简称为语法树或分析树）是将一个推导中的各个符号连接到从它推导出来的符号而形成的，如图3—1所示。两种不同的推导可以有相同的语法树。
+语法分析树（parse tree，也简称为语法树或分析树）是将一个推导中的各个符号连接到从它推导出来的符号而形成的，如图\ref{fig:3-3}所示。两种不同的推导可以有相同的语法树。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.8\textwidth]{3-3.pdf}
+  \caption{语法分析树}
+  \label{fig:3-3}
+\end{figure}
 
 \subsection{二义性文法}
 
-如果一个文法能够推导出具有两棵不同语法树的句子，则该文法有\textit{二义性}（ambiguous）。文法3—1是有二义性的，因为句子id := id + id + id有两棵语法分析树（图3—2）。
+如果一个文法能够推导出具有两棵不同语法树的句子，则该文法有\textit{二义性}（ambiguous）。文法\ref{grammar:3-1}是有二义性的，因为句子id := id + id + id有两棵语法分析树（图\ref{fig:3-4}）。
 
-文法3—2也是有二义性的。图3—3给出了句子$1-2-3$的两棵语法分析树，图3—4则给出了$1+2*3$的两棵语法树。显然，如果我们用这些语法分析树来解释这两个表达式的含义，$1-2-3$的两棵语法分析树则有两种不同的含义，分别为$(1-2)-3=—4$和$1-(2-3)=2$。同样，$(1+2)\times 3$也不同于$1+(2\times 3)$。而且编译器正是利用语法分析树来推导语义的。
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.8\textwidth]{3-4.pdf}
+  \caption{文法\ref{grammar:3-1}的同一个句子的两颗语法分析树}
+  \label{fig:3-4}  
+\end{figure}
+
+文法\ref{grammar:3-2}也是有二义性的。图\ref{fig:3-6}给出了句子$1-2-3$的两棵语法分析树，图\ref{fig:3-7}则给出了$1+2*3$的两棵语法树。显然，如果我们用这些语法分析树来解释这两个表达式的含义，$1-2-3$的两棵语法分析树则有两种不同的含义，分别为$(1-2)-3=—4$和$1-(2-3)=2$。同样，$(1+2)\times 3$也不同于$1+(2\times 3)$。而且编译器正是利用语法分析树来推导语义的。
+
+\renewcommand\tablename{文法}
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{lll}
+    \toprule
+    $E$ & $\rightarrow$ & id \\
+    $E$ & $\rightarrow$ & num \\
+    $E$ & $\rightarrow$ & $E*E$ \\
+    $E$ & $\rightarrow$ & $E/E$ \\
+    $E$ & $\rightarrow$ & $E+E$ \\
+    $E$ & $\rightarrow$ & $E-E$ \\
+    $E$ & $\rightarrow$ & ($E$) \\
+    \bottomrule
+  \end{tabular}
+  \caption{}
+  \label{grammar:3-2}
+\end{table}
+\renewcommand\tablename{表}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.8\textwidth]{3-6.pdf}
+  \caption{文法\ref{grammar:3-2}的句子$1-2-3$的两颗语法分析树}
+  \label{fig:3-6}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.8\textwidth]{3-7.pdf}
+  \caption{文法\ref{grammar:3-2}的句子$1+2*3$的两颗语法分析树}
+  \label{fig:3-7}
+\end{figure}
 
 因此，二义性文法会给编译带来问题，通常我们希望文法是无二义性的。幸运的是，二义性文法常常可以转换为无二义性的文法。
 
-让我们来找出文法3-2的另一种文法，它接收的语言与文法3-2相同，但却是无二义性的。首先，假定*比+具有\textit{更紧密的约束}，或换言之，*具有\textit{较高的优先级}。其次，假定每一种操作符都是\textit{左结合}的，于是我们得到$(1-2)-3$而不是$1-(2-3)$。通过引人一个新的非终结符得到文法3-3，我们就可达到此目的。
+让我们来找出文法\ref{grammar:3-2}的另一种文法，它接收的语言与文法\ref{grammar:3-2}相同，但却是无二义性的。首先，假定*比+具有\textit{更紧密的约束}，或换言之，*具有\textit{较高的优先级}。其次，假定每一种操作符都是\textit{左结合}的，于是我们得到$(1-2)-3$而不是$1-(2-3)$。通过引入一个新的非终结符得到文法\ref{grammar:3-3}，我们就可达到此目的。
 
-文法3-3中，符号$E$、$T$和$F$分别代表\textit{表达式}（expression）、\textit{项}（term）和\textit{因子}（factor）。习惯上，因子是可以相乘的语法实体，项是可以相加的语法实体。
+\renewcommand\tablename{文法}
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{lllll}
+    \toprule
+    $E\rightarrow E+T$ & \quad & $T\rightarrow T*F$ & \quad & $F\rightarrow id$ \\
+    $E\rightarrow E-T$ & \quad & $T\rightarrow T/F$ & \quad & $F\rightarrow num$ \\
+    $E\rightarrow T$   & \quad & $T\rightarrow F$   & \quad & $F\rightarrow (E)$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{}
+  \label{grammar:3-3}
+\end{table}
+\renewcommand\tablename{表}
 
-这个文法接收的句子集合与原二义性文法接收的相同，但是现在每一个句子都只有一棵语法分析树。文法3-3决不会产生图3-5所示的两棵语法分析树（见习题3.17）。
+文法\ref{grammar:3-3}中，符号$E$、$T$和$F$分别代表\textit{表达式}（expression）、\textit{项}（term）和\textit{因子}（factor）。习惯上，因子是可以相乘的语法实体，项是可以相加的语法实体。
+
+这个文法接收的句子集合与原二义性文法接收的相同，但是现在每一个句子都只有一棵语法分析树。文法\ref{grammar:3-3}决不会产生图\ref{fig:3-9}所示的两棵语法分析树（见习题3.17）。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.8\textwidth]{3-9.pdf}
+  \caption{文法\ref{grammar:3-3}决不会产生的两颗语法分析树}
+  \label{fig:3-9}
+\end{figure}
 
 如果我们想让*是右结合的，则可将产生式改写为$T\rightarrow F * T$。
 
@@ -1745,9 +1831,46 @@ b := c + (d := 5 + 6, d)
 
 设$S$是一文法的开始符号。为了指明\$必须出现在一个完整的$S$词组之后，需要引入一个新的开始符号$S'$以及一个新的产生式$S'\rightarrow S$\$。
 
-在文法3-3中，$E$是开始符号，修改后的文法为文法3-4。
+在文法\ref{grammar:3-3}中，$E$是开始符号，修改后的文法为文法\ref{grammar:3-4}。
+
+\renewcommand\tablename{文法}
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{lllll}
+    \toprule
+    $S \rightarrow E$\$ & \quad & \quad & \quad & \quad \\
+    \quad & \quad & $T \rightarrow T * F$ & \quad & $F \rightarrow$ id \\
+    $E \rightarrow E + T$ & \quad & $T \rightarrow T/F$ & \quad & $F \rightarrow$ num \\
+    $E \rightarrow E - T$ & \quad & $T \rightarrow F$ & \quad & $F \rightarrow (E)$ \\
+    $E \rightarrow T$ & \quad & \quad & \quad & \quad \\
+    \bottomrule
+  \end{tabular}
+  \caption{}
+  \label{grammar:3-4}
+\end{table}
+\renewcommand\tablename{表}
 
 \section{预测分析}
+
+有一些文法使用一种称为\textit{递归下降}（recursive descent）的简单算法就很容易进行分析。这种算法的实质是将每一个文法产生式转变成递归函数中的一个子句。为了举例说明这种算法，我们来为文法\ref{grammar:3-5}写一个递归下降语法分析器。
+
+\renewcommand\tablename{文法}
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{lll}
+    \toprule
+    & & $L \rightarrow$ end \\
+    $S \rightarrow$ if $E$ then $S$ else $S$ & & $L \rightarrow$ ; $S$ $L$ \\
+    $S \rightarrow$ begin $S$ $L$ & & \\
+    $S \rightarrow$ print $E$ & & $E \rightarrow$ num = num \\
+    \bottomrule
+  \end{tabular}
+  \caption{}
+  \label{grammar:3-5}
+\end{table}
+\renewcommand\tablename{表}
+
+这个语言的递归下降语法分析器对每个非终结符有一个函数，非终结符的每个产生式对应一个子句。
 
 \begin{minted}[frame=single]{sml}
 datatype token = IF | THEN | ELSE | BEGIN | END | PRINT
@@ -1768,6 +1891,10 @@ and L() = case !tok
 and E() = (eat(NUM); eat(EQ); eat(NUM))
 \end{minted}
 
+若恰当地定义error和getToken，这个程序就能很好地对文法\ref{grammar:3-5}进行分析。
+
+这种简单方法的成功给了我们一种鼓励，让我们再用它尝试文法\ref{grammar:3-4}：
+
 \begin{minted}[frame=single]{sml}
 fun S() = (E(); eat(EOF))
 and E() = case !tok
@@ -1783,6 +1910,46 @@ and F() = case !tok
             | NUM => (eat(NUM))
             | LPAREN => (eat(LPAREN); E(); eat(RPAREN))  
 \end{minted}
+
+这时我们遇到了一个\textit{冲突}：函数$E$不知道该使用哪个子句。考虑标记串$(1*2-3)+4$和$(1*2-3)$初次调用$E$时，对于前者，应使用产生式$E \rightarrow E+T$；而对于后者，则应该使用$E \rightarrow T$。
+
+递归下降分析也称为\textit{预测}（predictive）分析，它只适合于每个子表达式的第一个终结符号能够为产生式的选择提供足够信息的那种文法。为了便于理解，我们将形式化FIRST集合的概念，然后用一个简单的算法导出无冲突的递归下降语法分析器。
+
+就像从正则表达式可以构造出词法分析器一样，也存在语法分析器的生成器之类的工具，可以用来构造预测分析器。但是如果我们打算使用工具的话，可能同时会需要用到基于更强大的LR(1)分析算法的工具，3.3节将讲述LR(1)分析算法。
+
+有时使用语法分析器生成工具并不方便，或者说不可能。预测分析器的优点就在于其算法简单，我们可以用它手工构造分析器，而无需自动构造工具。
+
+\subsection{FIRST集合和FOLLOW集合}
+
+给定一个由终结符和非终结符组成的字符串FIRST()是从可以推导出的任意字符串中的开头终结符组成的集合。例如，令$\gamma=T*F$。任何可从推导出的由终结符组成的字符串都必定以id、num或 ( 开始。因此有
+
+FIRST($T*F$)= \{id,num,(\}
+
+如果两个不同的产生式$X\rightarrow \gamma_1$和$X\rightarrow \gamma_2$具有相同的左部符号（$X$），并且它们的右部有重叠的FIRST集合，则这个文法不能用预测分析法来分析。因为如果存在某个终结符$I$，它既在FIRST($\gamma_1$)中，又在FIRST($\gamma_2$)中，则当输入标记为$I$时，递归下降分析器中与对应的函数将不知道该怎样做。
+
+FIRST集合的计算似乎很简单。若$\gamma=XYZ$，则好像只要忽略$Y$和$Z$，只需计算FIRST($X$)就可以了。但是考虑文法\ref{grammar:3-6}就可以看出情况并不如此。因为$Y$可能产生空串，所以也可能产生空串，于是我们发现FIRST($XYZ$)一定包含FIRST($Z$)。因此，在计算FIRST集合时，我们必须跟踪能产生空串的符号；这种符号称为\textit{可空}（nullable）符号。同时我们还必须跟踪有可能跟随在可空符号之后的其他符号。
+
+\renewcommand\tablename{文法}
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{lllll}
+    \toprule
+    $Z \rightarrow d$ & \quad & $Y \rightarrow  $ & \quad & $X \rightarrow Y$ \\
+    $Z \rightarrow X \; Y \; Z$ & \quad & $Y \rightarrow c$ & \quad & $X \rightarrow a$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{}
+  \label{grammar:3-6}
+\end{table}
+\renewcommand\tablename{表}
+
+对于一个特定的文法，当给定由终结符和非终结符组成的字符串$\gamma$时，下述结论成立。
+
+\begin{itemize}
+\item 若$X$可以导出空串，那么nullable($X$)为真。
+\item FIRST()是可从推导出的字符串的开头终结符的集合。
+\item FOLLOW($X$)是可直接跟随于$X$之后的终结符集合。也就是说，如果存在着任一推导包含$Xt$，则$t\in$FOLLOW($X$)。当推导包含$XYZt$，其中$Y$和$Z$都推导出$\epsilon$时，也有$t\in$FOLLOW($X$)。
+\end{itemize}
 
 \section{LR分析}
 
@@ -1871,6 +2038,33 @@ exp : INT                    ()
 \chapter{活动记录}
 
 \chapter{翻译成中间代码}
+
+\begin{minted}[frame=single]{sml}
+signature TREE =
+sig
+
+datatype exp   = CONST of int
+               | NAME of Temp.label
+               | TEMP of Temp.temp
+               | BINOP of binop * exp * exp
+               | MEM of exp
+               | CALL of exp * exp list
+               | ESEQ of stm * exp
+
+     and stm   = MOVE of exp * exp
+               | EXP of exp
+               | JUMP of exp * Temp.label list
+               | CJUMP of relop * exp * exp * Temp.label * Temp.label
+               | SEQ of stm * stm
+               | LABEL of Temp.label
+
+     and binop = PLUS | MINUS | MUL | DIV
+               | AND | OR | LSHIFT | RSHIFT | ARSHIFT | XOR
+
+     and relop = EQ | NE | LT | GT | LE | GE
+               | ULT | ULE | UGT | UGE
+end
+\end{minted}
 
 \chapter{基本块和轨迹}
 
