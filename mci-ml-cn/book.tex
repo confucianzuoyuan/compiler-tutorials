@@ -11,6 +11,7 @@
 \usepackage{graphicx}
 \usepackage{mathtools}
 \usepackage[export]{adjustbox}
+\newtcolorbox[list inside=mybox,auto counter,number within=chapter]{MyBox}[2][]{colbacktitle=yellow,coltitle=black,title={算法 \thetcbcounter \;\;{#2}},#1}
 \usemintedstyle{xcode}
 \usetikzlibrary{
   shapes,
@@ -1950,6 +1951,78 @@ FIRST集合的计算似乎很简单。若$\gamma=XYZ$，则好像只要忽略$Y$
 \item FIRST()是可从推导出的字符串的开头终结符的集合。
 \item FOLLOW($X$)是可直接跟随于$X$之后的终结符集合。也就是说，如果存在着任一推导包含$Xt$，则$t\in$FOLLOW($X$)。当推导包含$XYZt$，其中$Y$和$Z$都推导出$\epsilon$时，也有$t\in$FOLLOW($X$)。
 \end{itemize}
+
+可将FIRST、FOLLOW和nullable精确地定义为满足如下属性的最小集合：
+
+\begin{tcolorbox}
+对于每个终结符$Z$，FIRST[$Z$]=\{$Z$\}
+
+\textbf{for} 每个产生式$X \rightarrow Y_1Y_2\cdots Y_k$
+
+\;\;\;\textbf{for} 每个$i$从$1$到$k$，每个$j$从$i+1$到$k$，
+
+\;\;\;\;\;\;\textbf{if} 所有$Y_i$都是可为空的
+
+\;\;\;\;\;\;\;\;\;\;\textbf{then} nullable[$X$]=true
+
+\;\;\;\;\;\;\textbf{if} $Y_1\cdots Y_{i-1}$都是可为空的
+
+\;\;\;\;\;\;\;\;\;\;\textbf{then} FIRST[$X$]=FIRST[$X$] $\cup$ FIRST[$Y_i$]
+
+\;\;\;\;\;\;\textbf{if} $Y_{i+1}\cdots Y_{k}$都是可为空的
+
+\;\;\;\;\;\;\;\;\;\;\textbf{then} FOLLOW[$Y_i$]=FOLLOW[$Y_i$] $\cup$ FOLLOW[$X$]
+
+\;\;\;\;\;\;\textbf{if} $Y_{i+1}\cdots Y_{j-1}$都是可为空的
+
+\;\;\;\;\;\;\;\;\;\;\textbf{then} FOLLOW[$Y_i$]=FOLLOW[$Y_i$] $\cup$ FIRST[$Y_j$]
+\end{tcolorbox}
+
+计算FIRST、FOLLOW和nullable的算法\ref{algo:3-1}遵循的正式上述事实。我们只需要简单地用一个赋值语句替代每一个方程并进行迭代，就可以计算出每个字符串的FIRST、FOLLOW和nullable。
+
+\begin{MyBox}[label=algo:3-1]{FIRST、FOLLOW和nullable的迭代计算}
+\textit{计算}FIRST、FOLLOW和nullable\textit{的算法}
+
+将所有的FIRST和FOLLOW初始化为空集合，将所有的nullable初始化为false。
+
+\textbf{for} 每个终结符$Z$
+
+\;\;\;\;\;\; FIRST[$Z$]$\leftarrow$\{$Z$\}
+
+\textbf{repeat}
+
+\;\;\;\textbf{for} 每个产生式$X \rightarrow Y_1Y_2\cdots Y_k$
+
+\;\;\;\;\;\;\textbf{for} 每个$i$从$1$到$k$，每个$j$从$i+1$到$k$，
+
+\;\;\;\;\;\;\;\;\;\textbf{if} 所有$Y_i$都是可为空的
+
+\;\;\;\;\;\;\;\;\;\;\;\;\;\textbf{then} nullable[$X$]$\leftarrow$true
+
+\;\;\;\;\;\;\;\;\;\textbf{if} $Y_1\cdots Y_{i-1}$都是可为空的
+
+\;\;\;\;\;\;\;\;\;\;\;\;\;\textbf{then} FIRST[$X$]$\leftarrow$FIRST[$X$] $\cup$ FIRST[$Y_i$]
+
+\;\;\;\;\;\;\;\;\;\textbf{if} $Y_{i+1}\cdots Y_{k}$都是可为空的
+
+\;\;\;\;\;\;\;\;\;\;\;\;\;\textbf{then} FOLLOW[$Y_i$]$\leftarrow$FOLLOW[$Y_i$] $\cup$ FOLLOW[$X$]
+
+\;\;\;\;\;\;\;\;\;\textbf{if} $Y_{i+1}\cdots Y_{j-1}$都是可为空的
+
+\;\;\;\;\;\;\;\;\;\;\;\;\;\textbf{then} FOLLOW[$Y_i$]$\leftarrow$FOLLOW[$Y_i$] $\cup$ FIRST[$Y_j$]
+
+\textbf{until} FIRST、FOLLOW和nullable在此轮迭代中没有改变
+\end{MyBox}
+
+当然，按正确的顺序考察产生式会有助于提高这个算法的效率，具体见17.4节。此外，这3个关系式不必同时计算，可单独计算nullable，然后计算FIRST，最后计算FOLLOW。
+
+关于集合的一组方程变成了计算这些集合的算法，这并不是第一次遇到：在2.4.2节计算$\epsilon$闭包的算法中我们也遇到了这种情形。这也不会是最后一次；这种迭代到不动点的技术也适用于编译器后端优化使用的数据流分析。
+
+我们来将这一算法应用于文法\ref{grammar:3-6}。一开始，我们有
+
+在第一次迭代中，我们发现$a\in\text{FIRST}[X]$，$Y$是可为空的，$c\in\text{FIRST}[Y]$，$d\in\text{FIRST}[Z]$，$d\in\text{FOLLOW}[X]$，$d\in\text{FOLLOW}[X]$，$d\in\text{FOLLOW}[Y]$。因此有
+
+在第二次迭代中，
 
 \section{LR分析}
 
