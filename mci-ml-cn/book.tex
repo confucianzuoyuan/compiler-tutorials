@@ -11,6 +11,7 @@
 \usepackage{graphicx}
 \usepackage{mathtools}
 \usepackage[export]{adjustbox}
+\usepackage{booktabs}
 \newtcolorbox[list inside=mybox,auto counter,number within=chapter]{MyBox}[2][]{colbacktitle=yellow,coltitle=black,title={算法 \thetcbcounter \;\;{#2}},#1}
 \usemintedstyle{xcode}
 \usetikzlibrary{
@@ -589,8 +590,7 @@ val lookup : table * id -> int
 
 词法标记是字符组成的序列，可以将其看作程序设计语言的文法单位。程序设计语言的词法标记可以归类为有限的几组标记类型。例如，典型程序设计语言的一些标记类型为：
 
-\begin{table}[htbp]
-  \centering
+\begin{center}
   \begin{tabular}{ll}
     \textbf{类型} & \textbf{例子} \\
     \midrule
@@ -603,14 +603,13 @@ val lookup : table * id -> int
     LPAREN & ( \\
     RPAREN & ) \\
   \end{tabular}
-\end{table}
+\end{center}
 
 IF、VOID、RETURN等由字母字符组成的标记成为\textit{保留字}（reserved word），在多数语言中，它们不能作为标识符使用。
 
 不是标记的例子有：
 
-\begin{table}[htbp]
-  \centering
+\begin{center}
   \begin{tabular}{ll}
     注释 & /* try again */ \\
     预处理命令 & \#include <stdio.h> \\
@@ -618,7 +617,7 @@ IF、VOID、RETURN等由字母字符组成的标记成为\textit{保留字}（re
     宏 & NUMS \\
     空格符、制表符和换行符 & \\
   \end{tabular}
-\end{table}
+\end{center}
 
 在能力较弱而需要宏预处理器的语言中，由预处理器处理源程序的字符流，并生成另外的字符流，然后由词法分析器读入这个新产生的字符流。这种宏处理过程也可以与词法分析集成到一起。
 
@@ -672,14 +671,13 @@ Pascal语言是所有组成合法Pascal程序的字符串的集合，素数语�
 
 通过使用符号、或、联结、$\epsilon$和克林闭包，我们可以规定与程序设计语言词法单词相对应的ASCII字符集。首先，考虑若干例子：
 
-\begin{table}[htbp]
-  \centering
+\begin{center}
   \begin{tabular}{ll}
     $(\textbf{0}|\textbf{1})^*\boldsymbol{\cdot}\textbf{0}$ & 由2的倍数组成的二进制数。\\
     $\textbf{b}^*(\textbf{abb}^*)^*(\textbf{a}|\epsilon)$ & 由a和b组成，但a不连续出现的字符串。\\
     $(\textbf{a}|\textbf{b})^*\textbf{aa}(\textbf{a}|\textbf{b})^*$ & 由a和b组成，且有连续出现a的字符串。\\
   \end{tabular}
-\end{table}
+\end{center}
 
 在书写正则表达式时，我们有时会省略联结运算符或$\epsilon$符号，并假定克林闭包的优先级高于联结运算，联结运算的优先级高于或运算，所以$\textbf{ab}|\textbf{c}$表示$(\textbf{a}\boldsymbol{\cdot}\textbf{b})|\textbf{c}$，而$(\textbf{a}|)$表示$(\textbf{a}|\epsilon)$。
 
@@ -1722,8 +1720,7 @@ b := c + (d := 5 + 6, d)
 
 推导\ref{derivation:3-1}既不是最左推导，也不是最右推导，因为这个句子的最左推导应当以下述推导开始：
 
-\begin{table}[htbp]
-\centering
+\begin{center}
 \begin{tabular}{l}
   $\underline{S}$ \\
   $\underline{S}$ ; $S$ \\
@@ -1733,7 +1730,7 @@ b := c + (d := 5 + 6, d)
   id := num ; id := $\underline{E} + E$ \\
   $\quad\vdots$ \\
 \end{tabular}
-\end{table}
+\end{center}
 
 \subsection{语法分析树}
 
@@ -2020,9 +2017,82 @@ FIRST集合的计算似乎很简单。若$\gamma=XYZ$，则好像只要忽略$Y$
 
 我们来将这一算法应用于文法\ref{grammar:3-6}。一开始，我们有
 
+\begin{center}
+  \begin{tabular}{c|ccc}
+    \multicolumn{1}{c}{} & nullable & FIRST & FOLLOW \\
+    \cline{2-4}
+    $X$ & no & & \\
+    $Y$ & no & & \\
+    $Z$ & no & & \\
+  \end{tabular}
+\end{center}
+
 在第一次迭代中，我们发现$a\in\text{FIRST}[X]$，$Y$是可为空的，$c\in\text{FIRST}[Y]$，$d\in\text{FIRST}[Z]$，$d\in\text{FOLLOW}[X]$，$d\in\text{FOLLOW}[X]$，$d\in\text{FOLLOW}[Y]$。因此有
 
-在第二次迭代中，
+\begin{center}
+  \begin{tabular}{c|ccc}
+    \multicolumn{1}{c}{} & nullable & FIRST & FOLLOW \\
+    \cline{2-4}
+    $X$ & no & a & c \; d \\
+    $Y$ & yes & c & d \\
+    $Z$ & no & d & \\
+  \end{tabular}
+\end{center}
+
+在第二次迭代中，我们发现$X$是可为空的，$c\in\text{FIRST}[X]$，$\{a,c\}\subseteq\text{FIRST}[Z]$，$\{a,c,d\}\subseteq\text{FOLLOW}[X]$，$\{a,c,d,\}\subseteq\text{FOLLOW}[Y]$，因此有
+
+\begin{center}
+  \begin{tabular}{c|ccc}
+    \multicolumn{1}{c}{} & nullable & FIRST & FOLLOW \\
+    \cline{2-4}
+    $X$ & yes & a \; c& a \; c \; d \\
+    $Y$ & yes & c & a \; c \; d \\
+    $Z$ & no & a \; c \; d & \\
+  \end{tabular}
+\end{center}
+
+第三次迭代没有发现新的信息，于是算法终止。
+
+也可将FIRST关系推广到符号串：
+
+\begin{center}
+  \begin{tabular}{ll}
+    $\text{FIRST}(X\gamma)=\text{FIRST}[X]$ & 若$!\text{nullable}[X]$ \\
+    $\text{FIRST}(X\gamma)=\text{FIRST}[X]\cup\text{FIRST}(\gamma)$ & 若$\text{nullable}[X]$ \\
+  \end{tabular}
+\end{center}
+
+并且类似地，如果$\gamma$中的每个符号都是可为空的，则称符号串$\gamma$是可为空的。
+
+\subsection{构造预测分析器}
+
+考虑一个递归下降分析器。非终结符$X$的分析函数对$X$的每个产生式都有一个子句，因此，该函数必须根据下一个输入标记$T$来选择其中的一个子句。如果能够为每一个$(X,T)$选择出正确的产生式，就能够写出这个递归下降分析器。我们需要的所有信息可以用一张关于产生式的二维表来表示，此表以文法的非终结符$X$和终结符$T$作为索引。这张表称为\textit{预测分析表}（predictive parsing table）。
+
+为了构造这张表，对每个$T\in \text{FIRST}(\gamma)$，在表的第$X$行第$T$列，填入产生式$X\rightarrow\gamma$。此外，如果$\gamma$是可为空的，则对每个$T\in\text{FOLLOW}(X)$，在表的第$X$行第$T$列，也填入该产生式。
+
+图\ref{fig:3-14}给出了文法\ref{grammar:3-6}的预测分析表。但是其中有些项中的产生式不止一个！出现这种多重定义的项意味着不能对文法\ref{grammar:3-6}进行预测分析。
+
+\begin{figure}[htbp]
+\centering
+\begin{tabular}{c|ccc|}
+  \multicolumn{1}{c}{} & a & c & \multicolumn{1}{c}{d} \\
+  \cline{2-4}
+  $X$ & \begin{tabular}{l}$X\rightarrow a$\\$X\rightarrow Y$\end{tabular} & $X\rightarrow Y$ & $X\rightarrow Y$ \\
+  $Y$ & $Y\rightarrow$ & \begin{tabular}{l}$Y\rightarrow$\\$Y\rightarrow c$\end{tabular} & $Y\rightarrow$ \\
+  $Z$ & $Z\rightarrow XYZ$ & $Z\rightarrow XYZ$ & \begin{tabular}{l}$Z\rightarrow d$\\$Z\rightarrow XYZ$\end{tabular} \\
+  \cline{2-4}
+\end{tabular}
+\caption{文法\ref{grammar:3-6}的预测分析表}
+\label{fig:3-14}
+\end{figure}
+
+如果我们仔细地检查这一文法，就能发现它具有二义性。句子$d$有多个语法树，包括：
+
+\begin{tikzpicture}[node distance = 0.5cm]
+  \node[circle] (1) {Z};
+  \node[circle,below = of 1] (2) {d};
+  \draw[thick] (1) -- (2);
+\end{tikzpicture}
 
 \section{LR分析}
 
