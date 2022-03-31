@@ -75,15 +75,15 @@
   \item C-Minus：编译器项目的一种语言
 \end{introduction}
 
-编译器是将一种语言翻译为另一种语言的计算机程序。编译器将\textbf{源语言}（source language）编写的程序作为输入，而产生用\textbf{目标语言}（target language）编写的等价程序。通常地，源语言为\textbf{高级语言}（high-level language），如C或C++，而目标语言则是目标机器的目标代码（object code，有时也称作机器代码（machine code）），也就是写在计算机机器指令中的用于运行的代码。这一过程可以用下图表示：
+编译器是将一种语言翻译为另一种语言的计算机程序。编译器将\textbf{源语言}（source language）编写的程序作为输入，而产生用\textbf{目标语言}（target language）编写的等价程序。通常地，源语言为\textbf{高级语言}（high-level language），如C或C++，而目标语言则是目标机器的\textbf{目标代码}（object code，有时也称作\textbf{机器代码}（machine code）），也就是使用目标机器的机器语言指令编写的代码，代码可以在目标机器上直接执行。这一过程可以用下图表示：
 
 \begin{center}
   \includegraphics[width=.8\textwidth]{1.pdf}
 \end{center}
 
-编译器是一种相当复杂的程序，其代码的长度可从10000行到1000000行不等。编写甚至读懂这样的一个程序都非易事，大多数的计算机科学家和专业人员也从来没有编写过一个完整的编译器。但是，几乎所有形式的计算均要用到编译器，而且任何一个与计算机打交道的专业人员都应掌握编译器的基本结构和操作。除此之外，计算机应用程序中经常遇到的一个任务就是命令解释程序和界面程序的开发，这比编译器要小，但使用的却是相同的技术。因此，掌握这一技术具有非常大的实际意义。
+编译器是一种相当复杂的程序，其代码的长度可从10000行到1000000行不等。编写甚至读懂这样的一个程序都非易事，大多数的计算机科学家和专业人员也从来没有编写过一个完整的编译器。但是，几乎所有形式的计算均要用到编译器，而且任何一个与计算机打交道的专业人员都应掌握编译器的基本结构和操作。除此之外，计算机应用程序中经常遇到的一个任务就是命令解释器和界面程序的开发，这比编译器要小，但使用的却是相同的技术。因此，掌握这一技术具有非常大的实际意义。
 
-也正因为这一点，本书不仅仅要讲解基础知识，还为读者提供了所有必要的工具和设计编写真正的编译器的实践。要做到这些，就必须学习各项理论知识，而这主要应从自动机原理（它使编译器结构合理）着手。在讲述时我们假设读者并不了解自动机原理。当然，此处的观点与标准的自动机原理论著有所不同，这些论著特别强调编译过程；但是，学过自动机原理的读者就会发现对这些理论材料很熟悉，这部分阅读起来也十分迅速。特别是对于那些十分了解自动机原理背景的读者来说，对\ref{sec:2-2}节、\ref{sec:2-3}节、\ref{sec:2-4}节和\ref{sec:3-2}节就不必细读了。无论怎样，读者都应知道基本的数据结构和离散数学。机器结构和汇编语言的相关知识也很重要，在第8章“代码生成”中尤为如此。
+也正因为这一点，本书不仅仅要讲解编译器的基础知识，还为读者提供了编写编译器的所有必要的工具，以及包含了设计并编写一个真正的编译器的实践项目。要做到这些，就必须学习各项理论知识，这些理论知识使得编译器的构建变成了一个能够被普通程序员驾驭的任务，我们会从自动机理论开始学习。在讲述时我们假设读者并不了解自动机原理。当然，本书的观点与标准的自动机理论著作中的观点有所不同，这些著作特别关注编译的过程；但是，学过自动机理论的读者就会发现对这些理论材料很熟悉，这部分阅读起来也十分迅速。特别是对于那些十分了解自动机理论背景的读者来说，对\ref{sec:2-2}节、\ref{sec:2-3}节、\ref{sec:2-4}节和\ref{sec:3-2}节就不必细读了。无论怎样，读者都应知道基本的数据结构和离散数学方面的知识。体系结构和汇编语言的相关知识也很重要，在第\ref{chap:8}章“代码生成”中尤为如此。
 
 实际编码技术的研究本身就要求认真规划，这是因为即使有很好的理论基础，编码的细节也可能会复杂得令人不知如何操作。本书包括了有关程序设计语言结构的一系列简单示例，并利用它们针对该项技术进行详细描述，讨论中使用到的语言被称作TINY。此外，附录\ref{append:A}还提供了一个更广泛的示例，它包括了一个小小的但却非常复杂的适用于作为课程项目的C子集（称作C-Minus）。本书还有大量的练习，这其中包括简单的笔头训练、书中代码的扩展，以及更多的相关编程练习。
 
@@ -1627,43 +1627,43 @@ TreeNode* repeat_stmt(void) {
   return t;
 }
 
-TreeNode * assign_stmt(void)
-{ TreeNode * t = newStmtNode(AssignK);
-  if ((t!=NULL) && (token==ID))
+TreeNode* assign_stmt(void) {
+  TreeNode* t = newStmtNode(AssignK);
+  if ((t != NULL) && (token == ID))
     t->attr.name = copyString(tokenString);
   match(ID);
   match(ASSIGN);
-  if (t!=NULL) t->child[0] = exp();
+  if (t != NULL) t->child[0] = exp();
   return t;
 }
 
-TreeNode * read_stmt(void)
-{ TreeNode * t = newStmtNode(ReadK);
+TreeNode* read_stmt(void) {
+  TreeNode* t = newStmtNode(ReadK);
   match(READ);
-  if ((t!=NULL) && (token==ID))
+  if ((t != NULL) && (token == ID))
     t->attr.name = copyString(tokenString);
   match(ID);
   return t;
 }
 
-TreeNode * write_stmt(void)
-{ TreeNode * t = newStmtNode(WriteK);
+TreeNode* write_stmt(void) {
+  TreeNode* t = newStmtNode(WriteK);
   match(WRITE);
-  if (t!=NULL) t->child[0] = exp();
+  if (t != NULL) t->child[0] = exp();
   return t;
 }
 
-TreeNode * exp(void)
-{ TreeNode * t = simple_exp();
+TreeNode* exp(void) {
+  TreeNode* t = simple_exp();
   if ((token==LT)||(token==EQ)) {
-    TreeNode * p = newExpNode(OpK);
+    TreeNode* p = newExpNode(OpK);
     if (p!=NULL) {
       p->child[0] = t;
       p->attr.op = token;
       t = p;
     }
     match(token);
-    if (t!=NULL)
+    if (t != NULL)
       t->child[1] = simple_exp();
   }
   return t;
