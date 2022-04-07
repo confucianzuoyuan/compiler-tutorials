@@ -1,0 +1,79 @@
+%% Creator: Inkscape 1.1.1 (1:1.1+202109281949+c3084ef5ed), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file '5-4.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{221.53488695bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,1.00205341)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0.26224064,0.79668368){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}dog\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{5-4.pdf}}%
+    \put(0.3980713,0.79183832){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}3\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{5-4.pdf}}%
+    \put(0.70374218,0.79203425){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}dog\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{5-4.pdf}}%
+    \put(0.83957273,0.78718889){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}3\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{5-4.pdf}}%
+    \put(0.7922209,0.49478071){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}mouse\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{5-4.pdf}}%
+    \put(0.94966033,0.48809635){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}4\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{5-4.pdf}}%
+    \put(0.04186016,0.48992315){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}bat\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{5-4.pdf}}%
+    \put(0.17769081,0.48507779){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{5-4.pdf}}%
+    \put(0.34578165,0.20559512){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}camel\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{5-4.pdf}}%
+    \put(0.5044025,0.20608362){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}2\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{5-4.pdf}}%
+    \put(0.25374901,0.01086173){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}(a)\end{tabular}}}}%
+    \put(0.81891948,0.01086173){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}(b)\end{tabular}}}}%
+  \end{picture}%
+\endgroup%

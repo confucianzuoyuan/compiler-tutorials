@@ -1,0 +1,88 @@
+%% Creator: Inkscape 1.1.1 (1:1.1+202109281949+c3084ef5ed), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file '0-1.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{443.14463981bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.76018909)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0.02680738,0.53078914){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}第1章\\ 绪论\end{tabular}}}}%
+    \put(0.17216275,0.53324194){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}   第9章\\指令选择\end{tabular}}}}%
+    \put(0.78293943,0.51626821){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}    第12章\\整合为一体\end{tabular}}}}%
+    \put(0.22397769,0.73946937){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}第2章\\词法分析\end{tabular}}}}%
+    \put(0.35583075,0.73953591){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}   第3章\\语法分析\end{tabular}}}}%
+    \put(0.52053054,0.73856813){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}   第4章\\抽象语法\end{tabular}}}}%
+    \put(0.1759665,0.6339695){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}   第6章\\活动记录\end{tabular}}}}%
+    \put(0.1736127,0.3996275){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}   第10章\\活跃分析\end{tabular}}}}%
+    \put(0.3532505,0.39770677){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}    第11章\\寄存器分配\end{tabular}}}}%
+    \put(0.35681368,0.2872678){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}   第17章\\数据流分析\end{tabular}}}}%
+    \put(0.51908257,0.28468336){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}  第18章\\循环优化\end{tabular}}}}%
+    \put(0.73148807,0.29036755){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}第19章\end{tabular}}}}%
+    \put(0.6832327,0.26252891){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}静态单赋值形式\end{tabular}}}}%
+    \put(0.68287771,0.1614946){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}        第20章\\流水线化和调度\end{tabular}}}}%
+    \put(0.06083679,0.16328254){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l} 第15章\end{tabular}}}}%
+    \put(0.32826296,0.16428938){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}   第16章\\多态类型\end{tabular}}}}%
+    \put(0.05637279,0.03509283){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}  第13章\\垃圾收集\end{tabular}}}}%
+    \put(0.2770829,0.03609972){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}        第14章\\面向对象的语言\end{tabular}}}}%
+    \put(0.68543751,0.03576894){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}  第21章\\存储层次\end{tabular}}}}%
+    \put(0.35698005,0.63403604){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}         第7章\\翻译成中间代码\end{tabular}}}}%
+    \put(0.60502637,0.63306826){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}       第8章\\基本块和轨迹\end{tabular}}}}%
+    \put(0.6911726,0.73789301){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}   第5章\\语义分析\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{0-1.pdf}}%
+    \put(0.91269571,0.6527173){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}半\\学\\期\end{tabular}}}}%
+    \put(0.91059202,0.39583802){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}半\\学\\期\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{0-1.pdf}}%
+    \put(0.97624397,0.53198947){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}一\\学\\期\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{0-1.pdf}}%
+    \put(0.9737363,0.16488404){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}一\\学\\期\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{0-1.pdf}}%
+    \put(-0.00242408,0.13254663){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}函数式程序设计语言\end{tabular}}}}%
+  \end{picture}%
+\endgroup%

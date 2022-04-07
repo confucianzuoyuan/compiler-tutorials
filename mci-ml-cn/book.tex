@@ -32,9 +32,12 @@
 
 \tcbuselibrary{skins, breakable, theorems}
 
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{3}
 
-\title{现代编译原理}
+\cover{cover.jpg}
+
+\title{现代编译原理——ML语言描述}
+\author{Andrew Appel}
 
 % 本文档命令
 \usepackage{array}
@@ -43,59 +46,7 @@
 \DeclareMathSymbol{"}{\mathalpha}{letters}{`"}
 \begin{document}
 
-\thispagestyle{empty}
-
-\begin{tikzpicture}[remember picture,overlay]
-%%%%%%%%%%%%%%%%%%%% Background %%%%%%%%%%%%%%%%%%%%%%%%
-\fill[Dandelion] (current page.south west) rectangle (current page.north east);
-
-%%%%%%%%%%%%%%%%%%%% Background Polygon %%%%%%%%%%%%%%%%%%%%
-
-\foreach \i in {2.5,...,22}
-{
-    \node[rounded corners,Dandelion!60,draw,regular polygon,regular polygon sides=6, minimum size=\i cm,ultra thick] at ($(current page.west)+(2.5,-5)$) {} ;
-}
-
-\foreach \i in {0.5,...,22}
-{
-\node[rounded corners,Dandelion!60,draw,regular polygon,regular polygon sides=6, minimum size=\i cm,ultra thick] at ($(current page.north west)+(2.5,0)$) {} ;
-}
-
-\foreach \i in {0.5,...,22}
-{
-\node[rounded corners,Dandelion!90,draw,regular polygon,regular polygon sides=6, minimum size=\i cm,ultra thick] at ($(current page.north east)+(0,-9.5)$) {} ;
-}
-
-
-\foreach \i in {21,...,6}
-{
-\node[Dandelion!85,rounded corners,draw,regular polygon,regular polygon sides=6, minimum size=\i cm,ultra thick] at ($(current page.south east)+(-0.2,-0.45)$) {} ;
-}
-
-
-%%%%%%%%%%%%%%%%%%%% Title of the Report %%%%%%%%%%%%%%%%%%%% 
-\node[left,black,minimum width=0.625*\paperwidth,minimum height=3cm, rounded corners] at ($(current page.north east)+(0,-9.5)$)
-{
-{\fontsize{25}{30} \selectfont \bfseries 现代编译原理}
-};
-
-%%%%%%%%%%%%%%%%%%%% Subtitle %%%%%%%%%%%%%%%%%%%% 
-\node[left,black,minimum width=0.625*\paperwidth,minimum height=2cm, rounded corners] at ($(current page.north east)+(0,-11)$)
-{
-{\huge \textit{ML语言描述}}
-};
-
-%%%%%%%%%%%%%%%%%%%% Author Name %%%%%%%%%%%%%%%%%%%% 
-\node[left,black,minimum width=0.625*\paperwidth,minimum height=2cm, rounded corners] at ($(current page.north east)+(0,-13)$)
-{
-{\Large{Andrew W.Appel}}
-};
-
-%%%%%%%%%%%%%%%%%%%% Year %%%%%%%%%%%%%%%%%%%% 
-\node[rounded corners,fill=Dandelion!70,text =black,regular polygon,regular polygon sides=6, minimum size=2.5 cm,inner sep=0,ultra thick] at ($(current page.west)+(2.5,-5)$) {\LARGE \bfseries 2022};
-
-\end{tikzpicture}
-
+\maketitle
 \frontmatter
 
 \tableofcontents
@@ -122,81 +73,10 @@
 
 \begin{figure}[htbp]
 	\centering
-	\scalebox{.6}{
-	\begin{tikzpicture}
-		\node[rectangle,text width=2cm,align=center,text width=2cm,align=center] (1) {第1章 \\ 绪论};
-		\node[rectangle,text width=2cm,align=center,above right = of 1] (6) {第6章 \\ 活动记录};
-		\node[rectangle,text width=2cm,align=center,above = of 6] (2) {第2章 \\ 词法分析};
-		\node[rectangle,text width=2cm,align=center,right = of 2] (3) {第3章 \\ 语法分析};
-		\node[rectangle,text width=2cm,align=center,right = of 3] (4) {第4章 \\ 抽象语法};
-		\node[rectangle,text width=2cm,align=center,right = of 4] (5) {第5章 \\ 语义分析};
-		\node[rectangle,text width=3cm,align=center,right = of 6] (7) {第7章 \\ 翻译成中间代码};
-		\node[rectangle,text width=3cm,align=center,right = of 7] (8) {第8章 \\ 基本块和轨迹};
-		\node[rectangle,text width=2cm,align=center,right = of 1] (9) {第9章 \\ 指令选择};
-		\node[rectangle,text width=2cm,align=center,below right = of 1] (10) {第10章 \\ 活跃分析};
-		\node[rectangle,text width=3cm,align=center,right = of 10] (11) {第11章 \\ 寄存器分配};
-		\node[rectangle,text width=2cm,align=center,below right = of 8] (12) {第12章 \\ 整合为一体};
-		\node[rectangle,text width=3cm,align=center,below right = of 10] (17) {第17章 \\ 数据流分析};
-		\node[rectangle,text width=2cm,align=center,right = of 17] (18) {第18章 \\ 循环优化};
-		\node[rectangle,text width=4cm,align=center,below left = of 17] (15) {第15章 \\ 函数式程序设计语言};
-		\node[rectangle,text width=2cm,align=center,right = of 15] (16) {第16章 \\ 多态类型};
-		\node[rectangle,text width=2cm,align=center,below = of 15] (13) {第13章 \\ 垃圾收集};
-		\node[rectangle,text width=3cm,align=center,right = of 13] (14) {第14章 \\ 面向对象的语言};
-		\node[rectangle,text width=3cm,align=center,right = of 18] (19) {第19章 \\ 静态单赋值形式};
-		\node[rectangle,text width=3cm,align=center,below = of 19] (20) {第20章 \\ 流水和调度};
-		\node[rectangle,text width=2cm,align=center,below = of 20] (21) {第21章 \\ 存储层次};
-
-		\draw[thick] (1) -- (2) -- (3) -- (4) -- (5);
-		\draw[thick] (1) -- (6) -- (7) -- (8) -- (12);
-		\draw[thick] (1) -- (9) -- (12);
-		\draw[thick] (1) -- (10) -- (11) -- (12);
-		\draw[thick] (10) -- (17) -- (18) -- (19);
-		\draw[thick] (15) -- (16);
-		\draw[thick] (18) -- (20);
-		\draw[thick] (18) -- (21);
-		\draw[thick] (5) -- (7);
-
-		\node[rectangle,right = of 5,yshift=-1.3cm,xshift=1cm] (22) {
-			\begin{tikzpicture}
-				\node[rectangle,text width=1cm,align=center] (1) {半 \\ 学 \\ 期};
-				\node[rectangle,above = of 1,yshift=-0.2cm] (2) {};
-				\node[rectangle,below = of 1,yshift=0.2cm] (3) {};
-				\draw[thick,->] (1) -- (2);
-				\draw[thick,->] (1) -- (3);
-			\end{tikzpicture}
-		};
-		\node[rectangle,below = of 22,yshift=0.8cm] (23) {
-			\begin{tikzpicture}
-				\node[rectangle,text width=1cm,align=center] (1) {半 \\ 学 \\ 期};
-				\node[rectangle,above = of 1,yshift=0.8cm] (2) {};
-				\node[rectangle,below = of 1,yshift=-0.8cm] (3) {};
-				\draw[thick,->] (1) -- (2);
-				\draw[thick,->] (1) -- (3);
-			\end{tikzpicture}
-		};
-		\node[rectangle,right = of 22,yshift=-2cm,xshift=-1cm] (24) {
-			\begin{tikzpicture}
-				\node[rectangle,text width=1cm,align=center] (1) {一 \\ 学 \\ 期};
-				\node[rectangle,above = of 1,yshift=2cm] (2) {};
-				\node[rectangle,below = of 1,yshift=-2.8cm] (3) {};
-				\draw[thick,->] (1) -- (2);
-				\draw[thick,->] (1) -- (3);
-			\end{tikzpicture}
-		};
-		\node[rectangle,below = of 24,yshift=1cm] (25) {
-			\begin{tikzpicture}
-				\node[rectangle,text width=1cm,align=center] (1) {一 \\ 学 \\ 期};
-				\node[rectangle,above = of 1,yshift=1.8cm] (2) {};
-				\node[rectangle,below = of 1,yshift=-1.8cm] (3) {};
-				\draw[thick,->] (1) -- (2);
-				\draw[thick,->] (1) -- (3);
-			\end{tikzpicture}
-		};
-	\end{tikzpicture}
-	}
+  \input{0-1.pdf_tex}
   \caption{内容结构图}
   \label{fig:0-1}
-	\end{figure}
+\end{figure}
 
 \begin{itemize}
   \item 一学期的课程可包含第一部分的所有章节（第1\textasciitilde 12章），同时让学生实现项目编译器（多半按项目组的方式进行）。另外，授课内容中还可以包含从第二部分中选择的一些主题。
@@ -2164,19 +2044,672 @@ exp : INT                    ()
 
 \chapter{抽象语法}
 
-\section{语义动作}
-
-\section{抽象语法分析树}
+抽象的(ab-stract):从所有具体实例中提取出来的。
+韦氏词典
+编译器的工作不仅是识别一个句子是否是属于某一个文法的语言，它还必须对那个句子做更多的事情。语法分析器中的语义动作(semanticaction)能够对所分析的短语做一些有用的事情。
+在递归下降语法分析器中，语义动作代码分散在实现语法分析的控制流中。在用Yacc说明的语法分析器中，语义动作是一段附带在文法产生式中的C程序代码。
+41语义动作
+每个终结符和非终结符都可关联一个语义值类型。例如，在使用文法3-13定义的一个简单计算器中，与exp和INT关联的类型可能是int;而其他单词则不需携带值。当然、与单词关联的类型必须与词法分析器随同这个单词一起返回的类型相匹配。
+对于规则A→BCD语义动作返回的值的类型必须是与非终结符A关联的类型。但它可以由所匹配的终结符和非终结符BCD的相关值来建立这个返回值。411递归下降
+在递归下降语法分析器中，语义行为是语法分析函数所返回的值，或者是这些数产生的
+88 副作用，或者两者兼而有之。对于每个终结符和非终结符，我们给它关联一种语义值类型(来 
+自于实现该编译器的语言)，其中语义值所表示的是由那个符号导出的短语。
+程序4-1是文法3-7的递归下降语法分析器。它指出了单词ID和NUM分别必须携带 string类型和int类型的值。我们假定存在一张将标识符映射至整数的查找表。与ETF等关联的类型是int，它们的语义动作很容易实现。
+但对于像T这样人为引人的符号(为消除左递归而引入的)其语义动作则要稍为棘手一点。原来的产生式是T→T*F，它的语义动作原本是:
+(int a,b;a=T();eat(TIMES);intb=F();return a*b;]
+但将文法改写后，产生式T→*FT中的“*”没有了左操作数。解决这个问题的一种方法是，将这个左操作数作为参数由T传递给T，如程序4-1所示。
+4.12 acc生成的分析器
+语法分析器的Yacc规范由一组文法规则组成，每个规则标注有一一个语义动作，此语义动作是一条C语句。Yacc生成的语法分析器每当用一条规则进行归约时，便执行对应的语义动作90代码。
+程序4-2以文法3-13为例说明了其方法。语义动作可用\$i来引用第i个右部符号的语义
 
 \chapter{语义分析}
 
+\epigraph{语义的（se-man-tic）：与语言表达的含义相关的。}{韦氏词典}
+
+编译器的\textit{语义分析}（semantic analysis）阶段的任务是：将变量的定义与变量的使用联系起来，检查每一个表达式是否有正确的类型，并将抽象语法转换成更简单的、适合于生成机器代码的表示。
+
 \section{符号表}
+
+语义分析阶段一个主要的工作是符号表的维护。\textit{符号表}（symbol table）也称为\textit{环境}(environment)，其作用是将标识符映射到它们的类型和存储位置。在处理类型、变量和函数的声明时，这些标识符便与其在符号表中的“含义”相绑定。每当发现标识符的使用（即非声明性出现）时，便在符号表中查看它们的含义。
+
+程序中的每一个局部变量都有一个\textit{作用域}（scope），该变量在此作用域中是可见的。例如：在Tiger表达式let $D$ in $E$ end中，所有在$D$中声明的变量、类型和函数在直到$E$结束为止的范围内都是可见的。当语义分析到达每一个作用域的结束时，所有绑定并局部于此作用域的标识符都将被抛弃。
+
+环境是由一些绑定（binding）构成的集合，所谓绑定指的是标识符与其含义之间的一种映射关系，我们用箭头$\mapsto$来表示绑定。例如，环境$\sigma_0$包含绑定\{g$\mapsto$string,a$\mapsto$int\}；这表示标识符a是整型变量，g是字符串变量。
+
+考虑下面这个用Tiger语言编写的简单例子：
+
+\begin{lstlisting}
+function f(a:int, b:int, c:int) =
+   (print_int(a+c);
+    let var j := a+b
+        var a := "hello"
+    in print(a); print_int(j)
+    end;
+    print_int(b)
+   )
+\end{lstlisting}
+
+假设编译这段程序时其环境为$\sigma_0$。第1行关于形式参数的声明使我们得到了表$\sigma_1 = \sigma_0 + \{a\mapsto int,b\mapsto int, c\mapsto int\}$，即，在$\sigma_0$中加入了a，b和c的新绑定。在$\sigma_1$中可查到第2行使用的那两个标识符的含义。第3行创建了表$\sigma_2=\sigma_1+\{j\mapsto int\}$；第4行则创建了表$\sigma_3=\sigma_2+\{a\mapsto string\}$。
+
+当被“加”到一起的两个环境含有同一个符号的不同绑定时，例如，在$\sigma_2$和$\{a\mapsto string\}$分别将a映射为int和string的情况下，两个表的“+”操作是怎样的呢？为了使得作用域规则按照我们期望的真实程序设计语言的方式工作，我们需要$\{a\mapsto string\}$的优先级更高。因此对于两张表$X$和$Y$，我们假定$X+Y$不等于$Y+X$，并且右边表中的绑定将覆盖左边表中相同符号的绑定。
+
+当到达第6行时，我们将抛弃$\sigma_3$而回到$\sigma_1$，并在$\sigma_1$中查看第7行出现的标识符b。最后在第8行我们将抛弃$\sigma_1$，而回到$\sigma_0$。
+
+应该怎样实现上述过程？在实际中有两种选择。一种是\textit{函数式}风格(functional style)，在这种方式中，当创建$\sigma_2$和$\sigma_3$时，保持$\sigma_1$原来的状态不变。这样，当再次需要$\sigma_1$时，$\sigma_1$就是已经就绪的了。
+
+另一种是\textit{命令式}风格(imperative style)，在这种方式下，我们修改$\sigma_1$直到它成为$\sigma_2$。这种\textit{破坏性更新}会“毁坏”$\sigma_1$；即，在$\sigma_2$存在期间，我们不能查看$\sigma_1$中的符号。但是，当我们完成了$\sigma_2$中的处理时，可以\textit{撤销}对$\sigma_1$的更新从而使返回到原来的状态。于是，存在着一个单一的全局环境$\sigma$（它在不同的时间变成$\sigma_0,\sigma_1,\sigma_2,\sigma_3,\sigma_1,\sigma_0$）和一个“撤销栈”（此栈含有可用来撤销破坏性更新所需要的足够信息）。每当添加一个符号到环境的同时，也将该符号加入到撤销栈中；在作用域的结束点(例如，在第6或第8行)，这些符号将从撤销栈中弹出，并且它们的最近一次绑定也将从$\sigma$中被删除（从而恢复到它们的前一次绑定）。
+
+无论被编译的语言或用于实现编译器的语言是“函数式的”、“命令式的”，还是“面向对象的”，都可以采用函数式的或命令式的环境管理方式。
+
+\subsection{多个符号表}
+
+在有些语言中，可以同时存在若干种活跃的环境：程序中每一个模块、类或者记录都有它自己的符号表$\sigma$。
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tabular}{p{6cm}p{6cm}}
+    \begin{lstlisting}[frame=none]
+      structure M = struct
+        structure E = struct
+          val a = 5;
+        end
+        structure N = struct
+          val b = 10
+          val a = E.a + b
+        end
+        structure D = struct
+          val d = E.a + N.a
+        end
+      end
+
+      (a) ML的例子
+    \end{lstlisting}
+    &
+    \begin{lstlisting}[frame=none]
+      package M;
+      class E {
+        static int a = 5;
+      }
+      class N {
+        static int b = 10;
+        static int a = E.a + b;
+      }
+      class D {
+        static int d = E.a + N.a;
+      }
+
+      (b) Java的例子
+    \end{lstlisting}
+  \end{tabular}
+  \caption{同时存在的若干活跃环境}
+  \label{fig:5-1}
+\end{figure}
+
+在对图\ref{fig:5-1}进行分析时令$\sigma_0$是包含一些预定义函数的基本环境，并令
+
+\begin{align*}
+  \sigma_1 &= \{a\mapsto int\} \\
+  \sigma_2 &= \{E\mapsto \sigma_1\} \\
+  \sigma_3 &= \{b\mapsto int,a\mapsto int\} \\
+  \sigma_4 &= \{N\mapsto \sigma_3\} \\
+  \sigma_5 &= \{d\mapsto int\} \\
+  \sigma_6 &= \{D\mapsto \sigma_5\} \\
+  \sigma_7 &= \sigma_2 + \sigma_4 + \sigma_6
+\end{align*}
+
+在ML语言的情况下(图\ref{fig:5-1}a)，编译$N$时查看标识符使用的环境是$\sigma_0+\sigma_2$。编译$D$的环境是$\sigma_0+\sigma_2+\sigma_4$分析的结果是$\{M\mapsto\sigma_7\}$。
+
+Java语言(图\ref{fig:5-1}b)允许向前引用（$N$中现表达式$D.d$是合法的），因此，$N$和$D$的编译环境都是$\sigma_7$；对于这个程序而言，其结果仍然是$\{M\mapsto\sigma_7\}$。
+
+\subsection{高效的命令式风格符号表}
+
+大型程序可能含有数千个不同的标识符，因此符号表的组织必须要能够进行高效的查找。
+
+命令式风格的环境通常采用哈希表来实现，哈希表的效率很高。操作$\sigma' = \sigma + \{a\mapsto \tau\}$是通过以a作为键值将$\tau$插入哈希表来实现的。一个简单的\textit{带有外部散列链的哈希表}就能够很好地工作，并且很容易实现对作用域的删除操作（当a的作用域结束时，我们需要删除$\{a\mapsto\tau\}$以恢复$\sigma$）。
+
+程序\ref{code:5-2}实现了一个简单的哈希表。第$i$条散列链（bucket）是由所有这样的元素组成的一张链表，它们的键值的哈希值是：$i$模SIZE。binding的类型可以是任意类型；在一个真实的程序中，哈希表模块可能是一个函子（functor），或者table类型可能是多态的（polymorphic）。
+
+\begin{lstlisting}[language=ml,caption={带有外部散列链的哈希表},label={code:5-2}]
+  val SIZE = 109 (* 必须是素数 *)
+  type binding = ...
+  type bucket = (string * binding) list
+  type table = bucket Array.array
+  val t : table = Array.array(SIZE, nil)
+
+  fun hash(s: string) : int =
+    CharVector.foldl (fn (c,n) => (n*256+ord(c)) mod SIZE) 0 s
+
+  fun insert(s: string, b: binding) =
+    let val i = hash(s) mod SIZE
+     in Array.update(t, i, (s,b)::Array.sub(t,i))
+    end
+
+  exception NotFound
+
+  fun lookup(s: string) =
+    let val i = hash(s) mod SIZE
+        fun search((s',b)::rest) = if s=s' then b
+                                           else search rest
+          | search nil = raise NotFound
+     in search(Array.sub(t,i))
+    end
+
+  fun pop(s: string) =
+    let val i = hash(s) mod SIZE
+        val (s',b)::rest = Array.sub(t,i)
+     in assert(s=s');
+        Array.update(t,i,rest)
+    end
+\end{lstlisting}
+
+考虑当$\sigma$已经包含$a\mapsto\tau_1$时，操作$\sigma+\{a\mapsto\tau_2\}$的情况。函数insert将$a\mapsto\tau_1$保留在散列链中，并将$a\mapsto\tau_2$插入在散列链的前部。于是在a的作用域结束处执行pop(a)之后，便恢复了$\sigma$。当然，只有当绑定的插人和弹出都按栈的方式操作时，pop操作才能正确工作。
+
+在工业级别的编译器中实现这种符号表则还应当在若干方面有所改进，见习题5.1。
+
+\subsection{高效的函数式符号表}
+
+在函数式风格的实现中，我们希望以这样一种方式来计算$\sigma'=\sigma+\{a\mapsto\tau\}$，即希望在$\sigma'$活跃的情况下仍然能够查找$\sigma$中的标识符。因此，我们不是将一个绑定加入到已存在的表中来“改变”这个表，而是通过计算现有的这个表与一个新的绑定的“和”来创建一个新表。这类似于在计算7+8时，不是将8加到7之上得到的结果覆盖原有的7，而是创建一个新的值15——从而7仍然可用于其他的计算。
+
+但是，对于非破坏性更新，哈希表的效率不高。图\ref{fig:5-3}a给出的是一个实现了映射$m_1$的哈希表。我们可以快速而高效地将$mouse$记录添加到表的第5个位置，这只要将$mouse$记录指向第5个链表原来的表头，并使第5个位置指向该$mouse$记录即可。但这样一来，映射$m_1$将不复存在：我们已破坏了它而使它变成了$m_2$。另一种可选的方法是复制散列数组但仍然共享所有老的散列链，如图\ref{fig:5-3}b所示。不过这种方法十分低效：哈希表的散列数组可能会相当大，它与元素的个数成正比，因此，对每一个新增添到表中的登记项都复制此数组是不现实的。
+
+\begin{figure}[htbp]
+  \centering
+  \input{5-3.pdf_tex}
+  \caption{哈希表}
+  \label{fig:5-3}
+\end{figure}
+
+通过使用二叉搜索树，我们可以高效地实现对这种搜索树的“函数式的”添加。例如，考虑图\ref{fig:5-4}的搜索树，它表示了如下映射：
+
+$$
+m_1=\{bat\mapsto 1,camel\mapsto 2,dog\mapsto 3\}
+$$
+
+\begin{figure}[htbp]
+  \centering
+  \input{5-4.pdf_tex}
+  \caption{二叉搜索树}
+  \label{fig:5-4}
+\end{figure}
+
+我们可以如图\ref{fig:5-4}b那样增加一个绑定$mouse\mapsto 4$，在不破坏映射$m_1$的情况下创建一个新的映射$m_2$。如果想要在树的第$d$层添加一个新的结点，则必须创建$d$个新结点——但不必复制整棵树。因此创建一棵新树（这棵树与原来的树共享一部分结构）的效率与查找一个元素相同；对于棵有$n$个结点的平衡树，时间在$\log(n)$之内。这是使用\textit{持久化数据结构}（persistent data structure）的一个例子；有一种能保持二叉树平衡的持久化红黑树，这种树可以保证访问一个结点的时间不会超过$\log(n)$（见习题1.1c和第206页）。
+
+\subsection{Tiger编译器的符号}
+
+程序\ref{code:5-2}中的哈希表操作需要查看被散列的字符串$s$中的每一个字符，然后将$s$与第$i$个散列链中的字符串逐一进行比较。为了避免不必要的字符串比较，我们可以将每一个字符串转变成一个symbol对象，使得任意一个给定字符串的所有不同出现都被转换成同一个符号对象。
+
+Symbol模块实现这种符号，它有下以几个重要特点：
+
+\begin{itemize}
+  \item 比较两个符号相等的运算非常快（仅仅是指针或者整数比较）。	
+  \item 提取一个整型哈希键值的操作非常快（当我们想要哈希表将一个符号映射到其他某种对象时会需要这种操作）。
+  \item 比较两个字符串的“大于”运算（按任意顺序）非常快（当我们想要构造二叉搜索树时会需要这种操作）。
+\end{itemize}
+
+即使想要构造的是一个映射符号到绑定的函数式风格的环境，我们也可以使用破坏-更新式的哈希表来映射字符串到符号：这种做法可以保证使“abc”的第二次出现与它的第一次出现都映射到相同的符号。程序\ref{code:5-5}给出了Symbol模块的接口。
+
+\begin{lstlisting}[language=ml,caption={SYMBOL的签名},label={code:5-5}]
+  signature SYMBOL =
+  sig
+    eqtype symbol
+    val symbol : string -> symbol
+    val name : symbol -> string
+
+    type 'a table
+    val empty : 'a table
+    val enter : 'a table * symbol * 'a -> 'a table
+    val look : 'a table * symbol -> 'a option
+  end
+\end{lstlisting}
+
+我们使用table来实现Symbol模块中的环境，table将symbol映射至绑定。在这个编译器中，我们希望不同的用途有不同的binding表示——类型绑定用于类型；值绑定用于变量和函数——因此，我们让table是一个多态类型。也就是说，无论$\alpha$是一个类型绑定，或是一个值绑定，又或者是其它任意类型的绑定，一个$\alpha$ table是一个从symbol到$\alpha$的映射。
+
+给定一张表，我们可以使用enter函数来将新的绑定添加到表中（创建一张新的表，而不修改旧的表）。如果在旧的表中有相同符号的绑定，那么旧的绑定将被新的绑定所替换。
+
+look(t,s)函数将寻找符号$s$在表$t$中的绑定$b$，返回值是SOME($b$)。如果符号并未绑定在表中，返回值是NONE。
+
+Symbol抽象的实现（程序\ref{code:5-6}）会使符号表更加的高效。为了使得像$\alpha$ table这样的“函数式映射”更加的高效，我们选择使用平衡二叉搜索树。搜索树的实现可以在\textit{Standard ML of New Jersey Library}中的IntBinaryMap模块中找到（细节可以参看Library手册）。
+
+\begin{lstlisting}[language=ml,caption={符号表的实现。HashTable和IntBinaryMap来自\textit{Standard ML of New Jersey Library}},label={code:5-6}]
+  structure Symbol :> SYMBOL =
+  struct
+    type symbol = string * int
+
+    exception Symbol
+    val nextsym = ref 0
+    val hashtable : (string,int) HashTable.hash_table =
+      HashTable.mkTable(HashString.hashString, op = ) (128,Symbol)
+
+    fun symbol name =
+      case HashTable.find hashtable name
+        of SOME i => (name,i)
+         | NONE => let val i = !nextsym
+                    in nextsym := i+1;
+                       HashTable.insert hashtable (name,i);
+                       (name,i)
+                   end
+
+    fun name(s,n) = s
+
+    type 'a table = 'a IntBinaryMap.map
+    val empty = IntBinaryMap.empty
+    fun enter(t: 'a table, (s,n): symbol, a: 'a) = IntBinaryMap.insert(t,n,a)
+    fun look(t: 'a table, (s,n): symbol) = IntBinaryMap.look(t,n)
+  end
+\end{lstlisting}
+
+二叉搜索树需要一个全序（total ordering）函数（“小于”）来比较symbol类型。由于字符串拥有全序函数，所以可以用字符串来实现符号，但是字符串的比较函数运行速度并不是很快。
+
+作为替代解决方案，符号包含了整数来用于“小于”比较操作。符号的排序完全是任意的——因为排序基于不同字符串在文件中被看到的顺序——但对于搜索树算法来说无关紧要。符号的内部表示是一个元组string $\times$ int，元组中的string部分仅用来实现接口的name函数。
+
+不同的字符串必须有不同的整数作为标识。Symbol模块可以维护一个计数器（count）来对它看到的不同的字符串有多少进行计数。对于任何一个之前没有见过的字符串，都用当前计数器的值作为字符串的整数标识。对于任何一个之前见过的字符串都使用相同的整数进行标识。一个传统的破坏更新式的哈希表可以用来查询某个字符串所对应的整数标识，这是因为Symbol模块不再需要之前版本的string $\rightarrow$ symbol映射。Symbol模块对使用本模块的所有客户端隐藏了破坏更新这样的副作用，而这只需要一个简单的symbol接口就可以做到。
+
+\subsection{命令式风格的符号表}
+
+如果我们想要使用破坏更新式的表，那么SYMBOL签名中的“table”部分将如下所示：
+
+\begin{lstlisting}
+  type 'a table
+  val new : unit -> 'a table
+  val enter : 'a table * symbol * 'a -> unit
+  val look : 'a table * symbol -> 'a option
+
+  val beginScope : 'a table -> unit
+  val endScope : 'a table -> unit
+\end{lstlisting}
+
+为了处理破坏性更新的“撤销”要求，接口函数beginScope记住表的当前状态；而endScope使表恢复到它位于最近一次执行且还未结束的beginScope状态。
+
+命令式的表使用哈希表来实现的。当插入绑定$x\mapsto b$时，$x$被哈希到索引$i$，并且在第$i$条散列链的链首放置一个绑定$x\mapsto b$。如果这个表已经包含了一个绑定$x\mapsto b'$，该绑定将仍保留在散列链中且被$x\mapsto b$所隐藏。这一点很重要，因为它将支持\textit{撤销}操作的实现（beginScope和endScope）。
+
+此外，我们还需要一个辅助栈，它给出符号被“压入”到符号表时的次序。当将$x\mapsto b$加入到符号表时，$x$便被压入栈中。beginScope要压入一个特殊的标记至栈。于是，为了实现endScope，要从栈中弹出符号直至遇到最顶上的一个标记，并将该标记也一并弹出。每当弹出一个符号的同时，也从它的散列链中删除为首的绑定。
 
 \section{Tiger编译器的绑定}
 
+符号表中应填入什么内容？也即，什么是一个binding？Tiger有两个独立的名字空间，一个是类型的名字空间，另一个是函数和变量的名字空间。与类型标识符关联的是Types.ty。如程序\ref{code:5-7}所示，Types模块描述了表示各种类型的结构。
+
+\begin{lstlisting}[language=ml,caption={Types结构},label={code:5-7}]
+  structure Types =
+  struct
+    type unique = unit ref
+
+    datatype ty = INT
+                | STRING
+                | RECORD of (Symbol.symbol * ty) list * unique
+                | ARRAY of ty * unique
+                | NIL
+                | UNIT
+                | NAME of Symbol.symbol * ty option ref
+  end
+\end{lstlisting}
+
+Tiger中的基本类型是int和string；每一种类型或者是基本类型，或者是由其他类型（基本类型，记录，或数组）通过记录或数组构造出来的类型。另外，由于每个“记录类型表达式”都会创建一个新的（且不同的）记录类型，即使它们的各个域都相同，我们依然有一个“唯一的”值来识别它。（你唯一可以做的一件比较有趣的事情就是使用\lstinline{unit ref}来测试某个记录类型是否和另一个记录类型是否相等；因为每个\lstinline{ref}都是唯一的。）
+
+记录类型携带有附加信息：各个域的名字和类型。
+
+数组与记录类似：ARRAY构造器携带有数组元素的类型，还携带了一个“唯一的”值来将这个数组类型和其它数组类型区分开。
+
+如果我们编译的是另外的某种语言，有可能会把下面的程序段视为合法的程序：
+
+\begin{lstlisting}
+let type a = {x: int,y: int}
+    type b = {x:int, y: int}
+    var i : a := ...
+    var j : b := ...
+ in i := j
+end
+\end{lstlisting}
+ 
+这个程序在Tiger中是非法的，但是如果语言支持结构上等价的两个类型可换，这个程序就是合法的。为了在这种语言的编译器中测试类型的等价性，我们需要递归地逐一检查每个域的类型。
+
+不过，下面的Tiger程序是合法的，因为类型c与类型a相同：
+
+\begin{lstlisting}
+let type a = {x: int, y: int}
+    type c = a
+    var i : a := ...
+    var j : c := ...
+ in i := j
+end
+\end{lstlisting}
+
+导致创建一个新的不同类型的并不是类型\textit{声明}，而是类型\textit{表达式}\lstinline|{x:int,y:int}|。
+
+在Tiger中，表达式nil属于任何记录类型。我们设计了一个特殊的“nil”类型来处理这种例外的情形。另外，有的表达式没有返回值，因此我们设计了一个类型unit。
+
+在处理相互递归的类型时，对于那种只知道其名字但还未见到其定义的类型，需要有一个占位符。类型\lstinline{NAME(sym,ref(SOME(t)))}和类型\lstinline{t}相同；但\lstinline{NAME(sym,ref(NONE))}也只是占位符而已。
+
+\textbf{环境}
+
+Symbol模块中的类型table提供从符号到其绑定的映射。这样，我们将有一个类型环境（type enviroment）和一个值环境（value enviroment）。下面的Tiger程序说明了只有一个环境是不够的：
+
+\begin{lstlisting}
+let type a = int
+    var a : a := 5
+    var b : a := a
+ in b+a
+end
+\end{lstlisting}
+
+符号a在预期类型标识符的语法上下文中表示类型“a”，在预期变量的语法上下文中表示变量“a”。
+
+对于类型标识符，我们需要记住的只是它代表的类型。因此，类型环境是符号至Types.ty的映射——即，它是一张\lstinline|Types.ty Symbol.table|。如图\ref{fig:5-8}所示，\lstinline{Env}模块包含有一个\lstinline{base_tenv}值——即“基本的”或“预定义的”类型环境。它映射符号int到Ty.INT，映射string到Ty.STRING。
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tabular}{l}
+    \begin{lstlisting}
+      signature ENV =
+      sig
+        type access
+        type ty
+        datatype enventry = VarEntry of {ty: ty}
+                          | FunEntry of {formals: ty list, result: ty}
+        val base_tenv : ty Symbol.table        (* 预定义类型 *)
+        val base_tenv : enventry Symbol.table  (* 预定义函数 *)
+      end
+    \end{lstlisting}
+  \end{tabular}
+  \caption{类型检查使用的环境}
+  \label{fig:5-8}
+\end{figure}
+
+对于每一个值标识符，我们需要知道它是一个变量还是一个函数；如果是变量，它的类型是什么；如果是函数，它的参数和返回值类型是什么，等等。类型enventry如图\ref{fig:5-4}所示，用于保存所有这些信息；而值环境则是从符号到环境登记项的映射。
+
+值环境将变量映射到一个告知其类型的登记项VarEntry。当我们查看一个函数时，将得到一个含有下述信息的登记项FunEntry：
+
+\begin{itemize}
+  \item formals 各个形式参数的类型
+  \item result 该数返回的结果的类型(或UNIT)。
+\end{itemize}
+
+对于类型检查，需要的只是formals和result；我们稍后将在中间语言表示中增加转换所需要的其他的域。
+
+\lstinline{base_venv}环境含有若干预定义的函数flush，ord，chr，size等的绑定，这些函数的描述见附录A。
+
+类型检查阶段需要同时使用类型环境和值环境。
+
+每当遇到类型变量和函数的声明时，类型检查器就会扩大这两个环境；在表达式处理期间（类型检查、中间代码生成）遇到的每一个标识符都需要查阅这两个环境。
+
 \section{表达式的类型检查}
 
-\section{声明}
+Semant结构执行抽象语法的语义分析——包括类型检查。此模块包含4个语法树上的递归函数：
+
+\begin{lstlisting}
+  type venv = Env.enventry Symbol.table
+  type tenv = ty Symbol.table
+
+  transVar: venv * tenv * Absyn.var -> expty
+  transExp: venv * tenv * Absyn.exp -> expty
+  transDec: venv * tenv * Absyn.dec -> {venv: venv, tenv: tenv}
+  transTy:         tenv * Absyn.ty  -> Types.ty
+\end{lstlisting}
+
+类型检查器是抽象语法树上的一个递归函数。我给它取名为transExp是因为稍后还将扩充这个函数，使得它不仅可以进行类型检查，而且还能将表达式转换为中间代码。transExp的三个参数分别是值环境venv，类型环境tenv和表达式。其返回值是expty，含有转换后的表达式和该表达式的Tiger语言类型：
+
+\begin{lstlisting}
+type expty = {exp: Translate.exp, ty: Types.ty}
+\end{lstlisting}
+
+其中，Translate.exp是已转换为中间代码的表达式，ty是该表达式的类型。
+
+为了避免在这里讨论中间代码，我们定义一个虚的Translate模块：
+
+\begin{lstlisting}
+  structure Translate = struct type exp = unit end
+\end{lstlisting}
+
+并对每个exp值都使用()。在第7章，我们将充实Translate.Exp类型。
+
+现在我们来考虑一个非常简单的加法表达式$e_1+e_2$。在Tiger中，这两个操作数都必须是整型（类型检查器必须对此进行检查），并且结果是整型（类型检查器将返回这种类型）。
+
+在多数语言中，加法操作符是\textit{重载}的：即操作符+既是整数加法，也是实数加法。如果两个操作数都是整数，其结果也是整数；如果两个操作数都是实数，其结果也是实数。并且，在多数语言中，如果两个操作数中有一个是整数，而另一个是实数，则整数将隐式地转换为实数。且结果为实数。当然，编译器必须使得这种转换在它生成的中间代码中显式地表现出来。
+
+对于Tiger的非重载的类型，其类型检查很容易实现：
+
+\begin{lstlisting}
+  fun transExp(venv,
+               tenv,
+               Absyn.OpExp{left,oper=Absyn.PlusOp,right,pos}) =
+      let val {exp=_, ty=tyleft}  = transExp(venv,tenv,left)
+          val {exp=_, ty=tyright} = transExp(venv,tenv,right)
+       in case tyleft  of Types.INT => ()
+                        | _ => error pos "integer required";
+          case tyright of Types.INT => ()
+                        | _ => error pos "integer required";
+          {exp=(), ty=Types.INT}
+      end
+\end{lstlisting}
+
+尽管我们还没有写出对其他种类表达式（以及非$+$操作符）的处理，但这段代码已能很好地工作了。也正因为如此，当对left和right进行递归调用时，有可能会抛出一个Match异常。你可以自己来完善其他情形的处理（见5.4.4节）。
+
+这样做有一点不够灵活。大部分对transExp的递归调用都会传递相同的venv和tenv参数，所以我们可以使用嵌套函数的方法来将它们抽取出来。检查整型类型的情况很平凡，以至于我们可以立即给出函数定义：checkInt。我们可以使用定义局部结构的方式来给经常用到的结构的名字起一个缩略名，方便我们的使用（例如Absyn $\rightarrow$ A）。一个重构过的transExp如下：
+
+\begin{lstlisting}
+  structure A = Absyn
+
+  fun checkInt ({exp,ty},pos) = (...)
+
+  fun transExp(venv,tenv) =
+    let fun trexp (A.OpExp{left,oper=A.PlusOp,right,pos}) =
+                  (checkInt(trexp left, pos);
+                   checkInt(trexp right, pos);
+                   {exp=(),ty=Types.INT})
+          | trexp (A.RecordExp ...) ...
+\end{lstlisting}
+
+\textbf{变量、下标和域的类型检查}
+
+trexp函数递归地遍历Absyn.exp，trvar函数递归地遍历Absyn.var；这两个函数都嵌套在transExp函数之内，并通过transExp的形式参数访问venv和tenv。只有在极少数的情况下，trexp会想去改变venv，那么trexp必须调用transExp而不是trexp。
+
+\begin{lstlisting}
+    and trvar (A.SimpleVar(id,pos)) =
+      (case Symbol.look(venv,id)
+         of SOME(E.VarEntry{ty}) => {exp=(),ty=actual_ty ty}
+          | NONE => (error pos ("undefined variable " ^ S.name id);
+                     exp=(), ty=Types.INT))
+      | trvar (A.FieldVar(v,id,pos)) = ...
+  in trexp
+end
+\end{lstlisting}
+
+对SimpleVar进行类型检查的trvar子句勾勒出了如何在环境中查找变量的绑定。如果标识符已经在环境中\textit{且}绑定到了一个VarEntry（而不是FunEntry），那么标识符的类型就是VarEntry中给出的类型（见图\ref{fig:5-8}）。
+
+有时VarEntry中的类型可能是一个“NAME类型”（见程序\ref{code:5-7}），而由transExp返回的所有类型都应当是“实在的”类型（即由其名字追溯到了它们最终的定义），因此一种较好的做法是让一个函数（函数名或许是actual\_ty）跳过所有的NAME类型。该函数的结果是一个非NAME类型的Types.ty，尽管当这个类型是一个记录或者数组时，其成员可能会含有NAME类型。
+
+对于函数调用，需要在环境中查看函数的标识符来得到其登记项FunEntry，此登记项含有一张参数类型表。函数调用表达式中的实参类型必须与参数类型表给出的类型相匹配。FunEntry也给出了函数的结果类型，它将作为整个函数调用的类型。
+
+每一种表达式都有它自己的类型检查规则，对于我未讲述过的其它所有情形，其规则都可以通过查阅附录A（Tiger语言参考手册）推导出来。
+
+\section{声明的类型检查}
+
+环境的创建和扩大是由程序中的声明导致的。在Tiger中，声明只出现在let表达式中。在用transDec翻译声明的过程中，很容易对let进行类型检查：
+
+\begin{lstlisting}
+  | trexp(A.LetExp{decs,body.pos}) =
+      let val {venv=venv',tenv=tenv'} =
+        transDecs(venv,tenv,decs)
+       in transExp(venv',tenv') body
+      end
+\end{lstlisting}
+
+其中，transExp首先调用beginScope()记住两个环境(venvtenv)的当前“状态”;然后用新的声明调用transDec来扩大环境(venvtenv);接下来翻译函数体表达式;最后调用endscope()将这两个环境恢复到它们原来的状态。
+
+\subsection{变量声明}
+
+从原理上讲，声明的处理相当简单：声明用一个新的绑定扩大环境，而扩大了的环境则用于后继的声明和表达式的处理。
+
+唯一有问题的是（相互）递归的类型声明和递归的函数声明。因此，我们先从非递归声明的特殊情形开始。
+
+例如，处理一个没有类型约束的变量声明，比如说\lstinline{var x := exp}，是相当简单的。
+
+\begin{lstlisting}
+  fun transDec (venv,tenv,A.VarDec{name,typ=NONE,init,...}) =
+    let val {exp,ty} = transExp(venv,tenv,init)
+     in {tenv=tenv,
+         venv=S.enter(venv,name,E.VarEntry{ty=ty})}
+    end
+\end{lstlisting}
+
+还有什么情形能比这更简单？实际上，如果出现了typ，如在下面的声明中：
+
+\begin{lstlisting}
+var x : type-id := exp
+\end{lstlisting}
+
+就会需要检查这个类型约束和进行初始化的表达式是否兼容。另外，类型为NIL的初始化表达式还必须受RECORD类型的约束。
+
+\subsection{类型声明}
+
+非递归类型声明的处理也不太难：
+
+\begin{lstlisting}
+  | transDec (venv,tenv,A.TypeDec[{name,ty}]) =
+      {venv=venv,
+       tenv=S.enter(tenv,name,transTy(tenv,ty))}
+\end{lstlisting}
+
+函数transTy将抽象语法中的类型表达式（Absyn.ty）翻译为要放入到环境中去的转换后的类型描述（Types.ty）。这种翻译是在结构Absyn.ty上递归进行的，它将Absyn.RecordTy转换成Types.RECORD，等等。在转换过程中，transTy只需查看它在类型环境tenv中找到的每一个符号。
+
+上面给出的程序中的模式[\{name,ty\}]的通用性不是很好，因为它只处理长度为1的类型声明列表，即单个相互递归类型声明的列表。请读者推广这段代码使之适应任意长度的类型声明列表。
+
+\subsection{函数声明}
+
+函数声明要稍微繁琐点：
+
+\begin{lstlisting}
+  | transDec(venv,tenv,
+             A.FunctionDec[{name,params,body,pos,
+                            result=SOME(rt,pos)}]) =
+      let val SOME(result_ty) = S.look(tenv,rt)
+        fun transparam{name,typ,pos} =
+          case S.look(tenv,typ)
+            of SOME t => {name=name,ty=t}
+        val params' = map transparam params
+        val venv'   = S.enter(venv,name,
+                              E.FunEntry{formals=map #ty params',
+                                         result=result_ty})
+        fun enterparam ({name,ty},venv) = S.enter(venv,name,
+                                                  E.VarEntry{access=(),ty=ty})
+        val venv'' = fold enterparam params' venv'
+       in transExp(venv'',tenv) body;
+          {venv=venv',tenv=tenv}
+      end
+\end{lstlisting}
+
+这是一种已剥离得非常彻底的实现：它只处理单个函数的情况，不处理递归函数，只处理有返回结果的函数（是函数，不是过程），不处理诸如未声明的类型标识符之类的程序错误，等等；并且，它不检查函数体表达式的类型是否与声明的结果类型相匹配。
+
+那么，它做了些什么？考虑下面的Tiger声明：
+
+\begin{lstlisting}
+function f(a: ta, b: tb) : rt = body.
+\end{lstlisting}
+
+transDec首先在类型环境中查找结果类型标识符rt。然后调用局部定义的函数transparam，此函数遍历形式参数列表，并返回一个元素类型为元组的列表，$(a,t_a),(b,t_b)$，其中$t_a$是在环境中查找ta所得到的NAME类型。现在transDec就有了足够的信息来为这个函数构造一个FunEntry，然后将构造好的FunEntry添加到值环境中，并产生一个新的环境venv'。
+
+接下来，形式参数（作为VarEntry）被添加到值环境中venv'中，并产生venv''；而这个环境则被（transexp函数）用来处理函数体。最终，venv''被丢弃，然后(venv',tenv)就是结果：这个环境将被用来处理那些允许调用函数f的表达式。
+
+\subsection{递归声明}
+
+上面的实现不能用于递归类型和递归函数的声明，因为在这两种声明中会遇到未定义的类型或函数的标识符（对于递归记录类型，未定义的类型出现在transTy中，或对于递归函数未定义的函数出现在transExp(body)中）。
+
+对于一组相互递归的对象（类型或函数）$t_1,...,t_n$，其解决方法是首先将所有这些对象的“头”放人到环境中，得到一个环境$e_1$。然后在环境$e_1$下处理所有这些对象的“体”。在处理这些体的期间，将会需要查找一些最近定义的名字，但是事实上它们已经在环境中——尽管其中有一些可能只是有头而没有体。
+
+那么，“头”指的是什么？对于如下的类型声明：
+
+\begin{lstlisting}
+type list = {first: int, rest: list)
+\end{lstlisting}
+
+头可以认为是type list =。
+
+为了将这个头送入环境tenv，我们可以使用一个其绑定为空（ty option）的NAME类型：
+
+\begin{lstlisting}
+tenv' = S.enter(tenv,name,Types.NAME(name,ref NONE))
+\end{lstlisting}
+
+现在，我们可以根据类型声明的“体”，即记录表达式\lstinline|{first: int, rest: list}|来调用transTy。我们给到transTy的环境是tenv'。
+
+重要的一点是，只要到达任何NAME类型，transTy就应停止。例如，如果transTy像actual\_ty一样企图顺着绑定到标识符list的NAME类型一直查找，它找到的（在这个例子的情况下）就只有NONE——此时它的类型肯定还未定义完毕。这个NONE只能在整个\{first:int,rest:list\}都被翻译之后才能用一个有效的类型来替代。
+
+然后，transTy返回的类型可以赋给NAME构造器中的引用变量。现在我们有了一个完整的类型环境，在这个环境中，调用actual\_ty不会有问题。
+
+ref变量的赋值（在NAME类型描述符中）意味着Translate不是一个“纯函数式”程序。任何对副作用的使用都会增加编写程序和理解程序的难度，但在我们这个情况中有限制的使用副作用还是可以接受的。
+
+在一组相互递归的类型声明中，每一个递归都必须通过记录或数组声明传递一个类型；下面这个声明
+
+\begin{lstlisting}
+type a = b
+type b = d
+type c = a
+type d = a
+\end{lstlisting}
+
+含有一个非法的递归$a\rightarrow b\rightarrow d\rightarrow a$。类型检查器应当检测出这种非法的递归。
+
+处理相互递归的函数与处理递归类型类似。第一遍收集每一个函数的头的信息（函数名、形式参数列表、返回值类型），但不处理函数体。在这一遍中，需要的是形式参数的类型，而不是它们的名字（在函数之外见不到它们的名字）。
+
+第二遍处理相互递归声明中的所有函数的函数体，此时使用的环境是已用所有函数头扩大了的环境。对于每一个函数体，再次处理它的形式参数列表，这一次则参数作为VarEntry加入到值环境中。
+
+\section{程序设计：类型检查}
+
+为你的编译器编写类型检查阶段的程序，即一个包含下面的函数的模块Semantic：
+
+\begin{lstlisting}
+  transProg : Absyn.exp -> unit
+\end{lstlisting}
+
+它对抽象语法树进行类型检查，并生成适当的关于类型不匹配或未声明的标识符的报错信息。
+
+实现本章描述的模块Env。构造一个模块Main调用语法分析器来生成Absyn.exp，然后对这个表达式调用transProg。
+
+你必须完全按照图\ref{fig:4-8}描述的方式使用Absyn接口，但可以自行决定采纳或者忽略本章给出的关于Semant模块内部结构的建议。
+
+你会需要用你写的语法分析器来生成抽象语法树。此外，在\$TIGER/chap5中还包含了下面支持文件：
+
+types.sml 表述了Tiger语言的数据类型。
+
+以及其他些与以前相同的文件。必要时要修改第4章练习中的sources.cm文件。
+
+\textbf{a.} 实现一个简单的类型检查器和声明处理器，这个声明处理器不处理递归数或递归数据类型（不必处理向前引用的函数或类型）。类型检查器不检查每一个break语句是否位于for语句或while语句之内。
+
+\textbf{b.} 扩充你的简单类型检查器，使能处理递归的（和相互递归的）函数、（相互）递归的类型声明，并保证break语句的正确嵌套。
+
+\section{习题}
+
+\textbf{5.1} 改进程序\ref{code:5-2}的哈希表实现：
+
+\textbf{a.} 当散列链的平均长度大于2时将散列数组增大一倍（因此，现在table是ref(array）。为了将数组增大一倍，在分配一个更大的数组时，要重新散列原数组中的内容然后再释放原数组。
+
+\textbf{b.} 给insert和lookup增加一个参数以允许使用多个表。
+
+\textbf{c.} 将table类型的表示隐藏在一个抽象模块中使得table的使用者不会直接修改该数据结构（只通过insert，lookup和pop操作进行修改）。
+
+\textbf{***5.2} 在很多应用中，我们会想要作用于环境的+操作符不仅仅是加入一个新的绑定；即不仅仅是$\sigma'=\sigma+\{a\mapsto\tau\}$，而是$\sigma'=\sigma_1+\sigma_2$，其中$\sigma_1$和$\sigma_2$，是任意的环境（可以是重叠的，在这种情况下，$\sigma_2$中的绑定优先）。
+
+我们希望有一种能高效实现这种环境“加法”的算法和数据结构。平衡树可以高效地实现o+|a→|(时间为log(N)，其中的大小)，但在和的大小都是N时，计算o+o,却需要O(N)。
+
+为了将这个问题抽象化，要解一般的不相交整数集合的并运算问题。此问题的输入是如下形式的命令集合：
+
+\begin{align*}
+  s_1 &= \{4\}              &\text{(定义单元素集合)}   \\
+  s_2 &= \{7\}                                 \\
+  s_3 &= s_1\cup s_2        &\text{(非破坏性联合)}     \\
+  6   &\overset{?}{\in} s_3 &\text{(是否为成员的测试)} \\
+  s_4 &= s_1\cup s_3                           \\
+  s_5 &= \{9\}                                 \\
+  s_6 &= s_4\cup s_5                           \\
+  7   &\overset{?}{\in} s_2
+\end{align*}
+
+高效的算法是这样一种算法，它可以处理N条命令组成的输入，并且回答任意成员关系查询的时间不超过o(N)。
+
+\textbf{*a.} 实现一个算法，该算法对于典型集合并运算a-bUc，在b比c小很多的情况下仍是高效的[Brown和Tarjan 1979]。
+
+\textbf{***b.} 设计一个即使在最坏情况下也是高效的算法，或证明不可能有这样的算法（参见Lipton等[1997]关于受限模型下界的论述）。
+
+\textbf{*5.3} Tiger语言定义要求，类型定义的每一个递归都必须经过一个记录或数组。但是，如果编译器忘记了检查这类错误，也不会出现特别糟糕的问题。解释这是为什么？
 
 \chapter{活动记录}
 
