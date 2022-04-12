@@ -1,0 +1,174 @@
+%% Creator: Inkscape 1.1.1 (1:1.1+202109281949+c3084ef5ed), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file '4-3.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{280.28018917bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,1.13288547)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{4-3.pdf}}%
+    \put(0.04313161,0.95189674){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{4-3.pdf}}%
+    \put(0.02785671,0.90776935){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}INT\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{4-3.pdf}}%
+    \put(0.04313161,0.85249239){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{4-3.pdf}}%
+    \put(0.03053261,0.81511048){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}exp\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{4-3.pdf}}%
+    \put(0.48506708,0.35547059){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}3\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{4-3.pdf}}%
+    \put(0.46979218,0.31134328){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}INT\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{4-3.pdf}}%
+    \put(0.48506708,0.25606625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}3\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{4-3.pdf}}%
+    \put(0.47246804,0.21868418){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}exp\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{4-3.pdf}}%
+    \put(0.04313165,0.75308805){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{4-3.pdf}}%
+    \put(0.03053265,0.71570613){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}exp\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{4-3.pdf}}%
+    \put(0.04313165,0.65368355){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=12]{4-3.pdf}}%
+    \put(0.03053265,0.61630187){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}exp\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=13]{4-3.pdf}}%
+    \put(0.04313165,0.55427944){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=14]{4-3.pdf}}%
+    \put(0.03053261,0.51689744){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}exp\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=15]{4-3.pdf}}%
+    \put(0.04313165,0.45487525){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=16]{4-3.pdf}}%
+    \put(0.03053261,0.41749333){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}exp\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=17]{4-3.pdf}}%
+    \put(0.26409928,0.6536837){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}2\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=18]{4-3.pdf}}%
+    \put(0.24882439,0.6095564){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}INT\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=19]{4-3.pdf}}%
+    \put(0.26409928,0.55427944){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}2\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=20]{4-3.pdf}}%
+    \put(0.25150032,0.5168976){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}exp\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=21]{4-3.pdf}}%
+    \put(0.26409928,0.45487494){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}2\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=22]{4-3.pdf}}%
+    \put(0.25150032,0.41749318){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}exp\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=23]{4-3.pdf}}%
+    \put(0.26409928,0.35547059){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}2\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=24]{4-3.pdf}}%
+    \put(0.25150032,0.31808883){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}exp\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=25]{4-3.pdf}}%
+    \put(0.26409928,0.25606656){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}6\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=26]{4-3.pdf}}%
+    \put(0.25150032,0.21868449){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}exp\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=27]{4-3.pdf}}%
+    \put(0.26409928,0.15666221){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}6\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=28]{4-3.pdf}}%
+    \put(0.25150032,0.11928045){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}exp\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=29]{4-3.pdf}}%
+    \put(0.37385845,0.41325643){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}+\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=30]{4-3.pdf}}%
+    \put(0.37385845,0.31385209){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}+\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=31]{4-3.pdf}}%
+    \put(0.37385845,0.21444805){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}+\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=32]{4-3.pdf}}%
+    \put(0.04313165,0.3554709){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=33]{4-3.pdf}}%
+    \put(0.03053265,0.31808883){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}exp\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=34]{4-3.pdf}}%
+    \put(0.15289073,0.71146947){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}+\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=35]{4-3.pdf}}%
+    \put(0.15289073,0.61206505){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}+\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=36]{4-3.pdf}}%
+    \put(0.15289073,0.5126607){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}+\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=37]{4-3.pdf}}%
+    \put(0.15289073,0.41325628){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}+\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=38]{4-3.pdf}}%
+    \put(0.15289073,0.31385193){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}+\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=39]{4-3.pdf}}%
+    \put(0.15289073,0.2144479){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}+\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=40]{4-3.pdf}}%
+    \put(0.15289073,0.1150434){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}+\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=41]{4-3.pdf}}%
+    \put(0.04313165,0.25606656){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=42]{4-3.pdf}}%
+    \put(0.03053265,0.21868479){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}exp\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=43]{4-3.pdf}}%
+    \put(0.04313169,0.15666252){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=44]{4-3.pdf}}%
+    \put(0.03053265,0.11928045){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}exp\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=45]{4-3.pdf}}%
+    \put(0.04313169,0.05725817){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}7\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=46]{4-3.pdf}}%
+    \put(0.03053265,0.01987641){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}exp\end{tabular}}}}%
+    \put(0.03718591,1.1089458){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}栈\end{tabular}}}}%
+    \put(0.66789253,1.10913693){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}输入\end{tabular}}}}%
+    \put(0.94436375,1.10924842){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}动作\end{tabular}}}}%
+    \put(0.62457086,1.04274789){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1 + 2 * 3 \$\end{tabular}}}}%
+    \put(0.94058349,1.04372328){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}移入\end{tabular}}}}%
+    \put(0.94058349,0.84400633){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}移入\end{tabular}}}}%
+    \put(0.9403605,0.94703314){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}归约\end{tabular}}}}%
+    \put(0.9403605,0.64228467){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}归约\end{tabular}}}}%
+    \put(0.94058349,0.74464867){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}移入\end{tabular}}}}%
+    \put(0.64575457,0.9444025){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}+ 2 * 3 \$\end{tabular}}}}%
+    \put(0.64575457,0.84420078){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}+ 2 * 3 \$\end{tabular}}}}%
+    \put(0.6683886,0.7430296){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}2 * 3 \$\end{tabular}}}}%
+    \put(0.68957231,0.6446829){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}* 3 \$\end{tabular}}}}%
+    \put(0.68957231,0.5403753){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}* 3 \$\end{tabular}}}}%
+    \put(0.71075649,0.43645173){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}3 \$\end{tabular}}}}%
+    \put(0.73194066,0.33333194){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\$\end{tabular}}}}%
+    \put(0.73194066,0.23511){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\$\end{tabular}}}}%
+    \put(0.73194066,0.13220457){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\$\end{tabular}}}}%
+    \put(0.73194066,0.03493017){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\$\end{tabular}}}}%
+    \put(0.94058349,0.54362554){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}移入\end{tabular}}}}%
+    \put(0.94058349,0.43704124){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}移入\end{tabular}}}}%
+    \put(0.9403605,0.33426651){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}归约\end{tabular}}}}%
+    \put(0.9403605,0.23724597){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}归约\end{tabular}}}}%
+    \put(0.9403605,0.12893542){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}归约\end{tabular}}}}%
+    \put(0.94043488,0.0350743){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}接受\end{tabular}}}}%
+  \end{picture}%
+\endgroup%

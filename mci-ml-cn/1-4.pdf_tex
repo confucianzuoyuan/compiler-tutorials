@@ -1,0 +1,96 @@
+%% Creator: Inkscape 1.1.1 (1:1.1+202109281949+c3084ef5ed), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file '1-4.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{265.87885bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.95063391)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0.32461775,0.934943){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}CompoundStm\end{tabular}}}}%
+    \put(0.0713923,0.81611909){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}AssignStm\end{tabular}}}}%
+    \put(0.66528062,0.81598683){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}CompoundStm\end{tabular}}}}%
+    \put(0.52373156,0.73743972){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}AssignStm\end{tabular}}}}%
+    \put(0.90867333,0.73505954){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}PrintStm\end{tabular}}}}%
+    \put(0.18887345,0.73743972){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}OpExp\end{tabular}}}}%
+    \put(-0.00070254,0.73814494){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}a\end{tabular}}}}%
+    \put(0.06563602,0.62020381){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}NumExp\end{tabular}}}}%
+    \put(0.20415524,0.61747111){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Plus\end{tabular}}}}%
+    \put(0.31949974,0.62020381){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}NumExp\end{tabular}}}}%
+    \put(0.50101553,0.61747111){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}b\end{tabular}}}}%
+    \put(0.61931773,0.62020381){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}EseqExp\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{1-4.pdf}}%
+    \put(0.89439488,0.65476118){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}LastExpList\end{tabular}}}}%
+    \put(0.92075202,0.55446696){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}IdExp\end{tabular}}}}%
+    \put(0.94204054,0.47449673){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}b\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{1-4.pdf}}%
+    \put(0.0982165,0.51968835){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}5\end{tabular}}}}%
+    \put(0.35175364,0.52208772){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}5\end{tabular}}}}%
+    \put(0.40468437,0.46080197){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}PrintStm\end{tabular}}}}%
+    \put(0.7955264,0.46318215){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}OpExp\end{tabular}}}}%
+    \put(0.39348334,0.37409531){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}PairExpList\end{tabular}}}}%
+    \put(0.31790263,0.29344458){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}IdExp\end{tabular}}}}%
+    \put(0.51585897,0.29375318){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}LastExpList\end{tabular}}}}%
+    \put(0.52913775,0.1961471){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}OpExp\end{tabular}}}}%
+    \put(0.34594205,0.20071337){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}a\end{tabular}}}}%
+    \put(0.42646694,0.09764383){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}IdExp\end{tabular}}}}%
+    \put(0.55728471,0.09552817){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Minus\end{tabular}}}}%
+    \put(0.6813392,0.09795243){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}NumExp\end{tabular}}}}%
+    \put(0.45374486,0.00308523){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}a\end{tabular}}}}%
+    \put(0.71357829,0){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{1-4.pdf}}%
+    \put(0.70052141,0.35607732){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}NumExp\end{tabular}}}}%
+    \put(0.81604087,0.35365322){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Times\end{tabular}}}}%
+    \put(0.92490525,0.35576872){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}IdExp\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{1-4.pdf}}%
+    \put(0.72640417,0.2778149){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}10\end{tabular}}}}%
+    \put(0.95030453,0.27971306){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}a\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{1-4.pdf}}%
+  \end{picture}%
+\endgroup%

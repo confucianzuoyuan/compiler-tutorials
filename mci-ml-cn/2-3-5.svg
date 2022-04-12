@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg221504"
+   inkscape:version="1.1.1 (1:1.1+202109281949+c3084ef5ed)"
+   sodipodi:docname="2-3-5.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview221506"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="2.9433782"
+     inkscape:cx="278.08183"
+     inkscape:cy="257.69709"
+     inkscape:window-width="1848"
+     inkscape:window-height="1016"
+     inkscape:window-x="72"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs221501">
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect268227"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect268110"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect262952"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect262835"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect256125"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect255899"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect233647"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect229495"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <marker
+       style="overflow:visible;"
+       id="Arrow1Mend"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.4) rotate(180) translate(10,0)"
+         style="fill-rule:evenodd;fill:context-stroke;stroke:context-stroke;stroke-width:1.0pt;"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path153459" />
+    </marker>
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect229361"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path153459-4" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-2"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path153459-7" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="图层 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g227656">
+      <circle
+         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
+         id="path221530"
+         cx="44.206261"
+         cy="61.853397"
+         r="3.3244319" />
+      <text
+         xml:space="preserve"
+         style="font-size:2.82222px;line-height:1.25;font-family:'方正书宋_GBK';-inkscape-font-specification:'方正书宋_GBK, Normal';stroke-width:0.264583"
+         x="43.500706"
+         y="62.806999"
+         id="text222414"><tspan
+           sodipodi:role="line"
+           id="tspan222412"
+           style="font-size:2.82222px;stroke-width:0.264583"
+           x="43.500706"
+           y="62.806999">1</tspan></text>
+    </g>
+    <g
+       id="g227661"
+       transform="translate(0.53690602,-0.07857132)">
+      <circle
+         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
+         id="path221530-1"
+         cx="62.271305"
+         cy="61.931969"
+         r="3.3244319" />
+      <text
+         xml:space="preserve"
+         style="font-size:2.82222px;line-height:1.25;font-family:'方正书宋_GBK';-inkscape-font-specification:'方正书宋_GBK, Normal';stroke-width:0.264583"
+         x="61.565754"
+         y="62.885574"
+         id="text222414-7"><tspan
+           sodipodi:role="line"
+           id="tspan222412-8"
+           style="font-size:2.82222px;stroke-width:0.264583"
+           x="61.565754"
+           y="62.885574">2</tspan></text>
+    </g>
+    <g
+       id="g264156"
+       transform="translate(28.18669,-14.182029)">
+      <circle
+         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
+         id="path221530-1-8"
+         cx="52.902203"
+         cy="75.835602"
+         r="3.3244319" />
+      <text
+         xml:space="preserve"
+         style="font-size:2.82222px;line-height:1.25;font-family:'方正书宋_GBK';-inkscape-font-specification:'方正书宋_GBK, Normal';stroke-width:0.264583"
+         x="52.196651"
+         y="76.789207"
+         id="text222414-7-6"><tspan
+           sodipodi:role="line"
+           id="tspan222412-8-16"
+           style="font-size:2.82222px;stroke-width:0.264583"
+           x="52.196651"
+           y="76.789207">3</tspan></text>
+    </g>
+    <g
+       id="g258833"
+       transform="translate(19.471753,-0.17978208)">
+      <g
+         id="g229322"
+         transform="translate(-0.00968933,-0.30033875)">
+        <circle
+           style="fill:none;stroke:#000000;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
+           id="path221530-1-9"
+           cx="81.410156"
+           cy="62.45068"
+           r="3.3244319" />
+        <text
+           xml:space="preserve"
+           style="font-size:2.82222px;line-height:1.25;font-family:'方正书宋_GBK';-inkscape-font-specification:'方正书宋_GBK, Normal';stroke-width:0.264583"
+           x="80.704605"
+           y="63.404285"
+           id="text222414-7-4"><tspan
+             sodipodi:role="line"
+             id="tspan222412-8-1"
+             style="font-size:2.82222px;stroke-width:0.264583"
+             x="80.704605"
+             y="63.404285">4</tspan></text>
+      </g>
+      <circle
+         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
+         id="path229526"
+         cx="81.400467"
+         cy="62.150341"
+         r="4.0145192" />
+    </g>
+    <g
+       id="g258833-0"
+       transform="translate(-11.005582,13.866816)">
+      <g
+         id="g229322-9"
+         transform="translate(-0.00968933,-0.30033875)">
+        <circle
+           style="fill:none;stroke:#000000;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
+           id="path221530-1-9-1"
+           cx="81.410156"
+           cy="62.45068"
+           r="3.3244319" />
+        <text
+           xml:space="preserve"
+           style="font-size:2.82222px;line-height:1.25;font-family:'方正书宋_GBK';-inkscape-font-specification:'方正书宋_GBK, Normal';stroke-width:0.264583"
+           x="80.704605"
+           y="63.404285"
+           id="text222414-7-4-9"><tspan
+             sodipodi:role="line"
+             id="tspan222412-8-1-1"
+             style="font-size:2.82222px;stroke-width:0.264583"
+             x="80.704605"
+             y="63.404285">5</tspan></text>
+      </g>
+      <circle
+         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
+         id="path229526-5"
+         cx="81.400467"
+         cy="62.150341"
+         r="4.0145192" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#Arrow1Mend-6)"
+       d="m 31.746499,57.591229 c 1.745307,-0.04648 3.490358,-0.09295 5.109426,0.327802 1.619068,0.420751 3.11204,1.308494 4.60473,2.196069"
+       id="path233645"
+       inkscape:path-effect="#path-effect233647"
+       inkscape:original-d="m 31.746499,57.591229 c 1.745314,-0.04621 3.490365,-0.09268 5.235149,-0.139412 1.493298,0.888043 2.98627,1.775786 4.479007,2.663283" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       d="m 74.073106,74.411963 c 3.8674,-1.246951 7.734439,-2.493785 10.317134,-2.198126 2.582694,0.295659 3.88092,2.133011 3.736188,3.803334 -0.144731,1.670323 -1.73199,3.174167 -4.191471,3.46654 -2.459482,0.292372 -5.791633,-0.62694 -9.124514,-1.546453"
+       id="path262950"
+       inkscape:path-effect="#path-effect262952"
+       inkscape:original-d="m 74.073106,74.411963 c 3.867605,-1.246315 7.734643,-2.493152 11.601119,-3.740503 1.298844,1.837941 2.59707,3.675293 3.894755,5.512166 -1.586761,1.504419 -3.174017,3.008266 -4.761873,4.511626 -3.331725,-0.91883 -6.663876,-1.838144 -9.996664,-2.757994" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#Arrow1Mend)"
+       d="m 47.577462,61.769063 c 10.811592,0 11.776358,0 11.776358,0"
+       id="path267989" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#Arrow1Mend)"
+       d="M 65.985215,61.631919 H 77.77024"
+       id="path267991" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#Arrow1Mend)"
+       d="m 84.591339,61.419202 12.364444,0.09367"
+       id="path267993" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#Arrow1Mend)"
+       d="m 79.151614,59.124601 c -0.867324,-2.740037 -1.734748,-5.480391 -1.473,-7.050537 0.261747,-1.570147 1.652536,-1.969703 3.044379,-1.905624 1.391842,0.06408 2.784508,0.591607 3.008634,2.091669 0.224126,1.500062 -0.719908,3.972529 -1.663905,6.444902"
+       id="path268108"
+       inkscape:path-effect="#path-effect268110"
+       inkscape:original-d="m 79.151614,59.124601 c -0.867161,-2.740089 -1.734585,-5.480442 -2.602272,-8.221062 1.39111,-0.399307 2.781898,-0.798865 4.17245,-1.198692 1.392989,0.527814 2.785655,1.055343 4.178085,1.582618 -0.943805,2.472828 -1.887839,4.945295 -2.832155,7.417546" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#Arrow1Mend)"
+       d="m 44.00074,65.334699 c -0.161035,3.883774 -0.32206,7.767293 3.357274,9.585173 3.679334,1.817881 11.198459,1.570393 18.717482,1.322908"
+       id="path268225"
+       inkscape:path-effect="#path-effect268227"
+       inkscape:original-d="m 44.00074,65.334699 c -0.160761,3.883785 -0.321784,7.767304 -0.483074,11.65056 7.519691,-0.247235 15.038816,-0.494724 22.55783,-0.742479" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.82222px;line-height:1.25;font-family:'方正书宋_GBK';-inkscape-font-specification:'方正书宋_GBK, Normal';stroke-width:0.264583"
+       x="78.831764"
+       y="54.384163"
+       id="text269660"><tspan
+         sodipodi:role="line"
+         id="tspan269658"
+         style="font-size:2.82222px;stroke-width:0.264583"
+         x="78.831764"
+         y="54.384163">a-z</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.82222px;line-height:1.25;font-family:'方正书宋_GBK';-inkscape-font-specification:'方正书宋_GBK, Normal';stroke-width:0.264583"
+       x="75.653458"
+       y="76.636459"
+       id="text273968"><tspan
+         sodipodi:role="line"
+         id="tspan273966"
+         style="font-size:2.82222px;stroke-width:0.264583"
+         x="75.653458"
+         y="76.636459">空白符等</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.82222px;line-height:1.25;font-family:'方正书宋_GBK';-inkscape-font-specification:'方正书宋_GBK, Normal';stroke-width:0.264583"
+       x="49.264214"
+       y="74.345909"
+       id="text273968-5"><tspan
+         sodipodi:role="line"
+         id="tspan273966-3"
+         style="font-size:2.82222px;stroke-width:0.264583"
+         x="49.264214"
+         y="74.345909">空白符等</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.82222px;line-height:1.25;font-family:'方正书宋_GBK';-inkscape-font-specification:'方正书宋_GBK, Normal';stroke-width:0.264583"
+       x="52.086037"
+       y="60.129181"
+       id="text277857"><tspan
+         sodipodi:role="line"
+         id="tspan277855"
+         style="font-size:2.82222px;stroke-width:0.264583"
+         x="52.086037"
+         y="60.129181">-</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.82222px;line-height:1.25;font-family:'方正书宋_GBK';-inkscape-font-specification:'方正书宋_GBK, Normal';stroke-width:0.264583"
+       x="70.288078"
+       y="59.882751"
+       id="text277857-4"><tspan
+         sodipodi:role="line"
+         id="tspan277855-7"
+         style="font-size:2.82222px;stroke-width:0.264583"
+         x="70.288078"
+         y="59.882751">-</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.82222px;line-height:1.25;font-family:'方正书宋_GBK';-inkscape-font-specification:'方正书宋_GBK, Normal';stroke-width:0.264583"
+       x="90.028687"
+       y="59.475479"
+       id="text283738"><tspan
+         sodipodi:role="line"
+         id="tspan283736"
+         style="font-size:2.82222px;stroke-width:0.264583"
+         x="90.028687"
+         y="59.475479">\textbackslash n</tspan></text>
+  </g>
+</svg>

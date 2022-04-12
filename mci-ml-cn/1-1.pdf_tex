@@ -1,0 +1,114 @@
+%% Creator: Inkscape 1.1.1 (1:1.1+202109281949+c3084ef5ed), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file '1-1.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{238.2836032bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.64349077)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0.05450523,0.47444274){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}词法\end{tabular}}}}%
+    \put(0.05411178,0.44308433){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}分析\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{1-1.pdf}}%
+    \put(0.18930152,0.47444265){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}语法\end{tabular}}}}%
+    \put(0.18890807,0.44308424){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}分析\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{1-1.pdf}}%
+    \put(0.32340921,0.47444274){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}语义\end{tabular}}}}%
+    \put(0.32370427,0.44308433){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}动作\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{1-1.pdf}}%
+    \put(0.45913179,0.47444265){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}语义\end{tabular}}}}%
+    \put(0.45883672,0.44308424){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}分析\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{1-1.pdf}}%
+    \put(0.59276866,0.34186255){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}栈帧\end{tabular}}}}%
+    \put(0.59385061,0.31050414){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}布局\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{1-1.pdf}}%
+    \put(0.86288957,0.47444275){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}指令\end{tabular}}}}%
+    \put(0.86288957,0.44308433){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}选择\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{1-1.pdf}}%
+    \put(0.59276875,0.09185819){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}代码\end{tabular}}}}%
+    \put(0.59483427,0.06049978){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}流出\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{1-1.pdf}}%
+    \put(0.59249184,0.45837005){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}翻译\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{1-1.pdf}}%
+    \put(0.4562634,0.58980212){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}环境\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{1-1.pdf}}%
+    \put(0.71523906,0.45837009){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}规范化\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{1-1.pdf}}%
+    \put(0.71523907,0.07578551){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}汇编器\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{1-1.pdf}}%
+    \put(0.85003541,0.07578555){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}链接器\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=12]{1-1.pdf}}%
+    \put(0.44568741,0.08950933){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}寄存器\end{tabular}}}}%
+    \put(0.4586709,0.06206173){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}分配\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=13]{1-1.pdf}}%
+    \put(0.31055505,0.08950933){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}数据流\end{tabular}}}}%
+    \put(0.32353854,0.06206159){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}分析\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=14]{1-1.pdf}}%
+    \put(0.16569626,0.08950933){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}控制流\end{tabular}}}}%
+    \put(0.17867976,0.06206177){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}分析\end{tabular}}}}%
+    \put(0.47027027,0.5223583){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}表\end{tabular}}}}%
+    \put(0.60404077,0.39376711){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}帧\end{tabular}}}}%
+    \put(0.12528054,0.09111749){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}汇\\编\end{tabular}}}}%
+    \put(0.93737627,0.47200853){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}汇\\编\end{tabular}}}}%
+    \put(0.2636966,0.09198607){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}流\\图\end{tabular}}}}%
+    \put(0.40245092,0.10530238){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}冲\\突\\图\end{tabular}}}}%
+    \put(0.53981234,0.13403402){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}寄\\存\\器\\指\\派\end{tabular}}}}%
+    \put(0.67380121,0.12226571){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}汇\\编\\语\\言\end{tabular}}}}%
+    \put(0.80723327,0.15944129){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}可\\重\\定\\位\\代\\码\end{tabular}}}}%
+    \put(0.93941329,0.12519816){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}机\\器\\语\\言\end{tabular}}}}%
+    \put(0.80923743,0.47358504){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}IR\\树\end{tabular}}}}%
+    \put(0.67112787,0.47247876){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}IR\\树\end{tabular}}}}%
+    \put(0.53748153,0.47019597){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}转\\换\end{tabular}}}}%
+    \put(0.40374633,0.50079944){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}抽\\象\\语\\法\end{tabular}}}}%
+    \put(0.26969266,0.47249074){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}归\\约\end{tabular}}}}%
+    \put(-0.00059016,0.49029214){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}源\\程\\序\end{tabular}}}}%
+    \put(0.13489421,0.50450535){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}标\\记\\符\\号\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=15]{1-1.pdf}}%
+  \end{picture}%
+\endgroup%

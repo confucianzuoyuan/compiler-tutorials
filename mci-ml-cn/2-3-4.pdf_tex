@@ -1,0 +1,77 @@
+%% Creator: Inkscape 1.1.1 (1:1.1+202109281949+c3084ef5ed), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file '2-3-4.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{152.42215559bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.55275041)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{2-3-4.pdf}}%
+    \put(0.21864641,0.3221928){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{2-3-4.pdf}}%
+    \put(0.56459316,0.32219273){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}2\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{2-3-4.pdf}}%
+    \put(0.38036782,0.06216101){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}4\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{2-3-4.pdf}}%
+    \put(0.91035954,0.31667037){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}3\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{2-3-4.pdf}}%
+    \put(0.70568506,0.05878456){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}5\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{2-3-4.pdf}}%
+    \put(0.38548913,0.43592744){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}0-9\end{tabular}}}}%
+    \put(0.52839548,0.52614867){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}0-9\end{tabular}}}}%
+    \put(0.72564403,0.43592744){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}.\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{2-3-4.pdf}}%
+    \put(0.87697013,0.52298397){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}0-9\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{2-3-4.pdf}}%
+    \put(0.52590608,0.05934584){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}0-9\end{tabular}}}}%
+    \put(0.92035658,0.08544698){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}0-9\end{tabular}}}}%
+    \put(0.31443087,0.20218046){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}.\end{tabular}}}}%
+  \end{picture}%
+\endgroup%
