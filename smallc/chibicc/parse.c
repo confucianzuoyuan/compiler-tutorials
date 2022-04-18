@@ -260,10 +260,7 @@ static void push_tag_scope(Token *tok, Type *ty) {
   scope->tags = sc;
 }
 
-// declspec = ("void" | "_Bool" | "char" | "short" | "int" | "long"
-//             | "typedef" | "static"
-//             | struct-decl | union-decl | typedef-name
-//             | enum-specifier)+
+// declspec = ("void" | "char" | "short" | "int" | "long")+
 //
 // The order of typenames in a type-specifier doesn't matter. For
 // example, `int long static` means the same as `static long int`.
