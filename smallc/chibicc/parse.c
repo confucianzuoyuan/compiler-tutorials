@@ -296,38 +296,14 @@ static Type *declspec(Token **rest, Token *tok, VarAttr *attr) {
   int counter = 0;
 
   while (is_typename(tok)) {
-    // Handle storage class specifiers.
-    if (equal(tok, "typedef") || equal(tok, "static")) {
-      if (!attr)
-        error_tok(tok, "storage class specifier is not allowed in this context");
-
-      if (equal(tok, "typedef"))
-        attr->is_typedef = true;
-      else
-        attr->is_static = true;
-
-      if (attr->is_typedef + attr->is_static > 1)
-        error_tok(tok, "typedef and static may not be used together");
-      tok = tok->next;
-      continue;
-    }
-
     // Handle user-defined types.
     Type *ty2 = find_typedef(tok);
-    if (equal(tok, "struct") || equal(tok, "union") || equal(tok, "enum") || ty2) {
+    if (ty2) {
       if (counter)
         break;
 
-      if (equal(tok, "struct")) {
-        ty = struct_decl(&tok, tok->next);
-      } else if (equal(tok, "union")) {
-        ty = union_decl(&tok, tok->next);
-      } else if (equal(tok, "enum")) {
-        ty = enum_specifier(&tok, tok->next);
-      } else {
-        ty = ty2;
-        tok = tok->next;
-      }
+      ty = ty2;
+      tok = tok->next;
 
       counter += OTHER;
       continue;
