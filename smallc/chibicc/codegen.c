@@ -71,7 +71,7 @@ static void gen_addr(Node *node) {
 
 // Load a value from where %rax is pointing to.
 static void load(Type *ty) {
-  if (ty->kind == TY_ARRAY || ty->kind == TY_STRUCT || ty->kind == TY_UNION) {
+  if (ty->kind == TY_ARRAY) {
     // If it is an array, do not attempt to load a value to the
     // register because in general we can't load an entire array to a
     // register. As a result, the result of an evaluation of an array
@@ -99,14 +99,6 @@ static void load(Type *ty) {
 // Store %rax to an address that the stack top is pointing to.
 static void store(Type *ty) {
   pop("%rdi");
-
-  if (ty->kind == TY_STRUCT || ty->kind == TY_UNION) {
-    for (int i = 0; i < ty->size; i++) {
-      println("  mov %d(%%rax), %%r8b", i);
-      println("  mov %%r8b, %d(%%rdi)", i);
-    }
-    return;
-  }
 
   if (ty->size == 1)
     println("  mov %%al, (%%rdi)");
@@ -170,8 +162,6 @@ static void cast(Type *from, Type *to) {
 
 // Generate code for a given node.
 static void gen_expr(Node *node) {
-  println("  .loc 1 %d", node->tok->line_no);
-
   switch (node->kind) {
   case ND_NUM:
     println("  mov $%ld, %%rax", node->val);
@@ -181,7 +171,6 @@ static void gen_expr(Node *node) {
     println("  neg %%rax");
     return;
   case ND_VAR:
-  case ND_MEMBER:
     gen_addr(node);
     load(node->ty);
     return;
@@ -197,10 +186,6 @@ static void gen_expr(Node *node) {
     push();
     gen_expr(node->rhs);
     store(node->ty);
-    return;
-  case ND_STMT_EXPR:
-    for (Node *n = node->body; n; n = n->next)
-      gen_stmt(n);
     return;
   case ND_COMMA:
     gen_expr(node->lhs);
@@ -335,8 +320,6 @@ static void gen_expr(Node *node) {
 }
 
 static void gen_stmt(Node *node) {
-  println("  .loc 1 %d", node->tok->line_no);
-
   switch (node->kind) {
   case ND_IF: {
     int c = count();
@@ -369,32 +352,9 @@ static void gen_stmt(Node *node) {
     println("%s:", node->brk_label);
     return;
   }
-  case ND_SWITCH:
-    gen_expr(node->cond);
-
-    for (Node *n = node->case_next; n; n = n->case_next) {
-      char *reg = (node->cond->ty->size == 8) ? "%rax" : "%eax";
-      println("  cmp $%ld, %s", n->val, reg);
-      println("  je %s", n->label);
-    }
-
-    if (node->default_case)
-      println("  jmp %s", node->default_case->label);
-
-    println("  jmp %s", node->brk_label);
-    gen_stmt(node->then);
-    println("%s:", node->brk_label);
-    return;
-  case ND_CASE:
-    println("%s:", node->label);
-    gen_stmt(node->lhs);
-    return;
   case ND_BLOCK:
     for (Node *n = node->body; n; n = n->next)
       gen_stmt(n);
-    return;
-  case ND_GOTO:
-    println("  jmp %s", node->unique_label);
     return;
   case ND_LABEL:
     println("%s:", node->unique_label);
