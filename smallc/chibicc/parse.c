@@ -107,7 +107,6 @@ static Type *union_decl(Token **rest, Token *tok);
 static Node *postfix(Token **rest, Token *tok);
 static Node *unary(Token **rest, Token *tok);
 static Node *primary(Token **rest, Token *tok);
-static Token *parse_typedef(Token *tok, Type *basety);
 
 static void enter_scope(void) {
   Scope *sc = calloc(1, sizeof(Scope));
@@ -312,8 +311,6 @@ static Type *declspec(Token **rest, Token *tok, VarAttr *attr) {
     // Handle built-in types.
     if (equal(tok, "void"))
       counter += VOID;
-    else if (equal(tok, "_Bool"))
-      counter += BOOL;
     else if (equal(tok, "char"))
       counter += CHAR;
     else if (equal(tok, "short"))
@@ -329,23 +326,16 @@ static Type *declspec(Token **rest, Token *tok, VarAttr *attr) {
     case VOID:
       ty = ty_void;
       break;
-    case BOOL:
-      ty = ty_bool;
-      break;
     case CHAR:
       ty = ty_char;
       break;
     case SHORT:
-    case SHORT + INT:
       ty = ty_short;
       break;
     case INT:
       ty = ty_int;
       break;
     case LONG:
-    case LONG + INT:
-    case LONG + LONG:
-    case LONG + LONG + INT:
       ty = ty_long;
       break;
     default:
@@ -462,59 +452,6 @@ static Type *typename(Token **rest, Token *tok) {
   return abstract_declarator(rest, tok, ty);
 }
 
-// enum-specifier = ident? "{" enum-list? "}"
-//                | ident ("{" enum-list? "}")?
-//
-// enum-list      = ident ("=" num)? ("," ident ("=" num)?)*
-static Type *enum_specifier(Token **rest, Token *tok) {
-  Type *ty = enum_type();
-
-  // Read a struct tag.
-  Token *tag = NULL;
-  if (tok->kind == TK_IDENT) {
-    tag = tok;
-    tok = tok->next;
-  }
-
-  if (tag && !equal(tok, "{")) {
-    Type *ty = find_tag(tag);
-    if (!ty)
-      error_tok(tag, "unknown enum type");
-    if (ty->kind != TY_ENUM)
-      error_tok(tag, "not an enum tag");
-    *rest = tok;
-    return ty;
-  }
-
-  tok = skip(tok, "{");
-
-  // Read an enum-list.
-  int i = 0;
-  int val = 0;
-  while (!equal(tok, "}")) {
-    if (i++ > 0)
-      tok = skip(tok, ",");
-
-    char *name = get_ident(tok);
-    tok = tok->next;
-
-    if (equal(tok, "=")) {
-      val = get_number(tok->next);
-      tok = tok->next->next;
-    }
-
-    VarScope *sc = push_scope(name);
-    sc->enum_ty = ty;
-    sc->enum_val = val++;
-  }
-
-  *rest = tok->next;
-
-  if (tag)
-    push_tag_scope(tag, ty);
-  return ty;
-}
-
 // declaration = declspec (declarator ("=" expr)? ("," declarator ("=" expr)?)*)? ";"
 static Node *declaration(Token **rest, Token *tok, Type *basety) {
   Node head = {};
@@ -551,8 +488,7 @@ static Node *declaration(Token **rest, Token *tok, Type *basety) {
 // Returns true if a given token represents a type.
 static bool is_typename(Token *tok) {
   static char *kw[] = {
-    "void", "_Bool", "char", "short", "int", "long", "struct", "union",
-    "typedef", "enum", "static",
+    "void", "char", "short", "int", "long",
   };
 
   for (int i = 0; i < sizeof(kw) / sizeof(*kw); i++)
@@ -563,12 +499,8 @@ static bool is_typename(Token *tok) {
 
 // stmt = "return" expr ";"
 //      | "if" "(" expr ")" stmt ("else" stmt)?
-//      | "switch" "(" expr ")" stmt
-//      | "case" num ":" stmt
-//      | "default" ":" stmt
 //      | "for" "(" expr-stmt expr? ";" expr? ")" stmt
 //      | "while" "(" expr ")" stmt
-//      | "goto" ident ";"
 //      | "break" ";"
 //      | "continue" ";"
 //      | ident ":" stmt
@@ -594,52 +526,6 @@ static Node *stmt(Token **rest, Token *tok) {
     if (equal(tok, "else"))
       node->els = stmt(&tok, tok->next);
     *rest = tok;
-    return node;
-  }
-
-  if (equal(tok, "switch")) {
-    Node *node = new_node(ND_SWITCH, tok);
-    tok = skip(tok->next, "(");
-    node->cond = expr(&tok, tok);
-    tok = skip(tok, ")");
-
-    Node *sw = current_switch;
-    current_switch = node;
-
-    char *brk = brk_label;
-    brk_label = node->brk_label = new_unique_name();
-
-    node->then = stmt(rest, tok);
-
-    current_switch = sw;
-    brk_label = brk;
-    return node;
-  }
-
-  if (equal(tok, "case")) {
-    if (!current_switch)
-      error_tok(tok, "stray case");
-    int val = get_number(tok->next);
-
-    Node *node = new_node(ND_CASE, tok);
-    tok = skip(tok->next->next, ":");
-    node->label = new_unique_name();
-    node->lhs = stmt(rest, tok);
-    node->val = val;
-    node->case_next = current_switch->case_next;
-    current_switch->case_next = node;
-    return node;
-  }
-
-  if (equal(tok, "default")) {
-    if (!current_switch)
-      error_tok(tok, "stray default");
-
-    Node *node = new_node(ND_CASE, tok);
-    tok = skip(tok->next, ":");
-    node->label = new_unique_name();
-    node->lhs = stmt(rest, tok);
-    current_switch->default_case = node;
     return node;
   }
 
@@ -695,15 +581,6 @@ static Node *stmt(Token **rest, Token *tok) {
     return node;
   }
 
-  if (equal(tok, "goto")) {
-    Node *node = new_node(ND_GOTO, tok);
-    node->label = get_ident(tok->next);
-    node->goto_next = gotos;
-    gotos = node;
-    *rest = skip(tok->next->next, ";");
-    return node;
-  }
-
   if (equal(tok, "break")) {
     if (!brk_label)
       error_tok(tok, "stray break");
@@ -738,7 +615,7 @@ static Node *stmt(Token **rest, Token *tok) {
   return expr_stmt(rest, tok);
 }
 
-// compound-stmt = (typedef | declaration | stmt)* "}"
+// compound-stmt = (declaration | stmt)* "}"
 static Node *compound_stmt(Token **rest, Token *tok) {
   Node *node = new_node(ND_BLOCK, tok);
   Node head = {};
@@ -750,11 +627,6 @@ static Node *compound_stmt(Token **rest, Token *tok) {
     if (is_typename(tok) && !equal(tok->next, ":")) {
       VarAttr attr = {};
       Type *basety = declspec(&tok, tok, &attr);
-
-      if (attr.is_typedef) {
-        tok = parse_typedef(tok, basety);
-        continue;
-      }
 
       cur = cur->next = declaration(&tok, tok, basety);
     } else {
@@ -1115,135 +987,6 @@ static Node *unary(Token **rest, Token *tok) {
   return postfix(rest, tok);
 }
 
-// struct-members = (declspec declarator (","  declarator)* ";")*
-static void struct_members(Token **rest, Token *tok, Type *ty) {
-  Member head = {};
-  Member *cur = &head;
-
-  while (!equal(tok, "}")) {
-    Type *basety = declspec(&tok, tok, NULL);
-    int i = 0;
-
-    while (!consume(&tok, tok, ";")) {
-      if (i++)
-        tok = skip(tok, ",");
-
-      Member *mem = calloc(1, sizeof(Member));
-      mem->ty = declarator(&tok, tok, basety);
-      mem->name = mem->ty->name;
-      cur = cur->next = mem;
-    }
-  }
-
-  *rest = tok->next;
-  ty->members = head.next;
-}
-
-// struct-union-decl = ident? ("{" struct-members)?
-static Type *struct_union_decl(Token **rest, Token *tok) {
-  // Read a tag.
-  Token *tag = NULL;
-  if (tok->kind == TK_IDENT) {
-    tag = tok;
-    tok = tok->next;
-  }
-
-  if (tag && !equal(tok, "{")) {
-    *rest = tok;
-
-    Type *ty = find_tag(tag);
-    if (ty)
-      return ty;
-
-    ty = struct_type();
-    ty->size = -1;
-    push_tag_scope(tag, ty);
-    return ty;
-  }
-
-  tok = skip(tok, "{");
-
-  // Construct a struct object.
-  Type *ty = struct_type();
-  struct_members(rest, tok, ty);
-
-  if (tag) {
-    // If this is a redefinition, overwrite a previous type.
-    // Otherwise, register the struct type.
-    for (TagScope *sc = scope->tags; sc; sc = sc->next) {
-      if (equal(tag, sc->name)) {
-        *sc->ty = *ty;
-        return sc->ty;
-      }
-    }
-
-    push_tag_scope(tag, ty);
-  }
-
-  return ty;
-}
-
-// struct-decl = struct-union-decl
-static Type *struct_decl(Token **rest, Token *tok) {
-  Type *ty = struct_union_decl(rest, tok);
-  ty->kind = TY_STRUCT;
-
-  if (ty->size < 0)
-    return ty;
-
-  // Assign offsets within the struct to members.
-  int offset = 0;
-  for (Member *mem = ty->members; mem; mem = mem->next) {
-    offset = align_to(offset, mem->ty->align);
-    mem->offset = offset;
-    offset += mem->ty->size;
-
-    if (ty->align < mem->ty->align)
-      ty->align = mem->ty->align;
-  }
-  ty->size = align_to(offset, ty->align);
-  return ty;
-}
-
-// union-decl = struct-union-decl
-static Type *union_decl(Token **rest, Token *tok) {
-  Type *ty = struct_union_decl(rest, tok);
-  ty->kind = TY_UNION;
-
-  if (ty->size < 0)
-    return ty;
-
-  // If union, we don't have to assign offsets because they
-  // are already initialized to zero. We need to compute the
-  // alignment and the size though.
-  for (Member *mem = ty->members; mem; mem = mem->next) {
-    if (ty->align < mem->ty->align)
-      ty->align = mem->ty->align;
-    if (ty->size < mem->ty->size)
-      ty->size = mem->ty->size;
-  }
-  ty->size = align_to(ty->size, ty->align);
-  return ty;
-}
-
-static Member *get_struct_member(Type *ty, Token *tok) {
-  for (Member *mem = ty->members; mem; mem = mem->next)
-    if (mem->name->len == tok->len &&
-        !strncmp(mem->name->loc, tok->loc, tok->len))
-      return mem;
-  error_tok(tok, "no such member");
-}
-
-static Node *struct_ref(Node *lhs, Token *tok) {
-  add_type(lhs);
-  if (lhs->ty->kind != TY_STRUCT && lhs->ty->kind != TY_UNION)
-    error_tok(lhs->tok, "not a struct nor a union");
-
-  Node *node = new_unary(ND_MEMBER, lhs, tok);
-  node->member = get_struct_member(lhs->ty, tok);
-  return node;
-}
-
 // Convert A++ to `(typeof A)((A += 1) - 1)`
 static Node *new_inc_dec(Node *node, Token *tok, int addend) {
   add_type(node);
@@ -1252,7 +995,7 @@ static Node *new_inc_dec(Node *node, Token *tok, int addend) {
                   node->ty);
 }
 
-// postfix = primary ("[" expr "]" | "." ident | "->" ident | "++" | "--")*
+// postfix = primary ("[" expr "]" | "++" | "--")*
 static Node *postfix(Token **rest, Token *tok) {
   Node *node = primary(&tok, tok);
 
@@ -1263,20 +1006,6 @@ static Node *postfix(Token **rest, Token *tok) {
       Node *idx = expr(&tok, tok->next);
       tok = skip(tok, "]");
       node = new_unary(ND_DEREF, new_add(node, idx, start), start);
-      continue;
-    }
-
-    if (equal(tok, ".")) {
-      node = struct_ref(node, tok->next);
-      tok = tok->next->next;
-      continue;
-    }
-
-    if (equal(tok, "->")) {
-      // x->y is short for (*x).y
-      node = new_unary(ND_DEREF, node, tok);
-      node = struct_ref(node, tok->next);
-      tok = tok->next->next;
       continue;
     }
 
@@ -1343,8 +1072,6 @@ static Node *funcall(Token **rest, Token *tok) {
 
 // primary = "(" "{" stmt+ "}" ")"
 //         | "(" expr ")"
-//         | "sizeof" "(" type-name ")"
-//         | "sizeof" unary
 //         | ident func-args?
 //         | str
 //         | num
@@ -1363,18 +1090,6 @@ static Node *primary(Token **rest, Token *tok) {
     Node *node = expr(&tok, tok->next);
     *rest = skip(tok, ")");
     return node;
-  }
-
-  if (equal(tok, "sizeof") && equal(tok->next, "(") && is_typename(tok->next->next)) {
-    Type *ty = typename(&tok, tok->next->next);
-    *rest = skip(tok, ")");
-    return new_num(ty->size, start);
-  }
-
-  if (equal(tok, "sizeof")) {
-    Node *node = unary(rest, tok->next);
-    add_type(node);
-    return new_num(node->ty->size, tok);
   }
 
   if (tok->kind == TK_IDENT) {
@@ -1412,46 +1127,11 @@ static Node *primary(Token **rest, Token *tok) {
   error_tok(tok, "expected an expression");
 }
 
-static Token *parse_typedef(Token *tok, Type *basety) {
-  bool first = true;
-
-  while (!consume(&tok, tok, ";")) {
-    if (!first)
-      tok = skip(tok, ",");
-    first = false;
-
-    Type *ty = declarator(&tok, tok, basety);
-    push_scope(get_ident(ty->name))->type_def = ty;
-  }
-  return tok;
-}
-
 static void create_param_lvars(Type *param) {
   if (param) {
     create_param_lvars(param->next);
     new_lvar(get_ident(param->name), param);
   }
-}
-
-// This function matches gotos with labels.
-//
-// We cannot resolve gotos as we parse a function because gotos
-// can refer a label that appears later in the function.
-// So, we need to do this after we parse the entire function.
-static void resolve_goto_labels(void) {
-  for (Node *x = gotos; x; x = x->goto_next) {
-    for (Node *y = labels; y; y = y->goto_next) {
-      if (!strcmp(x->label, y->label)) {
-        x->unique_label = y->unique_label;
-        break;
-      }
-    }
-
-    if (x->unique_label == NULL)
-      error_tok(x->tok->next, "use of undeclared label");
-  }
-
-  gotos = labels = NULL;
 }
 
 static Token *function(Token *tok, Type *basety, VarAttr *attr) {
@@ -1475,7 +1155,6 @@ static Token *function(Token *tok, Type *basety, VarAttr *attr) {
   fn->body = compound_stmt(&tok, tok);
   fn->locals = locals;
   leave_scope();
-  resolve_goto_labels();
   return tok;
 }
 
@@ -1511,12 +1190,6 @@ Obj *parse(Token *tok) {
   while (tok->kind != TK_EOF) {
     VarAttr attr = {};
     Type *basety = declspec(&tok, tok, &attr);
-
-    // Typedef
-    if (attr.is_typedef) {
-      tok = parse_typedef(tok, basety);
-      continue;
-    }
 
     // Function
     if (is_function(tok)) {
