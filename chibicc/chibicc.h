@@ -113,6 +113,7 @@ struct Node {
   // Function call
   char *funcname;
   Node *args;
+  bool pass_by_stack;
 
   Obj *var;      // Used if kind == ND_VAR
   int val;       // Used if kind == ND_NUM

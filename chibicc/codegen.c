@@ -63,6 +63,40 @@ static void store(void) {
   printf("  mov %%rax, (%%rdi)\n");
 }
 
+static void push_args2(Node *args, bool first_pass) {
+  if (!args)
+    return;
+
+  push_args2(args->next, first_pass);
+
+  if ((first_pass && !args->pass_by_stack) || (!first_pass && args->pass_by_stack))
+    return;
+
+  gen_expr(args);
+  push();
+}
+
+static int push_args(Node *args) {
+  int stack = 0, gp = 0;
+
+  for (Node *arg = args; arg; arg = arg->next) {
+    if (gp++ >= 6) {
+      arg->pass_by_stack = true;
+      stack++;
+    }
+  }
+
+  if ((depth + stack) % 2 == 1) {
+    printf("  sub $8, %%rsp\n");
+    depth++;
+    stack++;
+  }
+
+  push_args2(args, true);
+  push_args2(args, false);
+  return stack;
+}
+
 // Generate code for a given node.
 static void gen_expr(Node *node) {
   switch (node->kind) {
@@ -91,18 +125,20 @@ static void gen_expr(Node *node) {
     store();
     return;
   case ND_FUNCALL: {
-    int nargs = 0;
-    for (Node *arg = node->args; arg; arg = arg->next) {
-      gen_expr(arg);
-      push();
-      nargs++;
-    }
+    int stack_args = push_args(node->args);
+    // gen_expr(node->lhs);
 
-    for (int i = nargs - 1; i >= 0; i--)
-      pop(argreg[i]);
+    int gp = 0;
+    for (Node *arg = node->args; arg; arg = arg->next) {
+      if (gp < 6)
+        pop(argreg[gp++]);
+    }
 
     printf("  mov $0, %%rax\n");
     printf("  call %s\n", node->funcname);
+    printf("  add $%d, %%rsp\n", stack_args * 8);
+
+    depth -= stack_args;
     return;
   }
   }
