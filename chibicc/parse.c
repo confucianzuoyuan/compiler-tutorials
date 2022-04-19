@@ -174,8 +174,12 @@ static Type *declspec(Token **rest, Token *tok) {
     return ty_char;
   }
 
-  *rest = skip(tok, "int");
-  return ty_int;
+  if (equal(tok, "int")) {
+    *rest = tok->next;
+    return ty_int;
+  }
+
+  error_tok(tok, "typename expected");
 }
 
 // func-params = (param ("," param)*)? ")"
