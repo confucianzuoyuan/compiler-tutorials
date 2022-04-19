@@ -8,6 +8,18 @@ int sub(int x, int y) { return x-y; }
 int add6(int a, int b, int c, int d, int e, int f) {
   return a+b+c+d+e+f;
 }
+
+int add7(int a, int b, int c, int d, int e, int f, int g) {
+  return a+b+c+d+e+f+g;
+}
+
+int add8(int a, int b, int c, int d, int e, int f, int g, int h) {
+  return a+b+c+d+e+f+g+h;
+}
+
+int add9(int a, int b, int c, int d, int e, int f, int g, int h, int i) {
+  return a+b+c+d+e+f+g+h+i;
+}
 EOF
 
 assert() {
@@ -137,5 +149,9 @@ assert 2 'int main() { int x[2][3]; int *y=x; y[2]=2; return x[0][2]; }'
 assert 3 'int main() { int x[2][3]; int *y=x; y[3]=3; return x[1][0]; }'
 assert 4 'int main() { int x[2][3]; int *y=x; y[4]=4; return x[1][1]; }'
 assert 5 'int main() { int x[2][3]; int *y=x; y[5]=5; return x[1][2]; }'
+
+assert 28 'int main() { return add7(1,2,3,4,5,6,7); }'
+assert 36 'int main() { return add8(1,2,3,4,5,6,7,8); }'
+assert 45 'int main() { return add9(1,2,3,4,5,6,7,8,9); }'
 
 echo OK

@@ -126,7 +126,6 @@ static void gen_expr(Node *node) {
     return;
   case ND_FUNCALL: {
     int stack_args = push_args(node->args);
-    // gen_expr(node->lhs);
 
     int gp = 0;
     for (Node *arg = node->args; arg; arg = arg->next) {
@@ -277,8 +276,10 @@ void codegen(Function *prog) {
 
     // Save passed-by-register arguments to the stack
     int i = 0;
-    for (Obj *var = fn->params; var; var = var->next)
+    for (Obj *var = fn->params; var; var = var->next) {
+      if (var->offset > 0) continue;
       printf("  mov %s, %d(%%rbp)\n", argreg[i++], var->offset);
+    }
 
     // Emit code
     gen_stmt(fn->body);
