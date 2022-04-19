@@ -169,4 +169,11 @@ assert 2 'int main() { char x=1; char y=2; return y; }'
 
 assert 1 'int main() { return sub_char(7, 3, 3); } int sub_char(char a, char b, char c) { return a-b-c; }'
 
+assert 0 'int main() { return ""[0]; }'
+
+assert 97 'int main() { return "abc"[0]; }'
+assert 98 'int main() { return "abc"[1]; }'
+assert 99 'int main() { return "abc"[2]; }'
+assert 0 'int main() { return "abc"[3]; }'
+
 echo OK
