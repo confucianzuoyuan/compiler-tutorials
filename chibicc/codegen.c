@@ -2,7 +2,7 @@
 
 static int depth;
 static char *argreg[] = {"%rdi", "%rsi", "%rdx", "%rcx", "%r8", "%r9"};
-static Function *current_fn;
+static Obj *current_fn;
 
 static void gen_expr(Node *node);
 
@@ -32,7 +32,13 @@ static int align_to(int n, int align) {
 static void gen_addr(Node *node) {
   switch (node->kind) {
   case ND_VAR:
-    printf("  lea %d(%%rbp), %%rax\n", node->var->offset);
+    if (node->var->is_local) {
+      // Local variable
+      printf("  lea %d(%%rbp), %%rax\n", node->var->offset);
+    } else {
+      // Global variable
+      printf("  lea %s(%%rip), %%rax\n", node->var->name);
+    }
     return;
   case ND_DEREF:
     gen_expr(node->lhs);
@@ -232,8 +238,10 @@ static void gen_stmt(Node *node) {
 }
 
 // Assign offsets to local variables.
-static void assign_lvar_offsets(Function *prog) {
-  for (Function *fn = prog; fn; fn = fn->next) {
+static void assign_lvar_offsets(Obj *prog) {
+  for (Obj *fn = prog; fn; fn = fn->next) {
+    if (!fn->is_function) continue;
+
     int top = 16;
     int bottom = 0;
 
@@ -261,11 +269,25 @@ static void assign_lvar_offsets(Function *prog) {
   }
 }
 
-void codegen(Function *prog) {
-  assign_lvar_offsets(prog);
+static void emit_data(Obj *prog) {
+  for (Obj *var = prog; var; var = var->next) {
+    if (var->is_function)
+      continue;
 
-  for (Function *fn = prog; fn; fn = fn->next) {
+    printf("  .data\n");
+    printf("  .globl %s\n", var->name);
+    printf("%s:\n", var->name);
+    printf("  .zero %d\n", var->ty->size);
+  }
+}
+
+static void emit_text(Obj *prog) {
+  for (Obj *fn = prog; fn; fn = fn->next) {
+    if (!fn->is_function)
+      continue;
+
     printf("  .globl %s\n", fn->name);
+    printf("  .text\n");
     printf("%s:\n", fn->name);
     current_fn = fn;
 
@@ -291,4 +313,10 @@ void codegen(Function *prog) {
     printf("  pop %%rbp\n");
     printf("  ret\n");
   }
+}
+
+void codegen(Obj *prog) {
+  assign_lvar_offsets(prog);
+  emit_data(prog);
+  emit_text(prog);
 }

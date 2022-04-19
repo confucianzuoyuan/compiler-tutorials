@@ -5,7 +5,7 @@ int main(int argc, char **argv) {
     error("%s: invalid number of arguments", argv[0]);
 
   Token *tok = tokenize(argv[1]);
-  Function *prog = parse(tok);
+  Obj *prog = parse(tok);
 
   // Traverse the AST to emit assembly.
   codegen(prog);
