@@ -1,8 +1,0 @@
-**/*~
-**/\#*
-**/*.o
-**/*.s
-**/a.out
-/tmp*
-/chibicc
-/test/*.exe
