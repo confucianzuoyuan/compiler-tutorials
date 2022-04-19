@@ -1,6 +1,7 @@
 #define _POSIX_C_SOURCE 200809L
 #include <assert.h>
 #include <ctype.h>
+#include <errno.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -9,6 +10,12 @@
 
 typedef struct Type Type;
 typedef struct Node Node;
+
+//
+// strings.c
+//
+
+char *format(char *fmt, ...);
 
 //
 // tokenize.c
@@ -42,7 +49,7 @@ void error_tok(Token *tok, char *fmt, ...);
 bool equal(Token *tok, char *op);
 Token *skip(Token *tok, char *op);
 bool consume(Token **rest, Token *tok, char *str);
-Token *tokenize(char *input);
+Token *tokenize_file(char *filename);
 
 //
 // parse.c
@@ -59,11 +66,11 @@ struct Obj {
   // Local variable
   int offset;
 
-  // Global variable
-  char *init_data;
-
   // Global variable or function
   bool is_function;
+
+  // Global variable
+  char *init_data;
 
   // Function
   Obj *params;
