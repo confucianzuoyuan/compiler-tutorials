@@ -235,12 +235,30 @@ static void gen_stmt(Node *node) {
 // Assign offsets to local variables.
 static void assign_lvar_offsets(Function *prog) {
   for (Function *fn = prog; fn; fn = fn->next) {
-    int offset = 0;
-    for (Obj *var = fn->locals; var; var = var->next) {
-      offset += var->ty->size;
-      var->offset = -offset;
+    int top = 16;
+    int bottom = 0;
+
+    int gp = 0;
+
+    for (Obj *var = fn->params; var; var = var->next) {
+      if (gp++ < 6) {
+        continue;
+      }
+
+      top = align_to(top, 8);
+      var->offset = top;
+      top += var->ty->size;
     }
-    fn->stack_size = align_to(offset, 16);
+
+    for (Obj *var = fn->locals; var; var = var->next) {
+      if (var->offset) continue;
+
+      bottom += var->ty->size;
+      bottom = align_to(bottom, 8);
+      var->offset = -bottom;
+    }
+
+    fn->stack_size = align_to(bottom, 16);
   }
 }
 
