@@ -187,4 +187,6 @@ assert 3 'int main() { int x=2; { x=3; } return x; }'
 assert 15 'int main() { int x; int y; char z; char *a=&y; char *b=&z; return b-a; }'
 assert 1 'int main() { int x; char y; int z; char *a=&y; char *b=&z; return b-a; }'
 
+assert 1 'int printf(); int main() { return 1; }'
+
 echo OK
